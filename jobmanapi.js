@@ -5,7 +5,7 @@ function sendPostRequest(body, path, onSuccess, onError) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(body),
     })
         .then(response => response.json())
         .then(data => {
