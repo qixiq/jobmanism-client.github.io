@@ -32,7 +32,7 @@ function beginSignupWithEmail(user, pwd, email, onSuccess, onError) {
 
 function completeSignup(user, pwd,  onSuccess, onError) {
     var query = document.location.search;
-    const urlParams = new URLSearchParams(queryString);
+    const urlParams = new URLSearchParams(query);
     var token = urlParams.get('token'); 
     var data = { userName: user, password: pwd, token: token };
     sendPostRequest(data, '/completesignup', onSuccess, onError);
