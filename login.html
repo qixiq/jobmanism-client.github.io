@@ -1,0 +1,29 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+
+</head>
+<body>
+    <p>Welcome to Jobman Website, please sign in</p>
+    <form id="theForm">
+        <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br/>
+        <label>Password:&nbsp;</label><input id="password" type="password" />
+        <button type="submit">Login</button>
+    </form>
+    <br />
+    <a href="beginsignup.html">Please signup if you do not have an account</a>
+    <script>
+        document.getElementById('theForm').onsubmit = function () {
+            login(document.getElementById('user').value, document.getElementById('password').value,
+                function (data) {
+                    document.write(JSON.stringify(data));
+                },
+                function (error) {
+                    document.write(JSON.stringify(error));
+                });
+            return false;
+        };
+    </script>
+
+</body>
+</html>
