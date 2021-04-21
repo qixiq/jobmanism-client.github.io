@@ -20,7 +20,7 @@
             login(userName, document.getElementById('password').value,
                 function (data) {
                     if (!data.isError) { 
-                        document.lo.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + data.sessionId;
+                        document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + data.sessionId;
                     }
                     else {
                         document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
