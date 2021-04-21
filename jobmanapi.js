@@ -72,6 +72,11 @@ function setUserPrimaryAddress(addressId, onSuccess, onError) {
 
 }
 
+function getPathPrefix(current) { 
+    var n = current.lastIndexOf('/'); 
+    return current.substring(0, n);
+}
+
 function updateUserProfile(formData, onSuccess, onError) {
     var query = document.location.search;
     const urlParams = new URLSearchParams(query);
@@ -92,10 +97,8 @@ function login(user, pwd, onSuccess, onError) {
 }
 
 function beginSignupWithEmail(user, pwd, email, onSuccess, onError) {
-    var path = document.location.href; 
-    var n = path.lastIndexOf('/'); 
-    var prefix = path.substring(0, n);
-    var data = {userName : user, password : pwd, emailAddress : email, completionlinkPrefix : prefix + '/completesignup.html' };
+
+    var data = { userName: user, password: pwd, emailAddress: email, completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
     sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
 }
 

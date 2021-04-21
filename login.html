@@ -19,9 +19,8 @@
             var userName = document.getElementById('user').value;
             login(userName, document.getElementById('password').value,
                 function (data) {
-                    if (!data.isError) {
-                        window.alert(document.location.href);
-                        document.location.href = '/landingpage.html?sessionId=' + data.sessionId;
+                    if (!data.isError) { 
+                        document.lo.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + data.sessionId;
                     }
                     else {
                         document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
