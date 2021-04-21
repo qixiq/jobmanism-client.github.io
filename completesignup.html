@@ -9,6 +9,8 @@
         <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br />
         <label>Password:&nbsp;</label><input id="password" type="password" /><br /><br />
         <button type="submit">Complete Sign Up</button>
+        <br />
+        <label id="ErrorLabel"></label>
     </form>
     <br />
     <script>
@@ -16,14 +18,17 @@
             completeSignup(document.getElementById('user').value,
                 document.getElementById('password').value,
                 function (data) {
-                    window.alert(data);
-                    document.write(JSON.stringify(data));
+                    if (!data.isError) {
+                        document.write('Welcome ! ' + userName);
+                    }
+                    else {
+                        document.getElementById('ErrorLabel').innerHTML = 'Error Completing Signup, Please Try Again';
+                    }
+
                 },
                 function (error) {
-                    window.alert(error);
-                    document.write(JSON.stringify(error));
-                }
-            );
+                    document.getElementById('ErrorLabel').innerHTML = 'Error Completing Signup, Please Try Again';
+                });
             return false;
         };
     </script>

@@ -1,0 +1,66 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Address Management Page</title>
+    <script>
+        var addresses = [];
+        function onSuccess(data) {
+          
+
+        }
+ 
+
+        function appendAddress(address) {
+            var addressList = document.getElementById('addressList');
+            addressList.innerHTML +=
+                '<br/><br/>' +
+            '<div id=\'the-address' + addresses.length + '\' > ' +
+            '<form>' +
+            '<button formaction=''>Make Primary Address</button><br/><br/>' +
+            '<button formaction=''>Delete</button>' +
+            '</form>' +
+            '</div>;
+        }
+
+        function onError(details) {
+
+        }
+
+        function init() {
+            getUserAddresses(onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <form id="theForm">
+        <button>Go back To User Profile</button>
+        <p><strong>MANAGE ADDRESSES </strong> for <span id="userName"></span></p><br />
+
+        <label><strong>Add Address:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Make Primary:&nbsp;</label><input id="make-primary" type="checkbox" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="addressList">
+
+    </div>
+    <br /><br />
+    <button onclick="">Save</button>
+    <br />
+    <script>document.getElementById('theForm').onsubmit = function () {
+            
+
+            return false;
+        };</script>
+
+</body>
+</html>

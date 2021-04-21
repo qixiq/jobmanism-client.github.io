@@ -8,18 +8,27 @@
     <form id="theForm">
         <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br/>
         <label>Password:&nbsp;</label><input id="password" type="password" />
-        <button type="submit">Login</button>
+
+        <button type="submit">Login</button><br/>
+        <label id="LoginError"></label>
     </form>
     <br />
     <a href="beginsignup.html">Please signup if you do not have an account</a>
     <script>
         document.getElementById('theForm').onsubmit = function () {
-            login(document.getElementById('user').value, document.getElementById('password').value,
+            var userName = document.getElementById('user').value;
+            login(userName, document.getElementById('password').value,
                 function (data) {
-                    document.write(JSON.stringify(data));
+                    if (!data.isError) {
+                        document.location.href = '/landingpage.html?sessionId=' + data.sessionId;
+                    }
+                    else {
+                        document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
+                    }
+                    
                 },
                 function (error) {
-                    document.write(JSON.stringify(error));
+                    document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
                 });
             return false;
         };

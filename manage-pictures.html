@@ -1,0 +1,93 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Landing Page</title>
+    <script>
+
+        function onSuccess(data) {
+            document.getElementById('userName').textContent = data.userName;
+            document.getElementById('firstName').value = data.firstName;
+            document.getElementById('middleNames').value = data.middleNames;
+            document.getElementById('lastName').value = data.lastName;
+            document.getElementById('street-1').value = data.streetLine1;
+            document.getElementById('street-2').value = data.streetLine2;
+            document.getElementById('street-number').value = data.streetNumber;
+            document.getElementById('addr-city').value = data.addrCity;
+            document.getElementById('addr-state').value = data.addrState;
+            document.getElementById('addr-country').value = data.addrCountry;
+            document.getElementById('addr-gps').value = data.addrGps;
+            document.getElementById('phone-ctry-code').value = data.phoneCountryCode;
+            document.getElementById('phone-number').value = data.phoneNumber;
+            document.getElementById('phone-features').value = data.phoneFeatures;
+            document.getElementById('current-picture').src = getResourceUrl(data.currentPictureId));
+
+        }
+
+        function onError(details) {
+
+        }
+
+        function init() {
+            getUserProfile(onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <form id="theForm">
+        <p><strong>USER PROFILE</strong> for <span id="userName"></span></p><br/>
+        <label><strong>First Name :&nbsp;</strong></label><input id="firstName" type="text" /><br /><br />
+        <label><strong>Middle Names :&nbsp;</strong></label><input id="middleNames" type="text" /><br /><br />
+        <label><strong>Last Name:&nbsp;</strong></label><input id="lastName" type="text" /><br /><br />
+
+        <label><strong>Primary Address:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
+
+        <label><strong>Primary Phone:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="phone-ctry-code" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="phone-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="phone-features" type="text" /><br /><br />
+
+        <label><strong>Profile Picture:&nbsp;</strong></label><input id="profile-picture" type="file" accept="image/*"/><br /><br />
+        <img id="current-picture" width="300" height="300"/><br/><br/>
+        <button type="submit">Update My Profile</button><br />
+    </form>
+    <br/><br/>
+    <button onclick="">Refresh</button>
+    <br /> 
+    <script>
+        document.getElementById('theForm').onsubmit = function () {
+            var formData = new FormData();
+            formData.append('firstName', document.getElementById('firstName').value);
+            formData.append('middleNames', document.getElementById('middleNames').value;
+            formData.append('lastName', document.getElementById('lastName').value;
+            formData.append('streetLine1', document.getElementById('street-1').value;
+            formData.append('streetLine2', document.getElementById('street-2').value;
+            formData.append('streetNumber', document.getElementById('street-number').value;
+            formData.append('addrCity', document.getElementById('addr-city').value;
+            formData.append('addrState', document.getElementById('addr-state').value;
+            formData.append('addrCountry', document.getElementById('addr-country').value;
+            formData.append('addrGps', document.getElementById('addr-gps').value;
+            formData.append('phoneCountryCode', document.getElementById('phone-ctry-code').value;
+            formData.append('phoneNumber', document.getElementById('phone-number').value;
+            formData.append('phoneFeatures', document.getElementById('phone-features').value;
+            
+            var pixEntry = document.getElementById('profile-picture').files;
+            if (pixEntry.length > 0) {
+                formData.append('profilePicture', pixEntry[0]);
+            }
+
+            updateUserProfile(formData, onSuccess, onError);
+            return false;
+        };
+    </script>
+
+</body>
+</html>
