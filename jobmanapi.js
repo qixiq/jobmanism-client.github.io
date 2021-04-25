@@ -49,6 +49,10 @@ function sendGetRequest(path, onSuccess, onError) {
         });
 }
 
+function isStringAndNotEmpty(val) {
+    return val == null || val === "";
+}
+
 function getResourceUrl(id) {
     var query = document.location.search;
     const urlParams = new URLSearchParams(query);
@@ -57,18 +61,52 @@ function getResourceUrl(id) {
 }
 
 function deleteUserAddress(addressId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        addressesToDelete: [parseInt(addressId)]
 
+    };
+    sendJsonPostRequest(data, '/deleteUserAddresses', onSuccess, onError);
 }
 
-function addUserAddress(data, onSuccess, onError) {
+function addUserAddress(address, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        addresses: [address]
 
+    };
+    sendJsonPostRequest(data, '/addUserAddresses', onSuccess, onError);
 }
 
 function getUserAddresses(onSuccess, onError) {
-
+    sendGetRequest('/getUserAddresses?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
 
 function setUserPrimaryAddress(addressId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        addressId:  parseInt(addressId)
+
+    };
+    sendJsonPostRequest(data, '/makeUserAddressPrimary', onSuccess, onError);
+}
+
+function deleteUserPhone(phoneId, onSuccess, onError) {
+
+}
+
+function addUserPhone(data, onSuccess, onError) {
+
+}
+
+function getUserPhones(onSuccess, onError) {
+
+}
+
+function setUserPrimaryPhone(phoneId, onSuccess, onError) {
 
 }
 
@@ -77,19 +115,23 @@ function getPathPrefix(current) {
     return current.substring(0, n);
 }
 
-function updateUserProfile(formData, onSuccess, onError) {
+function getQueryParameter(variableName) {
     var query = document.location.search;
     const urlParams = new URLSearchParams(query);
-    var sessionId = urlParams.get('sessionId');
-    formData.append('sessionId', sessionId );
-    sendFormDataPostRequest(formData, '/updateUserProfile', onSuccess, onError);
+    return urlParams.get(variableName);
 }
 
-function getUserProfile(onSuccess, onError) {
-    var query = document.location.search;
-    const urlParams = new URLSearchParams(query);
-    var sessionId = urlParams.get('sessionId');
-    sendGetRequest('/getUserProfile?sessionId=' + sessionId, onSuccess, onError);
+function updateUserNames(firstName, middleNames, lastName, onSuccess, onError) {
+    var data =
+    {
+        userNames: { firstName: firstName, middleNames: middleNames, lastName: lastName },
+        sessionId : getQueryParameter('sessionId')
+    } 
+    sendJsonPostRequest(data, '/updateNamesForProfile', onSuccess, onError);
+}
+
+function getUserProfile(onSuccess, onError) { 
+    sendGetRequest('/getUserProfile?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
 function login(user, pwd, onSuccess, onError) {
     var data = { userName: user, password : pwd};

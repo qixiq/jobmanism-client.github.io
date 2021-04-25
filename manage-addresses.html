@@ -3,30 +3,77 @@
     <script type="text/javascript" src="jobmanapi.js"></script>
     <title>Jobman Address Management Page</title>
     <script>
-        var addresses = [];
-        function onSuccess(data) {
-          
+        var userName = getQueryParameter('userName');
+        var primaryAddressId = getQueryParameter('primaryId');
+        var sessionId = getQueryParameter('sessionId');
+        var addressCount = 0;
 
+        function onSuccess(data) {
+            addressCount = 0;
+            document.getElementById('street-1').value = "";
+            document.getElementById('street-2').value = "";
+            document.getElementById('street-number').value = "";
+            document.getElementById('addr-city').value = "";
+            document.getElementById('addr-state').value = "";
+            document.getElementById('addr-country').value = "";
+            document.getElementById('addr-gps').value = "";
+            document.getElementById('addr-post-code').value = "";
+            document.getElementById('addressList').innerHTML = "";
+
+            data.forEach(appendAddress);
+
+            
+        }
+
+        function removeAddress(id) {
+            deleteUserAddress(id,
+                init,
+                onError);
+        }
+
+        function makeAddressPrimary(id) {
+            setUserPrimaryAddress(id,
+                function () {
+                    primaryAddressId = id;
+                    init();
+                },
+                onError);
+        } 
+
+        function appendAddress(address)
+        {
+            addressCount++;
+            var isPrimary = address.addressId == primaryAddressId;
+            var listDiv = document.getElementById('addressList');
+            listDiv.innerHTML += '<p><strong>ADDRESS ' + addressCount;
+            if (isPrimary) {
+                listDiv.innerHTML += '(Primary Address)';
+            }
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndNotEmpty(address.streetLine2)) {
+                listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
+            listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            if (!isPrimary) {
+                listDiv.innerHTML += '<button  onclick="removeAddress(\'' + address.addressId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makeAddressPrimary(\'' + address.addressId + '\')">Set As Primary</button><br /><br/>';
+            }
         }
  
 
-        function appendAddress(address) {
-            var addressList = document.getElementById('addressList');
-            addressList.innerHTML +=
-                '<br/><br/>' +
-            '<div id=\'the-address' + addresses.length + '\' > ' +
-            '<form>' +
-            '<button formaction=''>Make Primary Address</button><br/><br/>' +
-            '<button formaction=''>Delete</button>' +
-            '</form>' +
-            '</div>;
-        }
 
         function onError(details) {
 
         }
 
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
         function init() {
+            document.getElementById('userName').textContent = userName;
             getUserAddresses(onSuccess, onError)
         }
 
@@ -34,10 +81,9 @@
     </script>
 </head>
 <body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br/><br/>
     <form id="theForm">
-        <button>Go back To User Profile</button>
         <p><strong>MANAGE ADDRESSES </strong> for <span id="userName"></span></p><br />
-
         <label><strong>Add Address:&nbsp;</strong></label><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
@@ -46,19 +92,29 @@
         <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Make Primary:&nbsp;</label><input id="make-primary" type="checkbox" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
         <button type="submit">Add</button><br />
     </form>
     <br /><br />
     <div id="addressList">
 
-    </div>
-    <br /><br />
-    <button onclick="">Save</button>
-    <br />
+    </div> 
     <script>document.getElementById('theForm').onsubmit = function () {
-            
-
+    var address =
+    {
+        streetLine1 : document.getElementById('street-1').value,
+        streetLine2 : document.getElementById('street-2').value,
+        streetNumber : document.getElementById('street-number').value,
+        city : document.getElementById('addr-city').value,
+        state: document.getElementById('addr-state').value,
+        country : document.getElementById('addr-country').value,
+        gpsLocation : document.getElementById('addr-gps').value,
+        postalCode : document.getElementById('addr-post-code').value
+    };
+    addUserAddress(
+        address,
+        init,
+        onError);
             return false;
         };</script>
 
