@@ -49,7 +49,7 @@ function sendGetRequest(path, onSuccess, onError) {
         });
 }
 
-function isStringAndNotEmpty(val) {
+function isStringAndEmpty(val) {
     return val == null || val === "";
 }
 
@@ -94,20 +94,38 @@ function setUserPrimaryAddress(addressId, onSuccess, onError) {
     sendJsonPostRequest(data, '/makeUserAddressPrimary', onSuccess, onError);
 }
 
-function deleteUserPhone(phoneId, onSuccess, onError) {
+function deleteUserPhoneNumber(phoneNumberId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        phoneNumbersToDelete: [parseInt(phoneNumberId)]
 
+    };
+    sendJsonPostRequest(data, '/deleteUserPhoneNumbers', onSuccess, onError);
 }
 
-function addUserPhone(data, onSuccess, onError) {
+function addUserPhoneNumber(phoneNumber, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        phoneNumbers: [phoneNumber]
 
+    };
+    sendJsonPostRequest(data, '/addUserPhoneNumbers', onSuccess, onError);
 }
 
-function getUserPhones(onSuccess, onError) {
-
+function getUserPhoneNumbers(onSuccess, onError) {
+    sendGetRequest('/getUserPhoneNumbers?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
 
-function setUserPrimaryPhone(phoneId, onSuccess, onError) {
+function setUserPrimaryPhoneNumber(phoneNumberId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        phoneNumberId: parseInt(phoneNumberId)
 
+    };
+    sendJsonPostRequest(data, '/makeUserPhoneNumberPrimary', onSuccess, onError);
 }
 
 function getPathPrefix(current) { 

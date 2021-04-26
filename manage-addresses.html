@@ -51,7 +51,7 @@
             }
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
-            if (!isStringAndNotEmpty(address.streetLine2)) {
+            if (!isStringAndEmpty(address.streetLine2)) {
                 listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
             }
             listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
