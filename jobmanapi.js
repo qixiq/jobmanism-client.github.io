@@ -60,6 +60,35 @@ function getResourceUrl(id) {
     return host + '/getresource?id=' + id + '&sessionId=' + sessionId;
 }
 
+
+function deleteUserResource(resourceId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        resourcesToDelete: [parseInt(resourceId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteUserResources', onSuccess, onError);
+}
+
+function addUserResources(formData, onSuccess, onError) {
+    sendFormDataPostRequest(formData, '/addUserResources', onSuccess, onError);
+}
+
+function getUserResources(mimeType, onSuccess, onError) {
+    sendGetRequest('/getUserResources?sessionId=' + getQueryParameter('sessionId') + '&mimeType=' + mimeType, onSuccess, onError);
+}
+
+function setUserPrimaryPicture(pictureId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        pictureId: parseInt(pictureId)
+
+    };
+    sendJsonPostRequest(data, '/makeUserPicturePrimary', onSuccess, onError);
+}
+
 function deleteUserAddress(addressId, onSuccess, onError) {
     var data =
     {

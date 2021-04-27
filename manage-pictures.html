@@ -3,60 +3,48 @@
     <script type="text/javascript" src="jobmanapi.js"></script>
     <title>Jobman Picture Management Page</title>
     <script>var userName = getQueryParameter('userName');
-        var primaryAddressId = getQueryParameter('primaryId');
+        var primaryPictureId = getQueryParameter('primaryId');
         var sessionId = getQueryParameter('sessionId');
-        var addressCount = 0;
+        var pictureCount = 0;
+        var uploadFiles = [];
 
         function onSuccess(data) {
-            addressCount = 0;
-            document.getElementById('street-1').value = "";
-            document.getElementById('street-2').value = "";
-            document.getElementById('street-number').value = "";
-            document.getElementById('addr-city').value = "";
-            document.getElementById('addr-state').value = "";
-            document.getElementById('addr-country').value = "";
-            document.getElementById('addr-gps').value = "";
-            document.getElementById('addr-post-code').value = "";
-            document.getElementById('addressList').innerHTML = "";
+            pictureCount = 0;
+            document.getElementById('picture-file').value = ""; 
+            document.getElementById('pictureList').innerHTML = "";
 
-            data.forEach(appendAddress);
+            data.forEach(appendPicture);
 
 
         }
 
-        function removeAddress(id) {
-            deleteUserAddress(id,
+        function removePicture(id) {
+            deleteUserResource(id,
                 init,
                 onError);
         }
 
-        function makeAddressPrimary(id) {
-            setUserPrimaryAddress(id,
+        function makePicturePrimary(id) {
+            setUserPrimaryPicture(id,
                 function () {
-                    primaryAddressId = id;
+                    primaryPictureId = id;
                     init();
                 },
                 onError);
         }
 
-        function appendAddress(address) {
-            addressCount++;
-            var isPrimary = address.addressId == primaryAddressId;
-            var listDiv = document.getElementById('addressList');
-            listDiv.innerHTML += '<p><strong>ADDRESS ' + addressCount;
+        function appendPicture(resourceId) {
+            pictureCount++;
+            var isPrimary = resourceId == primaryPictureId;
+            var listDiv = document.getElementById('pictureList');
+            listDiv.innerHTML += '<p><strong>PICTURE ' + pictureCount;
             if (isPrimary) {
-                listDiv.innerHTML += '(Primary Address)';
+                listDiv.innerHTML += '(Primary Picture)';
             }
             listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
-            if (!isStringAndNotEmpty(address.streetLine2)) {
-                listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
-            }
-            listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
-            listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
-            listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            listDiv.innerHTML += '<img src="' + getResourceUrl(resourceId) + '" width="300" height="300" /><br /><br />';
             if (!isPrimary) {
-                listDiv.innerHTML += '<button  onclick="removeAddress(\'' + address.addressId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makeAddressPrimary(\'' + address.addressId + '\')">Set As Primary</button><br /><br/>';
+                listDiv.innerHTML += '<button  onclick="removePicture(\'' + resourceId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makePicturePrimary(\'' + resourceId + '\')">Set As Primary</button><br /><br/>';
             }
         }
 
@@ -72,46 +60,42 @@
 
         function init() {
             document.getElementById('userName').textContent = userName;
-            getUserAddresses(onSuccess, onError)
+            document.getElementById('picture-file').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+            getUserResources("image/*", onSuccess, onError)
         }
+
+
 
         window.addEventListener('load', init);</script>
 </head>
 <body>
     <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
-    <form id="theForm">
-        <p><strong>MANAGE ADDRESSES </strong> for <span id="userName"></span></p><br />
-        <label><strong>Add Address:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
+    <form id="theForm" method="post" enctype="multipart/form-data">
+        <p><strong>MANAGE PICTURES </strong> for <span id="userName"></span></p><br />
+        <label><strong>Add Picture:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
         <button type="submit">Add</button><br />
     </form>
     <br /><br />
-    <div id="addressList">
+    <div id="pictureList">
 
     </div>
-    <script>document.getElementById('theForm').onsubmit = function () {
-            var address =
-            {
-                streetLine1: document.getElementById('street-1').value,
-                streetLine2: document.getElementById('street-2').value,
-                streetNumber: document.getElementById('street-number').value,
-                city: document.getElementById('addr-city').value,
-                state: document.getElementById('addr-state').value,
-                country: document.getElementById('addr-country').value,
-                gpsLocation: document.getElementById('addr-gps').value,
-                postalCode: document.getElementById('addr-post-code').value
-            };
-            addUserAddress(
-                address,
-                init,
-                onError);
+    <script>
+        var form = document.getElementById('theForm');
+        form.onsubmit = function ()
+        {
+            if (uploadFiles.length > 0) {
+                var data = new FormData();
+                data.append('resource1', uploadFiles[0]);
+                data.append('sessionId', sessionId)
+                            addUserResources(
+                                data,
+                                init,
+                                onError);
+            }
+            
             return false;
         };</script>
 
