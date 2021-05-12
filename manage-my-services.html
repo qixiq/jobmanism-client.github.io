@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Manage My Service Categories</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var userName = getQueryParameter('userName');
+        var registered = [];
+        var unregistered = [];
+
+        var registeredServicesCount = 0;
+        var unregisteredServicesCount = 0;
+        var uploadFiles = [];
+
+        function onSuccess(data) {
+            registeredServicesCount = 0;
+            unregisteredServicesCount = 0;
+            registered = [];
+            unregistered = [];
+            document.getElementById('registeredServicesList').innerHTML = "";
+            document.getElementById('unregisteredServicesList').innerHTML = "";
+
+            data.categories.forEach(populateServiceByType); 
+        }
+
+        function populateServiceByType(serviceCategory) {
+            if (serviceCategory.registeredAsProvider) {
+                registered.push(serviceCategory);
+            }
+            else {
+                unregistered.push(serviceCategory);
+            }
+
+            registered.forEach(appendRegisteredServiceCategory);
+            unregistered.forEach(appendUnregisteredServiceCategory);
+        }
+
+        function doRemoveServiceCategory(id) {
+            unregisterFromServiceCategory(sessionId, id, init, onError);
+        }
+
+        function doRegisterForServiceCategory(id) {
+            registerForServiceCategory(sessionId, id, init, onError);
+        }
+
+
+        function appendRegisteredServiceCategory(serviceCategory)
+        {
+            registeredServicesCount++; 
+            var listDiv = document.getElementById('registeredServicesList');
+            listDiv.innerHTML += '<p><strong>REGISTERED SERVICE CATEGORY ' + registeredServicesCount; 
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="doRemoveServiceCategory(\'' + serviceCategory.id + '\')">UnRegister</button><br /><br/>';
+            
+        }
+
+        function appendUnregisteredServiceCategory(serviceCategory) {
+            unregisteredServicesCount++;
+            var listDiv = document.getElementById('unregisteredServicesList');
+            listDiv.innerHTML += '<p><strong>UNREGISTERED SERVICE CATEGORY ' + unregisteredServicesCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="doRegisterForServiceCategory(\'' + serviceCategory.id + '\')">Register</button><br /><br/>';
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            
+            getUserServiceCategories(onSuccess, onError);
+
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br />
+    <br /><br />
+    <div id="registeredServicesList">
+
+    </div>
+    <br /><br />
+    <div id="unregisteredServicesList">
+
+    </div>
+</body>
+</html>

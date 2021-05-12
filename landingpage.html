@@ -10,8 +10,10 @@
         var userId = 0;
         var userName = '';
         var sessionId = '';
+        var isSuperAdmin = false;
 
         function onSuccess(data) {
+            isSuperAdmin = data.privileges == 1;
             document.getElementById('userName').textContent = data.userName;
             userName = data.userName;
             userId = data.userId;
@@ -57,6 +59,13 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-pictures.html?sessionId=' + sessionId + '&userName=' + userName + '&primaryId=' + primaryPictureId;
         }
 
+        function manageServiceCategories() {
+            if (isSuperAdmin)
+                document.location.href = getPathPrefix(document.location.href) + '/manage-service-categories.html?sessionId=' + sessionId;
+            else
+                document.location.href = getPathPrefix(document.location.href) + '/manage-my-services.html?sessionId=' + sessionId + '&userName=' + userName;
+        }
+
         function onError(details) {
 
         }
@@ -95,12 +104,14 @@
 
         <label><strong>Profile Picture:&nbsp;</strong></label><button onclick="managePictures()">Manage Pictures</button><br /><br />
         <img id="current-picture" alt="Please upload an Image" width="300" height="300" /><br /><br />
+        <label><strong>Service Categories:&nbsp;</strong></label><button onclick="manageServiceCategories()">Manage Service Categories</button><br /><br />
+
     </div>
-    <br/><br/>
+    <br /><br />
     <button onclick="init();">Refresh</button>
-    <br /> 
-    <script>
-        document.getElementById('theForm').onsubmit = function () {
+    <br />
+    
+    <script>document.getElementById('theForm').onsubmit = function () {
             updateUserNames(
                 document.getElementById('firstName').value,
                 document.getElementById('middleNames').value,
@@ -108,8 +119,7 @@
                 init,
                 onError);
             return false;
-        };
-    </script>
+        };</script>
 
 </body>
 </html>

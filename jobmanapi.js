@@ -198,3 +198,42 @@ function completeSignup(user, pwd,  onSuccess, onError) {
     var data = { userName: user, password: pwd, token: token };
     sendJsonPostRequest(data, '/completesignup', onSuccess, onError);
 }
+
+function addServiceCategory(formData, onSuccess, onError) {
+    sendFormDataPostRequest(formData, '/addServiceCategory', onSuccess, onError);
+}
+
+function getAllServiceCategories(onSuccess, onError) {
+
+    sendGetRequest('/getServiceCategories?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+
+function getUserServiceCategories(onSuccess, onError) {
+
+    sendGetRequest('/getUserServiceCategories?sessionId=' + getQueryParameter('sessionId')  , onSuccess, onError);
+}
+
+ 
+
+function registerForServiceCategory(sessionId, id, onSuccess, onError)
+{
+    var data =
+    {
+        sessionId: sessionId,
+        serviceCategoryIds: [parseInt(id)]
+
+    };
+    sendJsonPostRequest(data, '/registerForServiceCategories', onSuccess, onError);
+}
+
+function unregisterFromServiceCategory(sessionId, id, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        ServicesToUnregisterFrom: [parseInt(id)]
+
+    };
+    sendJsonPostRequest(data, '/unregisterFromServiceCategory', onSuccess, onError);
+}
+

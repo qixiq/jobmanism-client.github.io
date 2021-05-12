@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Service Categories Management Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var serviceCategoriesCount = 0;
+        var uploadFiles = [];
+
+        function onSuccess(data) {
+            serviceCategoriesCount = 0;
+            document.getElementById('name').value = "";
+            document.getElementById('description').value = "";
+            document.getElementById('aliases').value = "";
+            document.getElementById('vetting').value = ""; 
+            document.getElementById('serviceCategoriesList').innerHTML = "";
+
+            data.forEach(appendServiceCategory);
+
+            
+        }
+
+        function removeServiceCategory(id) { 
+        }
+
+        function editServiceCategory(id) { 
+        }
+
+
+        function appendServiceCategory(serviceCategory)
+        {
+            serviceCategoriesCount++; 
+            var listDiv = document.getElementById('serviceCategoriesList');
+            listDiv.innerHTML += '<p><strong>SERVICE CATEGORY ' + serviceCategoriesCount; 
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="removeServiceCategory(\'' + serviceCategory.id + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="editServiceCategory(\'' + serviceCategory.id + '\')">Edit</button><br /><br/>';
+            
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getAllServiceCategories(onSuccess, onError);
+            document.getElementById('vetting').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
+    <form id="theForm">
+        <p><strong>MANAGE SERVICE CATEGORIES </strong></p><br />
+        <label><strong>Add Service Category:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Aliases:&nbsp;</label><textarea id="aliases"></textarea><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Vetting:&nbsp;</label><input id="vetting" type="file" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="serviceCategoriesList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var data = new FormData();
+            if (uploadFiles.length > 0) {
+
+                data.append('vettingSpec', uploadFiles[0]);
+            }
+            data.append('sessionId', sessionId);
+            data.append('name', document.getElementById('name').value);
+            data.append('description', document.getElementById('description').value);
+            data.append('aliases', document.getElementById('aliases').value.split(','));
+            addServiceCategory(
+                data,
+                init,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>
