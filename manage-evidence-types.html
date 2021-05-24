@@ -1,11 +1,10 @@
 <html>
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
-    <title>Jobman Service Categories Management Page</title>
+    <title>Jobman EvidenceTypes Management Page</title>
     <script>
         var sessionId = getQueryParameter('sessionId');
-        var serviceCategoriesCount = 0;
-        var uploadFiles = [];
+        var evidenceTypesCount = 0; 
 
         function onSuccess(data) {
             serviceCategoriesCount = 0;
@@ -14,32 +13,22 @@
             document.getElementById('aliases').value = "";
             document.getElementById('serviceCategoriesList').innerHTML = "";
 
-            data.forEach(appendServiceCategory);
+            data.forEach(appendEvidenceType);
 
             
         }
 
-        function editServiceCategory(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/edit-service.html?sessionId=' + sessionId + '&serviceId=' + id;
+        function editEvidenceType(evId) {
+            document.location.href = getPathPrefix(document.location.href) + '/edit-evidence.html?sessionId=' + sessionId + '&evidenceId=' + id;
         }
 
-        function onRemoveServiceCategory(svcId) {
+        function onRemoveEvidenceType(evId) {
             removeServiceCategory(sessionId, svcId, init, onError);
         }
 
 
 
-        function onPublishServiceCategory(svcId) {
-            publishServiceCategory(sessionId, svcId, init, onError);
-
-        }
-
-        function onUnPublishServiceCategory(svcId) {
-            unPublishServiceCategory(sessionId, svcId, init, onError);
-
-        }
-
-        function appendServiceCategory(serviceCategory)
+        function appendEvidenceType(evidenceType)
         {
             serviceCategoriesCount++; 
             var listDiv = document.getElementById('serviceCategoriesList');
@@ -47,14 +36,8 @@
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
             listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveServiceCategory(\'' + serviceCategory.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editServiceCategory(\'' + serviceCategory.id + '\')" > Edit</button >&nbsp;&nbsp;';
-            if (serviceCategory.published) {
-                listDiv.innerHTML += '<button  onclick = "onUnPublishServiceCategory(\'' + serviceCategory.id + '\')" > UnPublish</button >&nbsp;&nbsp;<br /><br/>';
-            }
-            else {
-                listDiv.innerHTML += '<button  onclick = "onPublishServiceCategory(\'' + serviceCategory.id + '\')" > Publish</button >&nbsp;&nbsp;<br /><br/>';
-            }
+            listDiv.innerHTML += '<button  onclick="onRemoveEvidenceType(\'' + evidenceType.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editEvidenceType(\'' + evidenceType.id + '\')" > Edit</button >&nbsp;&nbsp;';
         }
  
 
@@ -68,7 +51,7 @@
         }
 
         function init() {
-            getAdminViewOfServiceCategories(onSuccess, onError); 
+            getEvidenceTypes(onSuccess, onError); 
         }
 
         window.addEventListener('load', init);
@@ -77,8 +60,8 @@
 <body>
     <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
     <form id="theForm">
-        <p><strong>MANAGE SERVICE CATEGORIES </strong></p><br />
-        <label><strong>Add Service Category:&nbsp;</strong></label><br /><br />
+        <p><strong>MANAGE EVIDENCE TYPES </strong></p><br />
+        <label><strong>Add Evidence Type:&nbsp;</strong></label><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Aliases:&nbsp;</label><textarea id="aliases"></textarea><br /><br /> 

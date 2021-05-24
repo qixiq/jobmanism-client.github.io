@@ -66,6 +66,12 @@
                 document.location.href = getPathPrefix(document.location.href) + '/manage-my-services.html?sessionId=' + sessionId + '&userName=' + userName;
         }
 
+        function manageEvidenceTypes() {
+            if (isSuperAdmin) {
+                document.location.href = getPathPrefix(document.location.href) + '/manage-evidence-types.html?sessionId=' + sessionId;
+            }
+        }
+
         function onError(details) {
 
         }
@@ -105,6 +111,7 @@
         <label><strong>Profile Picture:&nbsp;</strong></label><button onclick="managePictures()">Manage Pictures</button><br /><br />
         <img id="current-picture" alt="Please upload an Image" width="300" height="300" /><br /><br />
         <label><strong>Service Categories:&nbsp;</strong></label><button onclick="manageServiceCategories()">Manage Service Categories</button><br /><br />
+        <label><strong>Evidence Types:&nbsp;</strong></label><button onclick="manageEvidenceTypes()">Manage Service Evidence Types</button><br /><br />
 
     </div>
     <br /><br />

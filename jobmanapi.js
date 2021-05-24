@@ -203,9 +203,9 @@ function addServiceCategory(formData, onSuccess, onError) {
     sendFormDataPostRequest(formData, '/addServiceCategory', onSuccess, onError);
 }
 
-function getAllServiceCategories(onSuccess, onError) {
+function getAdminViewOfServiceCategories(onSuccess, onError) {
 
-    sendGetRequest('/getServiceCategories?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+    sendGetRequest('/getAdminViewOfServiceCategories?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
 
 
@@ -235,5 +235,39 @@ function unregisterFromServiceCategory(sessionId, id, onSuccess, onError) {
 
     };
     sendJsonPostRequest(data, '/unregisterFromServiceCategory', onSuccess, onError);
+}
+
+function removeServiceCategory(sessionId, svcId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        serviceIdsToDelete: [parseInt(svcId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteServiceCategory', onSuccess, onError);
+}
+
+
+
+function publishServiceCategory(sessionId, svcId, onSuccess, onError ){
+    var data =
+    {
+        sessionId: sessionId,
+        serviceCategoryId: parseInt(svcId),
+        published : 1
+
+    };
+    sendJsonPostRequest(data, '/updateServiceCategoryPublishStatus', onSuccess, onError);
+}
+
+function unPublishServiceCategory(sessionId, svcId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        serviceCategoryId: parseInt(svcId),
+        published: 0
+
+    };
+    sendJsonPostRequest(data, '/updateServiceCategoryPublishStatus', onSuccess, onError);
 }
 
