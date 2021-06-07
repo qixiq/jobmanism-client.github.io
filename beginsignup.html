@@ -20,12 +20,10 @@
             beginSignupWithEmail(document.getElementById('user').value,
                 document.getElementById('password').value,
                 email,
-                function (data) {
-                    window.alert(data);
+                function (data) { 
                     document.write("Email with instructions to complete signup has been sent to " + email);
                 },
-                function (error) {
-                    window.alert(error);
+                function (error) { 
                     document.write(JSON.stringify(error));
                 }
             );

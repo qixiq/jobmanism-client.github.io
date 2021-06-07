@@ -19,7 +19,7 @@
                 document.getElementById('password').value,
                 function (data) {
                     if (!data.isError) {
-                        document.write('Welcome ! ' + userName);
+                        document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + data.sessionId;
                     }
                     else {
                         document.getElementById('ErrorLabel').innerHTML = 'Error Completing Signup, Please Try Again';
