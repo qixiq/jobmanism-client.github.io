@@ -70,6 +70,9 @@
             if (isSuperAdmin) {
                 document.location.href = getPathPrefix(document.location.href) + '/manage-evidence-types.html?sessionId=' + sessionId;
             }
+            else {
+                window.alert("You do not have permission for this action");
+            }
         }
 
         function onError(details) {
