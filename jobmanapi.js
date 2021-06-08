@@ -271,3 +271,88 @@ function unPublishServiceCategory(sessionId, svcId, onSuccess, onError) {
     sendJsonPostRequest(data, '/updateServiceCategoryPublishStatus', onSuccess, onError);
 }
 
+function getEvidenceTypes(onSuccess, onError) {
+    sendGetRequest('/getEvidenceTypes?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+function removeEvidenceType(sessionId, evidenceId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        evidenceIdsToDelete: [parseInt(evidenceId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteEvidenceType', onSuccess, onError);
+}
+
+function addEvidenceType(
+    data,
+    onSuccess,
+    onError) { 
+    sendJsonPostRequest(data, '/addEvidenceType', onSuccess, onError);
+}
+
+function getCoveredItems(onSuccess, onError) {
+    sendGetRequest('/getCoveredItems?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+function removeCoveredItem(sessionId, itemId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        itemIds: [parseInt(itemId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteEvidenceType', onSuccess, onError);
+}
+
+function addCoveredItem(
+    data,
+    onSuccess,
+    onError) {
+    sendJsonPostRequest(data, '/createCoveredItem', onSuccess, onError);
+}
+
+
+function getWarrantyRemedies(onSuccess, onError) {
+    sendGetRequest('/getWarrantyRemedies?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+function removeWarrantyRemedy(sessionId, itemId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        itemIds: [parseInt(itemId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteWarrantyRemedy', onSuccess, onError);
+}
+
+function addWarrantyRemedy(
+    data,
+    onSuccess,
+    onError) {
+    sendJsonPostRequest(data, '/createWarrantyRemedy', onSuccess, onError);
+}
+
+function getUserGroups(onSuccess, onError) {
+    sendGetRequest('/getDisplayInfoForGroups?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+function removeUserGroup(sessionId, itemId, onSuccess, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        groupIdsToDelete: [parseInt(itemId)]
+
+    };
+    sendJsonPostRequest(data, '/deleteUserGroups', onSuccess, onError);
+}
+
+function addUserGroup(
+    data,
+    onSuccess,
+    onError) {
+    sendJsonPostRequest(data, '/createUserGroup', onSuccess, onError);
+}
+

@@ -66,13 +66,24 @@
                 document.location.href = getPathPrefix(document.location.href) + '/manage-my-services.html?sessionId=' + sessionId + '&userName=' + userName;
         }
 
-        function manageEvidenceTypes() {
-            if (isSuperAdmin) {
-                document.location.href = getPathPrefix(document.location.href) + '/manage-evidence-types.html?sessionId=' + sessionId;
-            }
-            else {
-                window.alert("You do not have permission for this action");
-            }
+        function manageEvidenceTypes() { 
+                document.location.href = getPathPrefix(document.location.href) + '/manage-evidence-types.html?sessionId=' + sessionId; 
+        }
+
+        function manageCoveredItems() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-covered-items.html?sessionId=' + sessionId;
+        }
+
+        function manageWarrantyRemedies() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-warranty-remedies.html?sessionId=' + sessionId;
+        }
+
+        function manageUserGroups() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-groups.html?sessionId=' + sessionId;
+        }
+
+        function manageFunctionPermissions() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-function-permissions.html?sessionId=' + sessionId;
         }
 
         function onError(details) {
@@ -115,6 +126,10 @@
         <img id="current-picture" alt="Please upload an Image" width="300" height="300" /><br /><br />
         <label><strong>Service Categories:&nbsp;</strong></label><button onclick="manageServiceCategories()">Manage Service Categories</button><br /><br />
         <label><strong>Evidence Types:&nbsp;</strong></label><button onclick="manageEvidenceTypes()">Manage Service Evidence Types</button><br /><br />
+        <label><strong>Covered Items:&nbsp;</strong></label><button onclick="manageCoveredItems()">Manage Covered Items</button><br /><br />
+        <label><strong>Warranty Remedies:&nbsp;</strong></label><button onclick="manageWarrantyRemedies()">Manage Warranty Remedies</button><br /><br />
+        <label><strong>Groups:&nbsp;</strong></label><button onclick="manageUserGroups()">Manage User Groups</button><br /><br />
+        <label><strong>Access Control:&nbsp;</strong></label><button onclick="manageFunctionPermissions()">Manage Function Permissions</button><br /><br />
 
     </div>
     <br /><br />

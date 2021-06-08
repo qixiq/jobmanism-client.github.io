@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Edit Service</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+ 
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToManagingServices() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-service-categories.html?sessionId=' + sessionId;
+        }
+
+        function init() { 
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToManagingServices()">Go Back To Managing Services</button><br /><br />
+    <p>Under Construction</p>
+
+</body>
+</html>

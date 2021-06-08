@@ -1,0 +1,87 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Warranty Remedies Management Page</title>
+    <script>var sessionId = getQueryParameter('sessionId');
+        var itemsCount = 0;
+
+        function onSuccess(data) {
+            itemsCount = 0;
+            document.getElementById('name').value = "";
+            document.getElementById('description').value = "";
+            document.getElementById('itemsList').innerHTML = "";
+
+            data.items.forEach(appendItem);
+
+
+        }
+
+        function editItem(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/edit-warranty-remedy.html?sessionId=' + sessionId + '&id=' + id;
+        }
+
+        function onRemoveItem(id) {
+            removeWarrantyRemedy(sessionId, id, init, onError);
+        }
+
+
+
+        function appendItem(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>WARRANTY REMEDY ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" > Edit</button >&nbsp;&nbsp;';
+        }
+
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getWarrantyRemedies(onSuccess, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
+    <form id="theForm">
+        <p><strong>MANAGE WARRANTY REMEDIES </strong></p><br />
+        <label><strong>Add Warranty Remedy:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var t = document.getElementById('type');
+            var data = {
+                sessionId: sessionId,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value
+            };
+            addWarrantyRemedy(
+                data,
+                init,
+                onError);
+
+
+            return false;
+        };</script>
+
+</body>
+</html>

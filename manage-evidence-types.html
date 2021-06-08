@@ -7,35 +7,49 @@
         var evidenceTypesCount = 0; 
 
         function onSuccess(data) {
-            serviceCategoriesCount = 0;
+            evidenceTypesCount = 0;
             document.getElementById('name').value = "";
             document.getElementById('description').value = "";
-            document.getElementById('aliases').value = "";
-            document.getElementById('serviceCategoriesList').innerHTML = "";
+            document.getElementById('type').selectedIndex = 0;
+            document.getElementById('evidenceTypesList').innerHTML = "";
 
-            data.forEach(appendEvidenceType);
+            data.types.forEach(appendEvidenceType);
 
             
         }
 
         function editEvidenceType(evId) {
-            document.location.href = getPathPrefix(document.location.href) + '/edit-evidence.html?sessionId=' + sessionId + '&evidenceId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/edit-evidence-type.html?sessionId=' + sessionId + '&evidenceId=' + evId;
         }
 
         function onRemoveEvidenceType(evId) {
-            removeServiceCategory(sessionId, svcId, init, onError);
+            removeEvidenceType(sessionId, evId, init, onError);
         }
 
+
+        function mediumToText(medium) {
+            switch (medium) { 
+                case 1:
+                    return 'Image';
+                case 2:
+                    return 'Video';
+                case 3:
+                    return 'Document';
+            }
+
+            return 'Text';
+        }
 
 
         function appendEvidenceType(evidenceType)
         {
-            serviceCategoriesCount++; 
-            var listDiv = document.getElementById('serviceCategoriesList');
-            listDiv.innerHTML += '<p><strong>SERVICE CATEGORY ' + serviceCategoriesCount; 
+            evidenceTypesCount++; 
+            var listDiv = document.getElementById('evidenceTypesList');
+            listDiv.innerHTML += '<p><strong>EVIDENCE TYPE ' + evidenceTypesCount; 
             listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
+            listDiv.innerHTML += '<label>Name: ' + evidenceType.name + '</label><br/>';
+            listDiv.innerHTML += '<label>Type: ' + mediumToText(evidenceType.medium) + '</label><br/>';
+            listDiv.innerHTML += '<p>' + evidenceType.description + '</p><br/>'; 
             listDiv.innerHTML += '<button  onclick="onRemoveEvidenceType(\'' + evidenceType.id + '\')">Remove</button>&nbsp;&nbsp;';
             listDiv.innerHTML += '<button  onclick = "editEvidenceType(\'' + evidenceType.id + '\')" > Edit</button >&nbsp;&nbsp;';
         }
@@ -64,21 +78,29 @@
         <label><strong>Add Evidence Type:&nbsp;</strong></label><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Aliases:&nbsp;</label><textarea id="aliases"></textarea><br /><br /> 
+        <label for="type">&nbsp;&nbsp;&nbsp;Type:&nbsp;</label>  
+        <select name="type" id="type"> 
+                <option value="text">Text</option>
+                <option value="image">Image</option>  
+                <option value="video">Video</option>
+                <option value="document">Document</option> 
+        </select>
         <button type="submit">Add</button><br />
     </form>
     <br /><br />
-    <div id="serviceCategoriesList">
+    <div id="evidenceTypesList">
 
     </div>
     <script>var form = document.getElementById('theForm');
         form.onsubmit = function () {
-            var data = new FormData(); 
-            data.append('sessionId', sessionId);
-            data.append('name', document.getElementById('name').value);
-            data.append('description', document.getElementById('description').value);
-            data.append('aliases', document.getElementById('aliases').value.split(','));
-            addServiceCategory(
+            var t = document.getElementById('type');
+            var data = {
+                sessionId: sessionId,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                specification: '' + t.options[t.selectedIndex].value + ';'
+            };  
+            addEvidenceType(
                 data,
                 init,
                 onError);
