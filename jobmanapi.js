@@ -325,7 +325,7 @@ function removeWarrantyRemedy(sessionId, itemId, onSuccess, onError) {
         itemIds: [parseInt(itemId)]
 
     };
-    sendJsonPostRequest(data, '/deleteWarrantyRemedy', onSuccess, onError);
+    sendJsonPostRequest(data, '/deleteWarrantyRemedies', onSuccess, onError);
 }
 
 function addWarrantyRemedy(
