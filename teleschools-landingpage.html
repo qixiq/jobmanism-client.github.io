@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>TeleSchools Main Page</title>
+    <script>var sessionId = getQueryParameter('sessionId');
+        var itemsCount = 0;
+
+        function onSuccess(data) {
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = ""; 
+            data.items.forEach(appendItem);  
+        }
+
+        function editItem(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&id=' + id;
+        }
+
+        function onRemoveItem(id) {
+            removeSchool(sessionId, id, init, onError);
+        }
+
+
+
+        function appendItem(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SCHOOL ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" > Edit</button >&nbsp;&nbsp;';
+        }
+
+
+
+        function onError(details) {
+
+        }
+
+        function addNewSchool() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getSchools(onSuccess, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <button onclick="addNewSchool()">Add New School</button><br /><br /> 
+    <br /><br />
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

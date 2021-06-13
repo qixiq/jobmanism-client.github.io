@@ -185,9 +185,9 @@ function login(user, pwd, onSuccess, onError) {
     sendJsonPostRequest(data, '/login', onSuccess, onError);
 }
 
-function beginSignupWithEmail(user, pwd, email, onSuccess, onError) {
+function beginSignupWithEmail(user, pwd, email, project, onSuccess, onError) {
 
-    var data = { userName: user, password: pwd, emailAddress: email, completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
+    var data = { userName: user, password: pwd, emailAddress: email, project: project, completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
     sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
 }
 
@@ -355,4 +355,23 @@ function addUserGroup(
     onError) {
     sendJsonPostRequest(data, '/createUserGroup', onSuccess, onError);
 }
+
+function getSchools(selector) {
+    sendGetRequest('/getSchools?sessionId=' + getQueryParameter('sessionId') + '&selector=' + selector, onSuccess, onError);
+}
+
+function removeSchool(sessionId, id, init, onError) {
+    var data =
+    {
+        sessionId: sessionId,
+        itemIds: [parseInt(id)]
+
+    };
+    sendJsonPostRequest(data, '/deleteSchools', onSuccess, onError);
+}
+
+function addSchool(data, onSuccess, onError) {
+    sendJsonPostRequest(data, '/addSchool', onSuccess, onError);
+}
+
 
