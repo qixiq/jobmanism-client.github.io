@@ -185,9 +185,15 @@ function login(user, pwd, onSuccess, onError) {
     sendJsonPostRequest(data, '/login', onSuccess, onError);
 }
 
-function beginSignupWithEmail(user, pwd, email, project, onSuccess, onError) {
+function teleSchoolsBeginSignupWithEmail(user, pwd, email, onSuccess, onError) {
 
-    var data = { userName: user, password: pwd, emailAddress: email, project: project, completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
+    var data = { userName: user, password: pwd, project: 'TeleSchools', emailAddress: email, completionlinkPrefix: getPathPrefix(document.location.href) + '/teleschools-completesignup.html' };
+    sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
+}
+
+function jobManismBeginSignupWithEmail(user, pwd, email,  onSuccess, onError) {
+
+    var data = { userName: user, password: pwd, emailAddress: email, project : 'JobManism',  completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
     sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
 }
 

@@ -17,10 +17,9 @@
     <script>
         document.getElementById('theForm').onsubmit = function () {
             var email = document.getElementById('email').value;
-            beginSignupWithEmail(document.getElementById('user').value,
+            teleSchoolsBeginSignupWithEmail(document.getElementById('user').value,
                 document.getElementById('password').value,
-                email,
-                'TeleSchools',
+                email, 
                 function (data) { 
                     document.write("Email with instructions to complete signup has been sent to " + email);
                 },

@@ -17,10 +17,9 @@
     <script>
         document.getElementById('theForm').onsubmit = function () {
             var email = document.getElementById('email').value;
-            beginSignupWithEmail(document.getElementById('user').value,
+            jobManismBeginSignupWithEmail(document.getElementById('user').value,
                 document.getElementById('password').value,
-                email,
-                'JobManism',
+                email, 
                 function (data) { 
                     document.write("Email with instructions to complete signup has been sent to " + email);
                 },
