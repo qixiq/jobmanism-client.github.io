@@ -366,7 +366,7 @@ function getSchools(selector, onSuccess, onError) {
     sendGetRequest('/getSchools?sessionId=' + getQueryParameter('sessionId') + '&selector=' + selector, onSuccess, onError);
 }
 
-function removeSchool(sessionId, id, init, onError) {
+function removeSchool(sessionId, id, onSuccess, onError) {
     var data =
     {
         sessionId: sessionId,
