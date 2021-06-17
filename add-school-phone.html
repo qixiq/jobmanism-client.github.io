@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Add School Phone</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Phone";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-phones.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+ 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back</button><br /><br />
+    <form id="theForm">
+        <label><strong>Add Phone Number:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <script>document.getElementById('theForm').onsubmit = function () {
+            var phoneNumber =
+            {
+                countryCode : document.getElementById('ctry-code').value,
+                numberText : document.getElementById('number').value,
+                features: document.getElementById('features').value,
+                type : document.getElementById('type').value 
+            };
+    addSchoolPhoneNumber(
+        schoolId,
+        phoneNumber,
+                onSuccess,
+                onError);
+            return false;
+        };</script>
+
+</body>
+</html>

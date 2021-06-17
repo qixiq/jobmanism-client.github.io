@@ -362,7 +362,7 @@ function addUserGroup(
     sendJsonPostRequest(data, '/createUserGroup', onSuccess, onError);
 }
 
-function getSchools(selector) {
+function getSchools(selector, onSuccess, onError) {
     sendGetRequest('/getSchools?sessionId=' + getQueryParameter('sessionId') + '&selector=' + selector, onSuccess, onError);
 }
 
@@ -378,6 +378,98 @@ function removeSchool(sessionId, id, init, onError) {
 
 function addSchool(data, onSuccess, onError) {
     sendJsonPostRequest(data, '/addSchool', onSuccess, onError);
+}
+
+function getSchool(schoolId, onSuccess, onError) {
+    sendGetRequest('/getSchool?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
+
+function getSchoolAddresses(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolAddresses?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
+ 
+function  deleteSchoolAddress(schoolId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemIds: [parseInt(id)],
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/deleteSchoolAddresses', onSuccess, onError);
+ 
+}
+
+function setSchoolPrimaryAddress(schoolId,id, onSuccess,  onError)
+{
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemId: parseInt(id),
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/makeAddressPrimaryForSchool', onSuccess, onError);
+}
+
+function addSchoolAddress( schoolId,address,onSuccess,onError)
+{
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        addresses: [address],
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/addSchoolAddresses', onSuccess, onError);
+}
+
+function getSchoolPhoneNumbers(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolPhoneNumbers?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
+ 
+function  deleteSchoolPhoneNumber(schoolId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemIds: [parseInt(id)],
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/deleteSchoolPhoneNumbers', onSuccess, onError);
+ 
+}
+
+function setSchoolPrimaryPhoneNumber(schoolId,id, onSuccess,  onError)
+{
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemId: parseInt(id),
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/makePhoneNumberPrimaryForSchool', onSuccess, onError);
+}
+
+function addSchoolPhoneNumber( schoolId,phoneNumber,onSuccess,onError)
+{
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        PhoneNumbers: [phoneNumber],
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/addSchoolPhoneNumbers', onSuccess, onError);
+}
+
+function updateSchool( data,onSuccess,onError)
+{ 
+    sendJsonPostRequest(data, '/updateSchool', onSuccess, onError);
 }
 
 

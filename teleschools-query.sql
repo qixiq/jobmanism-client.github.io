@@ -171,6 +171,40 @@ create TABLE TeleschoolDevices
     ON UPDATE CASCADE
 );
 
+create TABLE SchoolPhoneNumbers
+(
+    PhoneNumberId BIGINT NOT NULL,
+    SchoolId BIGINT NOT NULL, 
+    CONSTRAINT FK_SchoolPhoneNumbers_SchoolId FOREIGN KEY (SchoolId)
+    REFERENCES [dbo].[Schools] (SchoolId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_SchoolPhoneNumbers_PhoneNumberId FOREIGN KEY (PhoneNumberId)
+    REFERENCES [dbo].[PhoneNumbers] (PhoneNumberId)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+CREATE UNIQUE INDEX uq_SchoolPhoneNumbers
+  ON [dbo].[SchoolPhoneNumbers](PhoneNumberId, SchoolId);
+
+  create TABLE SchoolAddresses
+(
+    AddressId BIGINT NOT NULL,
+    SchoolId BIGINT NOT NULL, 
+    CONSTRAINT FK_SchoolAddresses_SchoolId FOREIGN KEY (SchoolId)
+    REFERENCES [dbo].[Schools] (SchoolId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_SchoolAddresses_AddressId FOREIGN KEY (AddressId)
+    REFERENCES [dbo].[Addresses] (AddressId)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+CREATE UNIQUE INDEX uq_SchoolAddresses
+  ON [dbo].[SchoolAddresses](AddressId, SchoolId);
+
 
 
 

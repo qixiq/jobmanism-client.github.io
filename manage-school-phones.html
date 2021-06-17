@@ -1,0 +1,89 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Phone Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId');
+        var primaryPhoneId = 0;
+        var phoneCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school;
+            primaryPhoneId = school.phoneNumber.phoneNumberId;
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Phones</strong>';
+
+            getSchoolPhoneNumbers(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('phoneList').innerHTML = '';
+            phoneCount = 0;  
+            data.phoneNumbers.forEach(appendPhone); 
+        }
+
+        function removePhoneNumber(id) {
+            deleteSchoolPhoneNumber(schoolId, id,
+                init,
+                onError);
+        }
+
+        function makePhoneNumberPrimary(id) {
+            setSchoolPrimaryPhoneNumber(schoolId,id, init,  onError);
+        } 
+
+        function appendPhone(phoneNumber)
+        {
+            phoneCount++;
+            var isPrimary = phoneNumber.phoneNumberId == primaryPhoneId; 
+            var listDiv = document.getElementById('phoneList');
+            listDiv.innerHTML += '<p><strong>PHONE NUMBER ' + phoneCount;
+            if (isPrimary) {
+                listDiv.innerHTML += '(Primary Phone Number)';
+            }
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
+            if (!isStringAndEmpty(phoneNumber.features)) {
+                listDiv.innerHTML += '<label>Features : ' + phoneNumber.features + '</label><br/>';
+            }
+            if (!isStringAndEmpty(phoneNumber.type)) {
+                listDiv.innerHTML += '<label>Type : ' + phoneNumber.type + '</label><br/>';
+            }
+            if (!isPrimary) {
+                listDiv.innerHTML += '<button  onclick="removePhoneNumber(\'' + phoneNumber.phoneNumberId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makePhoneNumberPrimary(\'' + phoneNumber.phoneNumberId + '\')">Set As Primary</button><br /><br/>';
+            }
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function addSchoolPhone() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-phone.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="addSchoolPhone()">Add New School Phone</button><br/><br/>
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="phoneList">
+
+    </div> 
+
+</body>
+</html>

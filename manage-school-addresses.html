@@ -1,0 +1,90 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Address Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId');
+        var primaryAddressId = 0;
+        var addressCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school;
+            primaryAddressId = school.address.addressId;
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Addresses</strong>';
+
+            getSchoolAddresses(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('addressList').innerHTML = '';
+            addressCount = 0;  
+            data.addresses.forEach(appendAddress); 
+            
+        }
+
+        function removeAddress(id) {
+            deleteSchoolAddress(schoolId, id,
+                init,
+                onError);
+        }
+
+        function makeAddressPrimary(id) {
+            setSchoolPrimaryAddress(schoolId,id, init,  onError);
+        } 
+
+        function appendAddress(address)
+        {
+            addressCount++;
+            var isPrimary = address.addressId == primaryAddressId;
+            var listDiv = document.getElementById('addressList');
+            listDiv.innerHTML += '<p><strong>ADDRESS ' + addressCount;
+            if (isPrimary) {
+                listDiv.innerHTML += '(Primary Address)';
+            }
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndEmpty(address.streetLine2)) {
+                listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
+            listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            if (!isPrimary) {
+                listDiv.innerHTML += '<button  onclick="removeAddress(\'' + address.addressId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makeAddressPrimary(\'' + address.addressId + '\')">Set As Primary</button><br /><br/>';
+            }
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function addSchoolAddress() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-address.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="addSchoolAddress()">Add New School Address</button><br/><br/>
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="addressList">
+
+    </div> 
+
+</body>
+</html>

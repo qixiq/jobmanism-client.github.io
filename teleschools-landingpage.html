@@ -12,7 +12,7 @@
         }
 
         function editItem(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&id=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + id;
         }
 
         function onRemoveItem(id) {
@@ -29,7 +29,7 @@
             listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
             listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
             listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" > Edit</button >&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
         }
 
 
@@ -43,13 +43,13 @@
         }
 
         function init() {
-            getSchools(onSuccess, onError);
+            getSchools('', onSuccess, onError);
         }
 
         window.addEventListener('load', init);</script>
 </head>
 <body>
-    <button onclick="addNewSchool()">Add New School</button><br /><br /> 
+    <button onclick="addNewSchool()">Add New School ... </button><br /><br /> 
     <br /><br />
     <div id="itemsList">
 
