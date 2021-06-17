@@ -1,0 +1,75 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Level Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var levelCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school; 
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Levels</strong>';
+
+            getSchoolLevels(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('levelsList').innerHTML = '';
+            data.levels.forEach(appendLevel); 
+        }
+
+        function removeLevel(id) {
+            deleteSchoolLevel(schoolId, id,
+                init,
+                onError);
+        }
+
+ 
+
+        function appendLevel(level)
+        { 
+            var listDiv = document.getElementById('levelsList');  
+            listDiv.innerHTML += '<p><strong>LEVEL ' + level.level  + '</strong ></p>';
+            listDiv.innerHTML += '<button  onclick="removeLevel(\'' + level.levelId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="manageSchoolLevelArms(\'' + level.levelId + '\')">Manage ...</button><br /><br/>';
+           
+           
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function manageSchoolLevelArms(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + id;
+        }
+
+        function addSchoolLevel() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-levels.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="addSchoolLevel()">Add New School Levels</button><br/><br/>
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="levelsList">
+
+    </div> 
+
+</body>
+</html>

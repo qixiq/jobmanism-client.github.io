@@ -473,3 +473,37 @@ function updateSchool( data,onSuccess,onError)
 }
 
 
+function addSchoolLevels(  schoolId, levels,
+            onSuccess,
+            onError)
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'),
+                    levels: levels,
+                    schoolId : parseInt(schoolId)
+            
+                };
+                sendJsonPostRequest(data, '/addSchoolLevels', onSuccess, onError);
+            }
+
+
+
+function getSchoolLevels(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolLevels?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
+function deleteSchoolLevel(schoolId, levelId,  onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemIds: [parseInt(levelId)],
+        targetId : parseInt(schoolId)
+
+    };
+    sendJsonPostRequest(data, '/deleteSchoolLevels', onSuccess, onError);
+}
+
+       
+
+
