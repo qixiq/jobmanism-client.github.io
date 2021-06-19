@@ -1,0 +1,50 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Add School Level Arms</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+        var levelId = getQueryParameter('levelId'); 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Level Arm";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId;
+        }
+
+ 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back</button><br /><br />
+    <form id="theForm">
+        <label><strong>Add School Level Arms:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Arms:&nbsp;</label><input id="arms" type="text" /><br /><br />  
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    <script>
+        function levelArrayFromText(s){
+            return [s];
+        }
+    
+    document.getElementById('theForm').onsubmit = function () { 
+    addSchoolLevelArms(
+        schoolId,
+        levelId,
+        levelArrayFromText(document.getElementById('arms').value),
+                onSuccess,
+                onError);
+            return false;
+        };</script>
+
+</body>
+</html>

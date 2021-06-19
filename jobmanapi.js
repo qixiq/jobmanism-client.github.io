@@ -504,6 +504,40 @@ function deleteSchoolLevel(schoolId, levelId,  onSuccess, onError){
     sendJsonPostRequest(data, '/deleteSchoolLevels', onSuccess, onError);
 }
 
+function getSchoolLevel(levelId, onSuccess, onError){
+    sendGetRequest('/getSchoolLevel?sessionId=' + getQueryParameter('sessionId') + '&levelId=' + levelId, onSuccess, onError);
+}
+
+
+function addSchoolLevelArms(
+    schoolId,
+    levelId,
+    arms,
+    onSuccess,
+    onError)
+    {
+        var data =
+        {
+            sessionId: getQueryParameter('sessionId'),
+            arms: arms,
+            levelId : parseInt(levelId)
+    
+        };
+        sendJsonPostRequest(data, '/addSchoolLevelArms', onSuccess, onError);
+    }
+ 
+function deleteSchoolLevelArms(schoolId, id,
+init,
+onError)
+{
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'),
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteSchoolLevelArms', onSuccess, onError);
+}
+
        
 
 
