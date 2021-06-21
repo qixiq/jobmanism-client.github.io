@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Level Arm Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var armId = getQueryParameter('armId'); 
+        var levelId = getQueryParameter('levelId'); 
+        var level;
+        var school ;
+        var armCount = 0;
+
+        function onGotSchool(data){ 
+        }
+
+        function onSuccess(data) {
+   
+            
+        }
+
+        function removeLevelArm(id) {
+            deleteSchoolLevelArms(schoolId, id,
+                init,
+                onError);
+        }
+
+ 
+ 
+ 
+
+
+        function onError(details) {
+
+        }
+
+ 
+
+
+        function goBackToSchoolLevelArmsPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body> 
+  
+    <button onclick="goBackToSchoolLevelArmsPage()">Go back To School Level Arms Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="armsList">
+
+    </div> 
+
+</body>
+</html>

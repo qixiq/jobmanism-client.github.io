@@ -1,0 +1,35 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+
+</head>
+<body>
+    <p>Welcome to TeleSchools, please sign up</p>
+    <form id="theForm">
+        <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br />
+        <label>Password:&nbsp;</label><input id="password" type="password" /><br /><br />
+        <label>Email Address:&nbsp;</label><input id="email" type="text" /><br /><br />
+        <button type="submit">Sign up</button><br/><br/>
+        <p>Please remember your user name and password, you will need it to complete signup.</p>
+
+    </form>
+    <br />
+    <script>
+        document.getElementById('theForm').onsubmit = function () {
+            var email = document.getElementById('email').value;
+            teleSchoolsBeginSignupWithEmail(document.getElementById('user').value,
+                document.getElementById('password').value,
+                email, 
+                function (data) { 
+                    document.write("Email with instructions to complete signup has been sent to " + email);
+                },
+                function (error) { 
+                    document.write(JSON.stringify(error));
+                }
+            );
+            return false;
+        };
+    </script>
+
+</body>
+</html>

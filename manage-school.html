@@ -26,6 +26,10 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-school-staff.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
         }
 
+        function manageStudents(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-students.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
         function onSuccess(data) {
             var school = data.school;
             var address = school.address;
@@ -64,6 +68,10 @@
             pageContent += '<button  onclick="managePhoneNumbers()">Manage PhoneNumbers</button><br/><br/><br/>'; 
 
             pageContent += '<button  onclick="manageLevels()">Manage Levels</button><br/><br/><br/>'; 
+
+            pageContent += '<button  onclick="manageStaff()">Manage Staff</button><br/><br/><br/>'; 
+
+            pageContent += '<button  onclick="manageStudents()">Manage Students</button><br/><br/><br/>'; 
 
             document.getElementById('contentDiv').innerHTML = pageContent;
         }

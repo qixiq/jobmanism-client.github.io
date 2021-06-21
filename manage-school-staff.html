@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Staff Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var levelCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school; 
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Staff</strong>';
+
+            getSchoolStaff(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('staffList').innerHTML = '';
+            data.staff.forEach(appendStaff); 
+        }
+
+        function removeStaff(id) {
+            deleteSchoolStaff(schoolId, id,
+                init,
+                onError);
+        }
+
+        function addTeacher(id) {
+            addSchoolTeacher(schoolId, id,
+                init,
+                onError);
+        }
+
+        function removeTeacher(id) {
+            removeSchoolTeacher(schoolId, id,
+                init,
+                onError);
+        }
+
+ 
+
+        function appendStaff(staff)
+        { 
+            var listDiv = document.getElementById('staffList');  
+            listDiv.innerHTML += '<p><strong>' ;
+            if(!staff.isTeacher)
+            {
+                listDiv.innerHTML += staff.name  + ' (staff) </strong ></p>';
+            }
+            else
+            {
+                listDiv.innerHTML +=  staff.name  + ' (teacher)</strong ></p>';
+            }
+            listDiv.innerHTML += '<button  onclick="removeStaff(\'' + staff.userId + '\')">Remove</button>' ;
+            if(!staff.isTeacher){
+                listDiv.innerHTML += '&nbsp;&nbsp;<button  onclick="addTeacher(\'' + staff.userId + '\')">Make A Teacher</button><br /><br/>';
+            }
+            else{ 
+                listDiv.innerHTML += '&nbsp;&nbsp;<button  onclick="removeTeacher(\'' + staff.userId + '\')">Remove As Teacher</button><br /><br/>';
+            
+            }
+           
+           
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function onAddSchoolStaff() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-staff.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="onAddSchoolStaff()">Add New School Staff</button><br/><br/>
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="staffList">
+
+    </div> 
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Staff Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Staff";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-staff.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+ 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <p>Please do not choose users that have already been added as satff or students for this school</p>
+    <form id="theForm"> 
+        
+        <label for="staff">Choose new staff members:</label>
+
+        <select name="staff" id="staff" multiple>
+          <option value="21">FirstName1 Middle1, LastName1</option>
+          <option value="22">FirstName2 Middle2, LastName2</option>
+          <option value="23">FirstName3 Middle3, LastName3</option>
+          <option value="24">FirstName4 Middle4, LastName4</option>
+          <option value="25">FirstName5 Middle5, LastName5</option>
+          <option value="26">FirstName6 Middle6, LastName6</option>
+          <option value="27">FirstName7 Middle7, LastName7</option>
+          <option value="28">FirstName8 Middle8, LastName8</option>
+          <option value="29">FirstName9 Middle9, LastName9</option>
+          <option value="30">FirstName10 Middle10, LastName10</option> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    addSchoolStaff(
+        schoolId,
+        getSelectValues(document.getElementById('staff')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

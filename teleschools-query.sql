@@ -54,7 +54,7 @@ CREATE TABLE SchoolStudents
 ( 
     SchoolId BIGINT NOT NULL,
     UserId BIGINT NOT NULL,
-    ArmId BIGINT NOT NULL,
+    ArmId BIGINT ,
     CONSTRAINT FK_SchoolStudents_SchoolId FOREIGN KEY (SchoolId)
     REFERENCES [dbo].[Schools] (SchoolId)
     ON DELETE CASCADE
@@ -76,6 +76,7 @@ CREATE TABLE SchoolStaff
 ( 
     SchoolId BIGINT NOT NULL,
     UserId BIGINT NOT NULL,
+    IsTeacher INT DEFAULT (0)
     CONSTRAINT FK_SchoolStaff_SchoolId FOREIGN KEY (SchoolId)
     REFERENCES [dbo].[Schools] (SchoolId)
     ON DELETE CASCADE
@@ -88,6 +89,8 @@ CREATE TABLE SchoolStaff
 
 CREATE UNIQUE INDEX uq_SchoolStaff
   ON [dbo].[SchoolStaff](SchoolId, UserId);
+
+ 
 
 create TABLE Subjects
 (

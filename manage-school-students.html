@@ -1,0 +1,80 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Student Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var levelCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school; 
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Students</strong>';
+
+            getSchoolStudents(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('studentsList').innerHTML = '';
+            data.students.forEach(appendStudent); 
+        }
+
+        function removeStudent(id) {
+            deleteSchoolStudents(schoolId, id,
+                init,
+                onError);
+        }
+
+   
+ 
+ 
+
+        function appendStudent(student)
+        { 
+            var listDiv = document.getElementById('studentsList');  
+            listDiv.innerHTML += '<p>' + student.name  ;
+            if(student.level && student.arm){
+                listDiv.innerHTML +=  '&nbsp;&nbsp;' + student.level + '' + student.arm ;
+            }
+            listDiv.innerHTML += ' </p>';
+    
+            
+            listDiv.innerHTML += '<button  onclick="removeStudent(\'' + student.userId + '\')">Remove</button>' ; 
+           
+           
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function onAddSchoolStudent() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-student.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="onAddSchoolStudent()">Add New School Student</button><br/><br/>
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="studentsList">
+
+    </div> 
+
+</body>
+</html>

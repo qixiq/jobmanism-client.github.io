@@ -539,5 +539,94 @@ onError)
 }
 
        
+function getSchoolStaff(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolStaff?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
+
+function  deleteSchoolStaff(schoolId, id,
+        onSuccess,
+        onError){
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'),
+                itemIds: [parseInt(id)],
+                targetId : parseInt(schoolId)
+            };
+            sendJsonPostRequest(data, '/deleteSchoolStaff', onSuccess, onError);
+        }
+
+        function addSchoolStaff(
+            schoolId,
+            staffIds,
+            onSuccess,
+            onError)
+
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'),
+                    itemIds: staffIds,
+                    targetId : parseInt(schoolId)
+                };
+                sendJsonPostRequest(data, '/addSchoolStaff', onSuccess, onError);
+            }
+
+function  addSchoolTeacher(schoolId, id,
+    onSuccess,
+        onError){ 
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'),
+                itemIds: [parseInt(id)],
+                targetId : parseInt(schoolId)
+            };
+            sendJsonPostRequest(data, '/addSchoolStaffAsTeacher', onSuccess, onError);
+        }
+
+function  removeSchoolTeacher(schoolId, id,
+    onSuccess,
+        onError)
+        {
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'),
+                itemIds: [parseInt(id)],
+                targetId : parseInt(schoolId)
+            };
+            sendJsonPostRequest(data, '/deleteSchoolStaffAsTeacher', onSuccess, onError);
+        }
+
+function  getSchoolStudents(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolStudents?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+        
+function  deleteSchoolStudents(schoolId, id,
+    onSuccess,
+                onError)
+                {
+                    var data =
+                    {
+                        sessionId: getQueryParameter('sessionId'),
+                        itemIds: [parseInt(id)],
+                        targetId : parseInt(schoolId)
+                    };
+                    sendJsonPostRequest(data, '/deleteStudentsFromSchool', onSuccess, onError);
+                }
+
+function addSchoolStudents(
+            schoolId,
+            studentIds,
+            onSuccess,
+            onError)
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'),
+                    itemIds: studentIds,
+                    targetId : parseInt(schoolId)
+                };
+                sendJsonPostRequest(data, '/addStudentsToSchool', onSuccess, onError);
+            }
 
 

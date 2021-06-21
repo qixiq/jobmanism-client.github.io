@@ -1,0 +1,64 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Address Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Address";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-addresses.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+ 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <form id="theForm"> 
+        <label><strong>Add Address:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;County:&nbsp;</label><input id="addr-county" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>document.getElementById('theForm').onsubmit = function () {
+    var address =
+    {
+        streetLine1 : document.getElementById('street-1').value,
+        streetLine2 : document.getElementById('street-2').value,
+        streetNumber : document.getElementById('street-number').value,
+        city : document.getElementById('addr-city').value,
+        county : document.getElementById('addr-county').value,
+        state: document.getElementById('addr-state').value,
+        country : document.getElementById('addr-country').value,
+        gpsLocation : document.getElementById('addr-gps').value,
+        postalCode : document.getElementById('addr-post-code').value
+    };
+    addSchoolAddress(
+        schoolId,
+        address,
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

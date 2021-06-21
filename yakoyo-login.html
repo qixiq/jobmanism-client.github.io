@@ -1,0 +1,39 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+
+</head>
+<body>
+    <img width="200" height="200" src="YAKOYO-logo.jpg"></img>
+    <p>Welcome to Yakoyo, please sign in</p>
+    <form id="theForm">
+        <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br/>
+        <label>Password:&nbsp;</label><input id="password" type="password" />
+
+        <button type="submit">Login</button><br/>
+        <label id="LoginError"></label>
+    </form>
+    <br />
+    <a href="yakoyo-beginsignup.html">Please signup if you do not have an account</a>
+    <script>
+        document.getElementById('theForm').onsubmit = function () {
+            var userName = document.getElementById('user').value;
+            login(userName, document.getElementById('password').value,
+                function (data) {
+                    if (!data.isError) { 
+                        document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + data.sessionId;
+                    }
+                    else {
+                        document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
+                    }
+                    
+                },
+                function (error) {
+                    document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';
+                });
+            return false;
+        };
+    </script>
+
+</body>
+</html>

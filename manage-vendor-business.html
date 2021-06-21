@@ -1,0 +1,41 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title> Yakoyo Business Vendor Management Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var vendorId = getQueryParameter('vendorId'); 
+
+
+
+        function onSuccess(data) {
+
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToAllVendorsPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getVendorBusiness(vendorId, onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToAllVendorsPage()">Go Back To Schools List</button><br/><br/>
+
+    <br /><br />
+    <div id="contentDiv">
+
+    </div> 
+
+</body>
+</html>

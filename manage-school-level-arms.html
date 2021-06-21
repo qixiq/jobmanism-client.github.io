@@ -49,12 +49,12 @@
         }
 
         function manageSchoolLevelArm(id){
-
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + id;
         }
 
 
         function addSchoolLevelArm() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId;;
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId;
         }
 
         function goBackToSchoolLevelsPage() {

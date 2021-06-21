@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Main Page</title>
+    <script>var sessionId = getQueryParameter('sessionId');
+        var itemsCount = 0;
+
+        function onSuccess(data) {
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = ""; 
+            data.items.forEach(appendItem);  
+        }
+
+        function editItem(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&vendorId=' + id;
+        }
+
+        function onRemoveItem(id) {
+            removeBusiness(sessionId, id, init, onError);
+        }
+
+
+
+        function appendItem(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>VENDOR BUSINESS ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+        }
+
+
+
+        function onError(details) {
+
+        }
+
+        function addNewVendorBusiness() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-vendor-business.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getVendorBusinesses('', onSuccess, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
+    <button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> 
+    <br /><br />
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>
