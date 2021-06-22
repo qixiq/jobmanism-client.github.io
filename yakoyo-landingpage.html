@@ -12,7 +12,7 @@
         }
 
         function editItem(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&vendorId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + id;
         }
 
         function onRemoveItem(id) {
@@ -43,7 +43,7 @@
         }
 
         function init() {
-            getVendorBusinesses('', onSuccess, onError);
+            getBusinesses('', onSuccess, onError);
         }
 
         window.addEventListener('load', init);</script>

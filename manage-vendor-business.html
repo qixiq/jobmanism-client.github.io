@@ -4,7 +4,7 @@
     <title> Yakoyo Business Vendor Management Page</title>
     <script>
         var sessionId = getQueryParameter('sessionId'); 
-        var vendorId = getQueryParameter('vendorId'); 
+        var businessId = getQueryParameter('businessId'); 
 
 
 
@@ -23,14 +23,14 @@
         }
 
         function init() {
-            getVendorBusiness(vendorId, onSuccess, onError)
+            getBusiness(businessId, onSuccess, onError)
         }
 
         window.addEventListener('load', init);
     </script>
 </head>
 <body>
-    <button onclick="goBackToAllVendorsPage()">Go Back To Schools List</button><br/><br/>
+    <button onclick="goBackToAllVendorsPage()">Go Back To Businesses List</button><br/><br/>
 
     <br /><br />
     <div id="contentDiv">

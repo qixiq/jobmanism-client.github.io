@@ -1,0 +1,26 @@
++
+GetBusiness
+AddBusiness
+GetBusinesses
+DeleteBusinesses
+
++
+
+GetBusinessLocations
+AddBusinessLocation
+DeleteBusinessLocations
+UpdateBusinessLocationPrimaryPhoneNumber
+UpdateBusinessLocationAddress
+
++
+AddBusinessAddresses
+GetBusinessAddresses
+UpdateBusinessAddress
+DeleteBusinessAddresses 
+
+ +
+
+AddBusinessPhoneNumbers
+GetBusinessPhoneNumbers
+UpdateBusinessPhoneNumber
+DeleteBusinessPhoneNumbers

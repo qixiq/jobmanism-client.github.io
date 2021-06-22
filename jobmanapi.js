@@ -191,6 +191,12 @@ function teleSchoolsBeginSignupWithEmail(user, pwd, email, onSuccess, onError) {
     sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
 }
 
+function yakoyoBeginSignupWithEmail(user, pwd, email, onSuccess, onError) {
+
+    var data = { userName: user, password: pwd, project: 'Yakoyo', emailAddress: email, completionlinkPrefix: getPathPrefix(document.location.href) + '/yakoyo-completesignup.html' };
+    sendJsonPostRequest(data, '/beginsignupwithemailcompletion', onSuccess, onError);
+}
+
 function jobManismBeginSignupWithEmail(user, pwd, email,  onSuccess, onError) {
 
     var data = { userName: user, password: pwd, emailAddress: email, project : 'JobManism',  completionlinkPrefix: getPathPrefix(document.location.href) + '/completesignup.html' };
@@ -628,5 +634,27 @@ function addSchoolStudents(
                 };
                 sendJsonPostRequest(data, '/addStudentsToSchool', onSuccess, onError);
             }
+
+function addBusiness(
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addBusiness', onSuccess, onError);
+    }
+
+    function getBusinesses (selector, onSuccess, onError){
+        sendGetRequest('/getBusinesses?sessionId=' + getQueryParameter('sessionId') ,  onSuccess, onError);
+    }
+
+    function removeBusiness(sessionId, id, onSuccess, onError)
+    {
+        var data =
+        {
+            sessionId: getQueryParameter('sessionId'),
+            itemIds: [parseInt(id)]
+        };
+        sendJsonPostRequest(data, '/deleteBusinesses', onSuccess, onError);
+    }
 
 

@@ -1,0 +1,117 @@
+ *AddSchool
+ *DeleteSchools
+ *GetSchools
+ *UpdateSchool
+ *GetSchool
+
++
+*AddSchoolAddresses
+*GetSchoolAddresses
+*UpdateSchoolAddress
+*DeleteSchoolAddresses
+*MakeAddressPrimaryForSchool
+
+ +
+
+*AddSchoolPhoneNumbers
+*GetSchoolPhoneNumbers
+*UpdateSchoolPhoneNumber
+*DeleteSchoolPhoneNumbers
+*MakePhoneNumberPrimaryForSchool
+
+ +
+
+ *AddSchoolLevels
+ *DeleteSchoolLevels
+ *GetSchoolLevels
+ *GetSchoolLevel
+
+ +
+
+  
+ *AddSchoolLevelArms
+ *DeleteSchoolLevelArms
+ *GetSchoolLevelArms
+
+  +
+
+ *AddSchoolStaff
+ *DeleteSchoolStaff
+ *GetSchoolStaff
+ 
+ +
+
+ *AddStudentsToSchool
+ *DeleteStudentsFromSchool
+ *GetSchoolStudents
+
+  +
+
+ *AddSchoolStaffAsTeacher
+ *DeleteSchoolStaffAsTeacher 
+
+ +
+
+*AddStudentsToLevelArm
+*DeleteStudentsFromLevelArm
+*GetLevelArmStudents
+
+ +
+
+AssignClassTeacherForLevelArm
+DeleteClassTeacherForLevelArm
+GetClassTeacherForLevelArm
+GetSchoolClassTeachers 
+
++
+
+ AddSubject
+ DeleteSubjects
+ GetSubjects
+ UpdateSubject
+
++
+
+ AssignStudentsSubjects
+ DeleteStudentsSubjects
+ GetStudentsSubjects
+ 
+ +
+
+ AddDevice
+ DeleteDevice
+ GetDevices
+ UpdateDevice
+
+ +
+
+ AssignDevicesToUsers
+ GetUserAssignedDevices
+ DeleteUsersDeviceAssignments
+
++
+
+AssignTeacherSubjectsForLevelArms
+DeleteTeacherSubjectsForLevelArms
+GetTeacherSubjectsForLevelArms
+
+
++
+
+CreatePermissionTemplate
+UpdatePermissionTemplate 
+GetPermissionTemplates
+DeletePermissionTemplates
+
++
+CreatePermission
+UpdatePermission
+GetPermissions
+DeletePermissions
+
+
+            pageContent += '<button  onclick="manageLevels()">Manage Levels</button><br/><br/><br/>'; 
+
+            pageContent += '<button  onclick="manageStaff()">Manage Staff</button><br/><br/><br/>';  
+
+ 

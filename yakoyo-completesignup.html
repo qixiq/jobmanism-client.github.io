@@ -4,7 +4,7 @@
 
 </head>
 <body>
-    <p>Welcome to TeleSchools Website, please complete sign up</p>
+    <p>Welcome to Yakoyo Website, please complete sign up</p>
     <form id="theForm">
         <label>UserName:&nbsp;</label><input id="user" type="text" /><br /><br />
         <label>Password:&nbsp;</label><input id="password" type="password" /><br /><br />
@@ -19,7 +19,7 @@
                 document.getElementById('password').value,
                 function (data) {
                     if (!data.isError) {
-                        document.location.href = getPathPrefix(document.location.href) + '/teleschools-landingpage.html?sessionId=' + data.sessionId;
+                        document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + data.sessionId;
                     }
                     else {
                         document.getElementById('ErrorLabel').innerHTML = 'Error Completing Signup, Please Try Again';
