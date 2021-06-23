@@ -5,12 +5,45 @@
     <script>
         var sessionId = getQueryParameter('sessionId'); 
         var businessId = getQueryParameter('businessId'); 
-
+        var itemsCount = 0;
 
 
         function onSuccess(data) {
-
+            itemsCount = 0;
+            document.getElementById('banner').innerHTML = '<p><strong>' + data.business.name + ' LOCATIONS </strong></p><br/>';
+            document.getElementById('itemsList').innerHTML = ""; 
+            data.business.locations.forEach(appendItem);  
         }
+
+        function editItem(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&locationId' + id;
+        }
+
+        function onRemoveItem(id) {
+            removeBusinessLocation(sessionId, businessId, id, init, onError);
+        }
+
+
+
+        function appendItem(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>LOCATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            var address = item.address;
+            listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndEmpty(address.streetLine2)) {
+                listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
+            listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            
+            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.locationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.locationId + '\')" >Manage ... </button ><br/><br/>';
+        }
+
+   
  
 
 
@@ -20,6 +53,11 @@
 
         function goBackToAllVendorsPage() {
             document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId;
+        }
+
+
+        function addBusinessLocation() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId;
         }
 
         function init() {
@@ -33,9 +71,10 @@
     <button onclick="goBackToAllVendorsPage()">Go Back To Businesses List</button><br/><br/>
 
     <br /><br />
-    <div id="contentDiv">
+    <div id="banner"></div><br/><br/>
+    <div id="itemsList">
 
     </div> 
-
+    <button onclick="addBusinessLocation()">Add New Location ...</button><br/><br/>
 </body>
 </html>

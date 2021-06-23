@@ -1,0 +1,89 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Add Business Location</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var businessId = getQueryParameter('businessId'); 
+
+        function onGotBusiness(result){
+            var business = result.business;
+            document.getElementById("banner").innerHTML = '<p><strong>Add New Location For ' + business.name + '</strong></p>';
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding New Location";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + businessId;
+        }
+
+ 
+        function init() {
+            getBusiness(businessId, onGotBusiness, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <div id="banner"></div>
+    <form id="theForm"> 
+        <label><strong>Address:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;County:&nbsp;</label><input id="addr-county" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
+        <label><strong>Phone:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>document.getElementById('theForm').onsubmit = function () {
+    var address =
+    {
+        streetLine1 : document.getElementById('street-1').value,
+        streetLine2 : document.getElementById('street-2').value,
+        streetNumber : document.getElementById('street-number').value,
+        city : document.getElementById('addr-city').value,
+        county : document.getElementById('addr-county').value,
+        state: document.getElementById('addr-state').value,
+        country : document.getElementById('addr-country').value,
+        gpsLocation : document.getElementById('addr-gps').value,
+        postalCode : document.getElementById('addr-post-code').value
+    };
+
+    var phoneNumber =
+            {
+                countryCode : document.getElementById('ctry-code').value,
+                numberText : document.getElementById('number').value,
+                features: document.getElementById('features').value,
+                type : document.getElementById('type').value 
+            };
+    addBusinessLocation(
+        businessId,
+        address,
+        phoneNumber,
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

@@ -9,10 +9,14 @@ DeleteBusinesses
 GetBusinessLocations
 AddBusinessLocation
 DeleteBusinessLocations
+
++
+
 UpdateBusinessLocationPrimaryPhoneNumber
 UpdateBusinessLocationAddress
 
 +
+
 AddBusinessAddresses
 GetBusinessAddresses
 UpdateBusinessAddress

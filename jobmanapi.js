@@ -656,5 +656,35 @@ function addBusiness(
         };
         sendJsonPostRequest(data, '/deleteBusinesses', onSuccess, onError);
     }
+    
+    function     addBusinessLocation(
+        businessId,
+        address,
+        phoneNumber,
+        onSuccess,
+        onError)
+        {
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'),
+                address : address,
+                phoneNumber, phoneNumber,
+                businessId : parseInt(businessId)
+            };
+            sendJsonPostRequest(data, '/addBusinessLocation', onSuccess, onError);
+        }
 
+        function getBusiness  (businessId, onSuccess, onError){
+            sendGetRequest('/getBusiness?sessionId=' + getQueryParameter('sessionId') + '&businessId=' + businessId ,  onSuccess, onError);
+        }
 
+        function removeBusinessLocation(sessionId, businessId, id, onSuccess, onError)
+        {
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'),
+                targetId: parseInt(businessId),
+                itemIds: [parseInt(id)]
+            };
+            sendJsonPostRequest(data, '/deleteBusinessLocations', onSuccess, onError);
+        }
