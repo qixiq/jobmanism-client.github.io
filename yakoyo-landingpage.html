@@ -41,7 +41,7 @@
         }
 
         function editBusiness(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + id + '&privileges=' + privileges;
         }
 
         function onRemoveBusiness(id) {
@@ -50,7 +50,7 @@
 
 
         function editMenuItemCategory(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-category.html?sessionId=' + sessionId + '&menuItemCategoryId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-category.html?sessionId=' + sessionId + '&menuItemCategoryId=' + id+ '&privileges=' + privileges;
         }
 
         function onRemoveMenuItemCategory(id) {
@@ -58,7 +58,7 @@
         }
 
         function editFoodAndDrinkVendorType(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-food-and-drink-vendor-type.html?sessionId=' + sessionId + '&vendorTypeId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-food-and-drink-vendor-type.html?sessionId=' + sessionId + '&vendorTypeId=' + id+ '&privileges=' + privileges;
         }
 
         function onRemoveFoodAndDrinkVendorType(id) {

@@ -5,27 +5,56 @@
     <script>
         var sessionId = getQueryParameter('sessionId'); 
         var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges'); 
+        var businessName = '';
         var itemsCount = 0;
 
-
-        function onSuccess(data) {
-            itemsCount = 0;
-            document.getElementById('banner').innerHTML = '<p><strong>' + data.business.name + ' LOCATIONS </strong></p><br/>';
-            document.getElementById('itemsList').innerHTML = ""; 
-            data.business.locations.forEach(appendItem);  
+        function onGotBusinessMenuItems(data){
+            itemsCount = 0; 
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' MENU ITEMS </strong></p><br/>'; 
+            data.menuItems.forEach(appendMenuItem);  
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addMenuItem()">Add New Menu Item ...</button><br/><br/>';
         }
 
-        function editItem(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&locationId' + id;
+        function onGotBusiness(data) {
+            itemsCount = 0; 
+            businessName = data.business.name ;
+            document.getElementById('itemsList').innerHTML = '<p><strong>' + businessName + ' LOCATIONS </strong></p><br/>'; 
+            data.business.locations.forEach(appendLocation);  
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addBusinessLocation()">Add New Location ...</button><br/><br/>';
+            getMenuItems(businessId, onGotBusinessMenuItems, onError);
         }
 
-        function onRemoveItem(id) {
+        function editBusinessLocation(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&locationId=' + id+ '&privileges=' + privileges;
+        }
+
+        function onRemoveBusinessLocation(id) {
             removeBusinessLocation(sessionId, businessId, id, init, onError);
         }
 
+        function editMenuItem(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&menuItemId=' + id+ '&privileges=' + privileges;
+        }
+
+        function onRemoveMenuItem(id) {
+            removeMenuItem(sessionId, businessId, id, init, onError);
+        }
 
 
-        function appendItem(item) {
+        function appendMenuItem(item){
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>MENU ITEM ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveMenuItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editMenuItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+
+        }
+
+        function appendLocation(item) {
             itemsCount++;
             var listDiv = document.getElementById('itemsList');
             listDiv.innerHTML += '<p><strong>LOCATION ' + itemsCount;
@@ -39,8 +68,8 @@
             listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
             listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
             
-            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.locationId + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.locationId + '\')" >Manage ... </button ><br/><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveBusinessLocation(\'' + item.locationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editBusinessLocation(\'' + item.locationId + '\')" >Manage ... </button ><br/><br/>';
         }
 
    
@@ -52,16 +81,20 @@
         }
 
         function goBackToAllVendorsPage() {
-            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId;
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
         }
 
 
         function addBusinessLocation() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId;
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
+        }
+
+        function addMenuItem() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
         }
 
         function init() {
-            getBusiness(businessId, onSuccess, onError)
+            getBusiness(businessId, onGotBusiness, onError)
         }
 
         window.addEventListener('load', init);
@@ -71,10 +104,9 @@
     <button onclick="goBackToAllVendorsPage()">Go Back To Businesses List</button><br/><br/>
 
     <br /><br />
-    <div id="banner"></div><br/><br/>
     <div id="itemsList">
 
     </div> 
-    <button onclick="addBusinessLocation()">Add New Location ...</button><br/><br/>
+    
 </body>
 </html>

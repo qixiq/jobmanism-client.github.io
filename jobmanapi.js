@@ -716,3 +716,25 @@ function removeFoodAndDrinkVendorType(sessionId, id, onSuccess, onError){
     };
     sendJsonPostRequest(data, '/deleteFoodAndDrinkVendorTypes', onSuccess, onError);
 }
+
+function getMenuItems(businessId, onSuccess, onError){
+    sendGetRequest('/getMenuItems?sessionId=' + getQueryParameter('sessionId') + '&filter=businessId-' + businessId , onSuccess, onError);
+}
+
+function removeMenuItem(sessionId, businessId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)],
+        targetId: parseInt(businessId)
+    };
+    sendJsonPostRequest(data, '/deleteMenuItems', onSuccess, onError);
+}
+
+function addMenuItem( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addMenuItem', onSuccess, onError);
+    }
