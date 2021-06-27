@@ -2,34 +2,101 @@
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
     <title>Yakoyo Main Page</title>
-    <script>var sessionId = getQueryParameter('sessionId');
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = parseInt(getQueryParameter('privileges'));
+        var userId = getQueryParameter('userId');
+        var userName = getQueryParameter('userName');
         var itemsCount = 0;
 
-        function onSuccess(data) {
-            itemsCount = 0;
-            document.getElementById('itemsList').innerHTML = ""; 
-            data.items.forEach(appendItem);  
+        function onGotMenuItemCategories(data){
+
+            itemsCount = 0; 
+            document.getElementById('itemsList').innerHTML += "<p><strong>MENU ITEM CATEGORIES</strong></p><br/><br/>"; 
+            data.items.forEach(appendMenuItemCategory);   
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewMenuItemCategory()">Add New Menu Item Category ... </button><br /><br /> ';
         }
 
-        function editItem(id) {
+        function onGotFoodAndDrinkVendorTypes(data)
+        {
+            itemsCount = 0; 
+            document.getElementById('itemsList').innerHTML += "<p><strong>FOOD AND DRINK VENDOR TYPES</strong></p><br/><br/>"; 
+            data.items.forEach(appendFoodAndDrinkVendorType);  
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewFoodAndDrinkVendorType()">Add New Food And Drink Vendor Type ... </button><br /><br /> ';
+            getMenuItemCategories(onGotMenuItemCategories, onError);
+        }
+
+        function onGotBusinesses(data) {
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = "<p><strong>VENDOR BUSINESSES</strong></p><br/><br/>"; 
+            data.items.forEach(appendBusiness);  
+
+            document.getElementById('itemsList').innerHTML += '<button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> ';
+
+            if((privileges & 1) != 0 || (privileges & 8) != 0)
+            {
+                //get vendorTypes
+                getFoodAndDrinkVendorTypes(onGotFoodAndDrinkVendorTypes, onError); 
+            }
+        }
+
+        function editBusiness(id) {
             document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + id;
         }
 
-        function onRemoveItem(id) {
+        function onRemoveBusiness(id) {
             removeBusiness(sessionId, id, init, onError);
         }
 
 
+        function editMenuItemCategory(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-category.html?sessionId=' + sessionId + '&menuItemCategoryId=' + id;
+        }
 
-        function appendItem(item) {
+        function onRemoveMenuItemCategory(id) {
+            removeMenuItemCategory(sessionId, id, init, onError);
+        }
+
+        function editFoodAndDrinkVendorType(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-food-and-drink-vendor-type.html?sessionId=' + sessionId + '&vendorTypeId=' + id;
+        }
+
+        function onRemoveFoodAndDrinkVendorType(id) {
+            removeFoodAndDrinkVendorType(sessionId, id, init, onError);
+        }
+
+
+        function appendFoodAndDrinkVendorType(item){
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>FOOD AND DRINK VENDOR TYPE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveFoodAndDrinkVendorType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editFoodAndDrinkVendorType(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+        }
+
+        function appendMenuItemCategory(item){
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>MENU ITEM CATEGORY ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveMenuItemCategory(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editMenuItemCategory(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+        }
+
+        function appendBusiness(item) {
             itemsCount++;
             var listDiv = document.getElementById('itemsList');
             listDiv.innerHTML += '<p><strong>VENDOR BUSINESS ' + itemsCount;
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
             listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick="onRemoveBusiness(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editBusiness(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
         }
 
 
@@ -39,18 +106,24 @@
         }
 
         function addNewVendorBusiness() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-vendor-business.html?sessionId=' + sessionId;
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-object.html?sessionId=' + sessionId + '&objectType=Business&privileges=' + privileges;
+        }
+        function addNewFoodAndDrinkVendorType() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-object.html?sessionId=' + sessionId + '&objectType=FoodAndDrinkVendorType&privileges=' + privileges;
+        }
+
+        function addNewMenuItemCategory() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-object.html?sessionId=' + sessionId + '&objectType=MenuItemCategory&privileges=' + privileges;
         }
 
         function init() {
-            getBusinesses('', onSuccess, onError);
+            getBusinesses('', onGotBusinesses, onError);
         }
 
         window.addEventListener('load', init);</script>
 </head>
 <body>
     <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
-    <button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> 
     <br /><br />
     <div id="itemsList">
 

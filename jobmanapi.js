@@ -635,12 +635,13 @@ function addSchoolStudents(
                 sendJsonPostRequest(data, '/addStudentsToSchool', onSuccess, onError);
             }
 
-function addBusiness(
+function addBusinessObject(
+    path,
     data,
     onSuccess,
     onError)
     {
-        sendJsonPostRequest(data, '/addBusiness', onSuccess, onError);
+        sendJsonPostRequest(data, path, onSuccess, onError);
     }
 
     function getBusinesses (selector, onSuccess, onError){
@@ -688,3 +689,30 @@ function addBusiness(
             };
             sendJsonPostRequest(data, '/deleteBusinessLocations', onSuccess, onError);
         }
+
+
+function getMenuItemCategories(onSuccess, onError) {
+    sendGetRequest('/getMenuItemCategories?sessionId=' + getQueryParameter('sessionId'),  onSuccess, onError);
+}
+
+function getFoodAndDrinkVendorTypes(onSuccess, onError){
+    sendGetRequest('/getFoodAndDrinkVendorTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+} 
+   
+function removeMenuItemCategory(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteMenuItemCategories', onSuccess, onError);
+}
+  
+function removeFoodAndDrinkVendorType(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteFoodAndDrinkVendorTypes', onSuccess, onError);
+}

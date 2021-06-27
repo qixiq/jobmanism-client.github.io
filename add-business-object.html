@@ -1,9 +1,13 @@
 <html>
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
-    <title>Yakoyo - Add New Business</title>
+    <title>Yakoyo - Add New Business Object</title>
     <script>
         var sessionId = getQueryParameter('sessionId');
+        var objectType = getQueryParameter('objectType');
+        var privileges = getQueryParameter('privileges');
+        var path = '/add' + objectType;
+ 
 
         function onError(details) {
 
@@ -11,14 +15,20 @@
          
 
         function onSuccess() {
-            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId;
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
         }
+
+        function init() {
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW ' + objectType+ ' </strong>'
+        }
+
+        window.addEventListener('load', init);</script>
           
     </script>
 </head>
 <body> 
     <form id="theForm">
-        <p><strong>ADD NEW BUSINESS </strong></p><br /> 
+        <p id="heading"></p><br /> 
         <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
         <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
         <button type="submit">Add</button><br />
@@ -35,7 +45,8 @@
                 name: document.getElementById('name').value,
                 description: document.getElementById('description').value
             };  
-            addBusiness(
+            addBusinessObject(
+                path,
                 data,
                 onSuccess,
                 onError);
