@@ -766,6 +766,14 @@ function addMenuItem(
     sendGetRequest('/getDeviceTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
  }
 
+ function getSubject(subjectId, onSuccess, onError){
+    sendGetRequest('/getSubject?sessionId=' + getQueryParameter('sessionId') + '&subjectId=' + subjectId, onSuccess, onError);
+ }
+
+ function getDeviceType(deviceTypeId, onSuccess, onError){
+    sendGetRequest('/getDeviceType?sessionId=' + getQueryParameter('sessionId') + '&deviceTypeId=' + deviceTypeId, onSuccess, onError);
+ }
+
  function addSubject(
     data,
     onSuccess,
@@ -781,3 +789,17 @@ function addMenuItem(
         {
             sendJsonPostRequest(data, '/addDeviceType', onSuccess, onError);
         }
+
+function updateSubject(
+            data,
+            onSuccess,
+            onError){
+                sendJsonPostRequest(data, '/updateSubject', onSuccess, onError);
+            }
+
+function updateDeviceType(
+    data,
+    onSuccess,
+    onError){
+        sendJsonPostRequest(data, '/updateDeviceType', onSuccess, onError);
+    }

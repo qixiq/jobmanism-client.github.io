@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>TeleSchools - Update Subject Name or Description</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var subjectId = getQueryParameter('subjectId');
+
+        function onError(details) {
+
+        }
+         
+        function onGotSubject(data){ 
+            document.getElementById('name').value = data.item.name;
+            document.getElementById('description').value = data.item.description;
+
+        }
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/teleschools-landingpage.html?sessionId=' + sessionId ;
+        }
+          
+        function init() {
+            getSubject(subjectId, onGotSubject, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body> 
+    <button onclick="onSuccess()">Go Back</button><br/><br/>
+    <form id="theForm">
+        <p><strong>Edit Subject Name and or Description </strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
+        <button type="submit">Update</button><br />
+    </form>
+    <br /><br />
+   
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var data = {
+                itemId : parseInt(subjectId),
+                sessionId: sessionId,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value
+            };  
+            updateSubject(
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>
