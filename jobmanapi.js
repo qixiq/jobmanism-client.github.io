@@ -738,3 +738,46 @@ function addMenuItem(
     {
         sendJsonPostRequest(data, '/addMenuItem', onSuccess, onError);
     }
+
+
+ function removeSubject(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteSubjects', onSuccess, onError);
+ }
+ 
+ function removeDeviceType(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteDeviceTypes', onSuccess, onError);
+ }
+
+ function getSubjects(onSuccess, onError){
+    sendGetRequest('/getSubjects?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+ }
+
+ function getDeviceTypes(onSuccess, onError){
+    sendGetRequest('/getDeviceTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+ }
+
+ function addSubject(
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addSubject', onSuccess, onError);
+    }
+
+    function addDeviceType(
+        data,
+        onSuccess,
+        onError)
+        {
+            sendJsonPostRequest(data, '/addDeviceType', onSuccess, onError);
+        }

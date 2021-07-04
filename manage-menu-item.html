@@ -1,0 +1,83 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add Menu Item</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var privileges = getQueryParameter('privileges');
+        var businessId = getQueryParameter('businessId'); 
+        var menuItemId = getQueryParameter('menuItemId'); 
+        var selectedIndex = 0;
+ 
+
+        function onError(details) {
+
+        }
+
+        function onGotMenuItem(data){
+
+        }
+
+        function onGotMenuItemCategories(data){
+            if(data.items.length == 0){
+                onSuccess();
+            }
+            data.items.forEach(appendMenuItemCategory); 
+            
+            getMenuItem(menuItemId, onGotMenuItem, onError);
+        }
+
+        function appendMenuItemCategory(category){ 
+            var el = document.createElement("option");
+            el.textContent = category.name;
+            el.value = category.id;
+            document.getElementById('category').appendChild(el); 
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId;
+        }
+
+        function init() { 
+            getMenuItemCategories(onGotMenuItemCategories, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p ><strong>MANAGE MENU ITEM</strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Category:&nbsp;</label><select id="category"></select><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () { 
+            var data = {
+                sessionId: sessionId,
+                menuItemCategoryId : parseInt(document.getElementById('category').value),
+                businessId : parseInt(businessId),
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value
+            };  
+            updateMenuItem( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

@@ -5,51 +5,127 @@
     <script>var sessionId = getQueryParameter('sessionId');
         var itemsCount = 0;
 
-        function onSuccess(data) {
+        function onGotSchools(data) {
             itemsCount = 0;
-            document.getElementById('itemsList').innerHTML = ""; 
-            data.items.forEach(appendItem);  
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML = "<h2><strong>SCHOOLS</strong></h2><br/>"; 
+            data.items.forEach(appendSchool); 
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewSchool()">Add New School ... </button><br />'; 
+            getSubjects(onGotSubjects, onError);
         }
 
-        function editItem(id) {
+        function onGotSubjects(data) {
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += "<h2><strong>SUBJECTS</strong></h2><br/>"; 
+            data.items.forEach(appendSubject);  
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewSubject()">Add New Subject ... </button><br /> ';
+            getDeviceTypes(onGotDeviceTypes, onError);
+        }
+
+        function onGotDeviceTypes(data) {
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += "<h2><strong>DEVICE TYPES</strong></h2><br/>"; 
+            data.items.forEach(appendDeviceType);   
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewDeviceType()">Add New Device Type ... </button><br /> ';
+        }
+
+        //schools
+
+        function editSchool(id) {
             document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + id;
         }
 
-        function onRemoveItem(id) {
+        function onRemoveSchool(id) {
             removeSchool(sessionId, id, init, onError);
         }
 
 
 
-        function appendItem(item) {
+        function appendSchool(item) {
             itemsCount++;
             var listDiv = document.getElementById('itemsList');
             listDiv.innerHTML += '<p><strong>SCHOOL ' + itemsCount;
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
             listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
-        }
-
-
-
-        function onError(details) {
-
+            listDiv.innerHTML += '<button  onclick="onRemoveSchool(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editSchool(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            
         }
 
         function addNewSchool() {
             document.location.href = getPathPrefix(document.location.href) + '/add-school.html?sessionId=' + sessionId;
         }
 
+        //subjects
+        function editSubject(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-subject.html?sessionId=' + sessionId + '&subjectId=' + id;
+        }
+
+        function onRemoveSubject(id) {
+            removeSubject(sessionId, id, init, onError);
+        }
+
+
+
+        function appendSubject(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SUBJECT ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveSubject(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editSubject(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            
+        }
+
+        function addNewSubject() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-subject.html?sessionId=' + sessionId;
+        }
+
+        //device types
+        function editDeviceType(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-device-type.html?sessionId=' + sessionId + '&deviceTypeId=' + id;
+        }
+
+        function onRemoveDeviceType(id) {
+            removeDeviceType(sessionId, id, init, onError);
+        }
+
+
+
+        function appendDeviceType(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>DEVICE TYPE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveDeviceType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editDeviceType(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            
+        }
+
+        function addNewDeviceType() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-device-type.html?sessionId=' + sessionId;
+        }
+
+        function onError(details) {
+
+        }
+
+
+
         function init() {
-            getSchools('', onSuccess, onError);
+            getSchools('', onGotSchools, onError);
         }
 
         window.addEventListener('load', init);</script>
 </head>
-<body>
-    <button onclick="addNewSchool()">Add New School ... </button><br /><br /> 
+<body> 
     <br /><br />
     <div id="itemsList">
 

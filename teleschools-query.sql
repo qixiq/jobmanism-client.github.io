@@ -121,9 +121,10 @@ create TABLE TeacherSubjects
 CREATE UNIQUE INDEX uq_TeacherSubjects
   ON [dbo].[TeacherSubjects](SubjectId, UserId, ArmId);
 
-create TABLE StudentSubjects
+CREATE TABLE StudentSubjects
 (
     UserId BIGINT NOT NULL,
+    ArmId BIGINT NOT NULL,
     SubjectId BIGINT NOT NULL,
     CONSTRAINT FK_StudentSubjects_SubjectId FOREIGN KEY (SubjectId)
     REFERENCES [dbo].[Subjects] (SubjectId)
@@ -132,11 +133,15 @@ create TABLE StudentSubjects
     CONSTRAINT FK_StudentSubjects_UserId FOREIGN KEY (UserId)
     REFERENCES [dbo].[UserProfiles] (UserId)
     ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_StudentSubjects_ArmId FOREIGN KEY (ArmId)
+    REFERENCES [dbo].[LevelArms] (ArmId)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE UNIQUE INDEX uq_StudentSubjects
-  ON [dbo].[StudentSubjects](SubjectId, UserId);
+  ON [dbo].[StudentSubjects](SubjectId, UserId, ArmId);
 
 create TABLE ClassTeachers
 (
@@ -155,24 +160,7 @@ create TABLE ClassTeachers
 CREATE UNIQUE INDEX uq_ClassTeachers
   ON [dbo].[ClassTeachers](ArmId, UserId);
 
-create TABLE TeleschoolDevices
-(
-    UserId BIGINT NOT NULL UNIQUE,
-    SatelliteDecoderId BIGINT NOT NULL UNIQUE,
-    ClosedUserGroupPhoneId BIGINT NOT NULL UNIQUE,
-    CONSTRAINT FK_TeleschoolDevices_ClosedUserGroupPhoneIdFOREIGN KEY (ClosedUserGroupPhoneId)
-    REFERENCES [dbo].[PhoneNumbers] (PhoneNumberId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    CONSTRAINT FK_TeleschoolDevices_UserId FOREIGN KEY (UserId)
-    REFERENCES [dbo].[UserProfiles] (UserId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    CONSTRAINT FK_TeleschoolDevices_SatelliteDecoderId FOREIGN KEY (SatelliteDecoderId)
-    REFERENCES [dbo].[SatelliteDecoders] (DeviceId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
+
 
 create TABLE SchoolPhoneNumbers
 (
@@ -208,6 +196,67 @@ CREATE UNIQUE INDEX uq_SchoolPhoneNumbers
 CREATE UNIQUE INDEX uq_SchoolAddresses
   ON [dbo].[SchoolAddresses](AddressId, SchoolId);
 
+
+CREATE TABLE DeviceTypes
+(
+    DeviceTypeId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Name VARCHAR(255) NOT NULL UNIQUE,
+    Description VARCHAR(1024) NOT NULL
+)
+
+create TABLE SchoolDevices
+(
+    UserId BIGINT NOT NULL ,
+    DeviceTypeId BIGINT NOT NULL ,
+    SchoolId BIGINT NOT NULL,
+    DeviceCode VARCHAR(1024) NOT NULL UNIQUE,
+    CONSTRAINT FK_SchoolDevices_DeviceTypeId FOREIGN KEY (DeviceTypeId)
+    REFERENCES [dbo].[DeviceTypes] (DeviceTypeId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_SchoolDevices_UserId FOREIGN KEY (UserId)
+    REFERENCES [dbo].[UserProfiles] (UserId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_SchoolDevices_SchoolId FOREIGN KEY (SchoolId)
+    REFERENCES [dbo].[Schools] (SchoolId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_SchoolDevices
+  ON [dbo].[SchoolDevices](DeviceTypeId, UserId, SchoolId);
+
+CREATE TABLE SchoolGroups
+(
+    SchoolGroupId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Name VARCHAR(255) NOT NULL UNIQUE,
+    Description VARCHAR(1024) NOT NULL,
+    MembershipConstraints VARCHAR(2048) NOT NULL,
+    SchoolId BIGINT NOT NULL,
+    CONSTRAINT FK_SchoolGroups_SchoolId FOREIGN KEY (SchoolId)
+    REFERENCES [dbo].[Schools] (SchoolId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+
+);
+
+CREATE TABLE SchoolGroupMembers
+(
+    UserId BIGINT NOT NULL ,
+    SchoolGroupId BIGINT NOT NULL , 
+    CONSTRAINT FK_SchoolGroupMembers_SchoolGroupId FOREIGN KEY (SchoolGroupId)
+    REFERENCES [dbo].[SchoolGroups] (SchoolGroupId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_SchoolGroupMembers_UserId FOREIGN KEY (UserId)
+    REFERENCES [dbo].[UserProfiles] (UserId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_SchoolGroupMembers
+  ON [dbo].[SchoolGroupMembers](SchoolGroupId, UserId);
 
 
 

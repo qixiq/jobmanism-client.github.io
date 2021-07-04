@@ -58,43 +58,59 @@
 
  +
 
-AssignClassTeacherForLevelArm
-DeleteClassTeacherForLevelArm
-GetClassTeacherForLevelArm
-GetSchoolClassTeachers 
+*AssignClassTeacherForLevelArm
+*DeleteClassTeacherForLevelArm
+*GetClassTeacherForLevelArm 
 
 +
 
- AddSubject
- DeleteSubjects
- GetSubjects
- UpdateSubject
+ *AddSubject
+ *DeleteSubjects
+ *GetSubjects
+ *GetSubject
+ *UpdateSubject
 
 +
 
- AssignStudentsSubjects
- DeleteStudentsSubjects
- GetStudentsSubjects
+*AssignStudentsSubjects
+*DeleteStudentsFromSubject
+*GetStudentsForSubject
+*GetSubjectsForStudent
  
  +
 
- AddDevice
- DeleteDevice
- GetDevices
- UpdateDevice
+*AddDeviceType
+*DeleteDeviceTypes
+*GetDeviceTypes
+*GetDeviceType
+*UpdateDeviceType
 
  +
 
- AssignDevicesToUsers
- GetUserAssignedDevices
- DeleteUsersDeviceAssignments
+*AssignNewDevicesToUsers
+*UpdateUserAssignedDevices
+*GetUserAssignedDevices
+*DeleteUserAssignedDevices
 
 +
 
-AssignTeacherSubjectsForLevelArms
-DeleteTeacherSubjectsForLevelArms
-GetTeacherSubjectsForLevelArms
+*AssignTeacherSubjectsForLevelArms
+*DeleteTeacherAssignedSubjectsForLevelArms
+*GetTeacherAssignedSubjectsForLevelArms
+*UpdateTeacherAssignedSubjectsForLevelArms
 
++
+
+/AddSchoolGroup
+/DeleteSchoolGroups
+/GetSchoolGroups
+/GetSchoolGroup
+/UpdateSchoolGroup
++
+
+/AddUsersToSchoolGroup
+/GetUsersInSchoolGroup
+/DeleteUsersFromSchoolGroup
 
 +
 

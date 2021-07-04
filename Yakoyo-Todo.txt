@@ -39,9 +39,22 @@
 *GetLocationMenuItems
 *UpdateMenuItemAtLocation
 UpdateMenuItemsAtLocations 
+ 
++
+
+GetMenuItem
 
 +
 
+GetFoodAndDrinkVendorLocation
 
++
+
+UpdateFoodAndDrinkVendorTypesAtLocation
+GetFoodAndDrinkVendorTypesAtLocation
+
++
+
+UpdateBusinessLocation
 
 
