@@ -1,0 +1,84 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Student Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+        var armId = getQueryParameter('armId'); 
+        var levelId = getQueryParameter('levelId'); 
+
+        function onGotSchoolStudents(data){
+            data.students.forEach(appendStudent);
+        }
+
+        function appendStudent(student){
+            select = document.getElementById('students'); 
+            var opt = document.createElement('option');
+            opt.value = student.userId;
+            opt.innerHTML = student.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Students";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+ 
+        function init() {
+            getSchoolStudents(schoolId, onGotSchoolStudents, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <p>Please choose school students to add to this arm</p>
+    <form id="theForm"> 
+        
+        <label for="students">Choose new students:</label><br/>
+
+        <select name="students" id="students" multiple> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    addStudentsToLevelArm(
+        parseInt(armId),
+        parseInt(schoolId),
+        getSelectValues(document.getElementById('students')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

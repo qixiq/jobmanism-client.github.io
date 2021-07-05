@@ -8,7 +8,7 @@
         function onGotSchools(data) {
             itemsCount = 0;
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML = "<h2><strong>SCHOOLS</strong></h2><br/>"; 
+            listDiv.innerHTML = "<h2><strong>SCHOOLS</strong></h2>"; 
             data.items.forEach(appendSchool); 
             listDiv.innerHTML += '<br /> <br /> <button onclick="addNewSchool()">Add New School ... </button><br />'; 
             getSubjects(onGotSubjects, onError);
@@ -17,7 +17,7 @@
         function onGotSubjects(data) {
             itemsCount = 0;
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += "<h2><strong>SUBJECTS</strong></h2><br/>"; 
+            listDiv.innerHTML += "<h2><strong>SUBJECTS</strong></h2>"; 
             data.items.forEach(appendSubject);  
             listDiv.innerHTML += '<br /> <br /> <button onclick="addNewSubject()">Add New Subject ... </button><br /> ';
             getDeviceTypes(onGotDeviceTypes, onError);
@@ -26,7 +26,7 @@
         function onGotDeviceTypes(data) {
             itemsCount = 0;
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += "<h2><strong>DEVICE TYPES</strong></h2><br/>"; 
+            listDiv.innerHTML += "<h2><strong>DEVICE TYPES</strong></h2>"; 
             data.items.forEach(appendDeviceType);   
             listDiv.innerHTML += '<br /> <br /> <button onclick="addNewDeviceType()">Add New Device Type ... </button><br /> ';
         }

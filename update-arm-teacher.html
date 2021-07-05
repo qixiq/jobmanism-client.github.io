@@ -1,0 +1,86 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Student Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+        var armId = getQueryParameter('armId'); 
+        var levelId = getQueryParameter('levelId'); 
+
+        function onGotSchoolStaff(data){
+            data.staff.forEach(appendTeacher);
+        }
+
+        function appendTeacher(staff){
+            if(!staff.isTeacher)
+            {
+                return;
+            }
+            select = document.getElementById('teachers'); 
+            var opt = document.createElement('option');
+            opt.value = staff.userId;
+            opt.innerHTML = staff.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Assigning Class Teacher";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+ 
+        function init() {
+            getSchoolStaff(schoolId, onGotSchoolStaff, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <form id="theForm"> 
+        
+        <label for="teachers">Choose Class Teacher For This Arm:</label><br/>
+
+        <select name="teachers" id="teachers"> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValue(select) { 
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            return parseInt(opt.value) ;
+            }
+        }
+        return 0;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    assignClassTeacherForLevelArm(
+        parseInt(armId),
+        parseInt(schoolId),
+        getSelectValue(document.getElementById('teachers')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

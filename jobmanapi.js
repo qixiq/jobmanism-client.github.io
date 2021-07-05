@@ -803,3 +803,67 @@ function updateDeviceType(
     onError){
         sendJsonPostRequest(data, '/updateDeviceType', onSuccess, onError);
     }
+
+function getLevelArmStudents(armId, onSuccess, onError){
+    sendGetRequest('/getLevelArmStudents?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId, onSuccess, onError);
+}
+            
+    
+ 
+function getClassTeacherForLevelArm(armId, onSuccess, onError){
+    sendGetRequest('/getClassTeacherForLevelArm?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId, onSuccess, onError);
+}
+ 
+function removeStudentFromLevelArm(sessionId, id, armId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(armId)
+    };
+    sendJsonPostRequest(data, '/deleteStudentsFromLevelArm', onSuccess, onError);
+}
+
+function     addStudentsToLevelArm(
+    armId,
+    schoolId,
+    studentIds,
+    onSuccess,
+    onError)
+    {
+        var data =
+        {
+            sessionId: getQueryParameter('sessionId'), 
+            itemIds: studentIds,
+            targetId : armId,
+            schoolId : schoolId
+        };
+        sendJsonPostRequest(data, '/addStudentsToLevelArm', onSuccess, onError);
+    }
+
+    function removeClassTeacherFromLevelArm(sessionId, classTeacherId, armId, onSuccess, onError)
+    {
+        var data =
+        {
+            sessionId: sessionId, 
+            itemId: parseInt(classTeacherId),
+            targetId : parseInt(armId)
+        };
+        sendJsonPostRequest(data, '/deleteClassTeachersForLevelArms', onSuccess, onError);
+    }
+
+    function assignClassTeacherForLevelArm(
+        armId,
+        schoolId,
+        userId,
+        onSuccess,
+        onError)
+    {
+        var data =
+        {
+            sessionId: getQueryParameter('sessionId'), 
+            itemId: userId,
+            targetId : armId
+        };
+        sendJsonPostRequest(data, '/assignClassTeacherForLevelArm', onSuccess, onError);
+    }

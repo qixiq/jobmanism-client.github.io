@@ -7,32 +7,95 @@
         var sessionId = getQueryParameter('sessionId'); 
         var armId = getQueryParameter('armId'); 
         var levelId = getQueryParameter('levelId'); 
-        var level;
-        var school ;
-        var armCount = 0;
+        var classTeacherId = 0;
+        var itemsCount = 0;
 
         function onGotSchool(data){ 
-        }
-
-        function onSuccess(data) {
-   
+            document.getElementById('itemsList').innerHTML = '';
+            getLevelArmStudents(armId, onGotLevelArmStudents, onError); 
             
         }
-
-        function removeLevelArm(id) {
-            deleteSchoolLevelArms(schoolId, id,
-                init,
-                onError);
+ 
+       
+        function onGotLevelArmStudents(data){ 
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += "<h2><strong>STUDENTS</strong></h2>"; 
+            if(data.students.length == 0)
+            {
+                listDiv.innerHTML += '<p><strong>Could Not Find Any Students</strong ></p>';
+            }
+            else
+            {
+                data.students.forEach(appendStudent); 
+            }
+             
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewStudents()">Add New Students ... </button><br /> '; 
+            getClassTeacherForLevelArm(armId, onGotClassTeacher, onError); 
         }
 
- 
- 
- 
+   
+
+
+        function onGotClassTeacher(data){
+            var teacher = data.staff;
+            
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<h2><strong>CLASS TEACHER</strong ></h2>';
+                if(data.isError){
+                    listDiv.innerHTML += '<p><strong>Could Not Find Class Teacher</strong ></p>';
+                        listDiv.innerHTML += '<br /> <br /> <button  onclick="onAssignClassTeacher()">Assign Class Teacher ...</button>&nbsp;&nbsp;'; 
+                }
+                else{
+                    classTeacherId = teacher.userId;
+                    listDiv.innerHTML += '<label>'+ teacher.name + '</label><br/>'; 
+                    listDiv.innerHTML += '<button  onclick="onRemoveClassTeacher()">Remove</button>&nbsp;&nbsp;';        
+                    listDiv.innerHTML += '<br /> <br /> <button  onclick="onUpdateClassTeacher(\'' + teacher.userId + '\')">Update Class Teacher ...</button>&nbsp;&nbsp;'; 
+                }
+            
+             
+    
+
+        }
 
 
         function onError(details) {
 
         }
+
+        function onRemoveClassTeacher(){
+            removeClassTeacherFromLevelArm(sessionId, classTeacherId, armId, init, onError);
+        }
+
+        function onAssignClassTeacher(){
+            document.location.href = getPathPrefix(document.location.href) + '/update-arm-teacher.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function onUpdateClassTeacher(id){
+            document.location.href = getPathPrefix(document.location.href) + '/update-arm-teacher.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&teacherId=' + id;
+        }
+
+        function onRemoveStudent(id) {
+            removeStudentFromLevelArm(sessionId, id, armId, init, onError);
+        }
+
+
+
+        function appendStudent(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>STUDENT ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>'+ item.name + '</label><br/>'; 
+            listDiv.innerHTML += '<button  onclick="onRemoveStudent(\'' + item.userId + '\')">Remove</button>&nbsp;&nbsp;'; 
+            
+        }
+
+        function addNewStudents() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-arm-students.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        //
 
  
 
@@ -51,8 +114,7 @@
 <body> 
   
     <button onclick="goBackToSchoolLevelArmsPage()">Go back To School Level Arms Page</button><br/><br/>
-    <p id="banner"></p>
-    <div id="armsList">
+    <div id="itemsList">
 
     </div> 
 
