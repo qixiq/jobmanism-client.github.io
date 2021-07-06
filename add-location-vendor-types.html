@@ -1,0 +1,82 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Add Location Vendor Type</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges');
+        var locationId = getQueryParameter('locationId');
+
+        function onGetVendorTypesNotAvailableInLocation(data){
+            data.items.forEach(appendVendorType);
+        }
+
+        function appendVendorType(vendorType){
+            select = document.getElementById('vendorTypes'); 
+            var opt = document.createElement('option');
+            opt.value = vendorType.id;
+            opt.innerHTML = vendorType.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Vendor Types";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId;
+        }
+
+ 
+        function init() {
+            getVendorTypesNotAvailableInLocation(locationId, onGetVendorTypesNotAvailableInLocation, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <form id="theForm"> 
+        
+        <label for="students">Choose Vendor Types to Add:</label><br/>
+
+        <select name="vendorTypes" id="vendorTypes" multiple> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    addFoodAndDrinkVendorTypesToLocation(
+        locationId,
+        getSelectValues(document.getElementById('vendorTypes')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

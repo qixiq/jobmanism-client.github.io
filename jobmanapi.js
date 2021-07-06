@@ -813,6 +813,10 @@ function getLevelArmStudents(armId, onSuccess, onError){
 function getClassTeacherForLevelArm(armId, onSuccess, onError){
     sendGetRequest('/getClassTeacherForLevelArm?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId, onSuccess, onError);
 }
+
+function getFoodAndDrinkVendorLocation(sessionId, locationId, onSuccess, onError){
+    sendGetRequest('/getFoodAndDrinkVendorLocation?sessionId=' + getQueryParameter('sessionId') + '&locationId=' + locationId, onSuccess, onError);
+}
  
 function removeStudentFromLevelArm(sessionId, id, armId, onSuccess, onError){
     var data =
@@ -867,3 +871,59 @@ function     addStudentsToLevelArm(
         };
         sendJsonPostRequest(data, '/assignClassTeacherForLevelArm', onSuccess, onError);
     }
+
+    function getMenuItemsNotAvailableInLocation(businessId, locationId, onSuccess, onError){
+        sendGetRequest('/getMenuItemsNotAvailableInLocation?sessionId=' + getQueryParameter('sessionId') + '&locationId=' + locationId + '&businessId=' + businessId, onSuccess, onError);
+    }
+
+    function getVendorTypesNotAvailableInLocation(locationId, onSuccess, onError){
+        sendGetRequest('/getVendorTypesNotAvailableInLocation?sessionId=' + getQueryParameter('sessionId') + '&locationId=' + locationId  , onSuccess, onError);
+    }
+
+
+    function addMenuItemToLocation(
+        data,
+        onSuccess,
+        onError){
+            sendJsonPostRequest(data, '/addMenuItemsToLocation', onSuccess, onError);
+        }
+
+
+        function addFoodAndDrinkVendorTypesToLocation(
+            locationId,
+            itemIds,
+            onSuccess,
+            onError)
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'), 
+                    itemIds: itemIds,
+                    targetId : parseInt(locationId)
+                };
+
+                sendJsonPostRequest(data, '/addFoodAndDrinkVendorTypesAtLocation', onSuccess, onError);
+            }
+
+function removeMenuItemFromLocation(sessionId, id, locationId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(locationId)
+    };
+
+    sendJsonPostRequest(data, '/deleteMenuItemsFromLocation', onSuccess, onError);
+}
+    
+function removeVendorTypeFromLocation(sessionId, id, locationId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(locationId)
+    };
+
+    sendJsonPostRequest(data, '/deleteFoodAndDrinkVendorTypesFromLocation', onSuccess, onError);
+    
+}

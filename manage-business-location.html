@@ -1,20 +1,126 @@
 <html>
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
-    <title>Add Business Location</title>
+    <title>Manage Business Location</title>
     <script> 
         var sessionId = getQueryParameter('sessionId'); 
         var businessId = getQueryParameter('businessId'); 
         var privileges = getQueryParameter('privileges');
         var locationId = getQueryParameter('locationId');
-        var addressId = 0;
-        var phoneNumberId = 0;
+        var menuItemCount = 0;
+        var vendorTypesCount = 0;
+        var pageContent = '';
 
         function onGotBusiness(result){
             var business = result.business;
-            document.getElementById("banner").innerHTML = '<p><strong>Manage Location For ' + business.name + '</strong></p>';
+            document.getElementById("banner").innerHTML = '<p><strong>Manage Location For ' + business.name + '</strong></p><br/><br/>';
+            getFoodAndDrinkVendorLocation(sessionId, locationId, onGotFoodAndDrinkVendorLocation, onError);
         }
 
+        function onGotFoodAndDrinkVendorLocation(data)
+        { 
+            menuItemCount = 0;
+            vendorTypesCount = 0;
+            var address = data.location.address;
+            var phoneNumber = data.location.phoneNumber; 
+
+            //address
+            pageContent = '<h2><strong>ADDRESS</strong></h2>' ;
+            pageContent += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndEmpty(address.streetLine2)) {
+                pageContent += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            pageContent += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            pageContent += '<label>' + address.country + '</label><br/>';
+            pageContent += '<label>GPS: ' + address.gpsLocation + '</label><br/>'; 
+            pageContent += '<button  onclick="onUpdateAddress(\'' + address.addressId + '\')">Update Address ... </button><br/><br/><br/>'; 
+
+            //phone
+            pageContent += '<h2><strong>PHONE NUMBER</strong></h2>' ;  
+            pageContent += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
+            if (!isStringAndEmpty(phoneNumber.features)) {
+                pageContent += '<label>Features : ' + phoneNumber.features + '</label><br/>';
+            }
+            if (!isStringAndEmpty(phoneNumber.type)) {
+                pageContent += '<label>Type : ' + phoneNumber.type + '</label><br/>';
+            } 
+            pageContent += '<button  onclick="onUpdatePhoneNumber(\'' + phoneNumber.phoneNumberId + '\')">Update Phone Number ... </button><br/><br/><br/>'; 
+
+            //vendor types
+            pageContent += '<h2><strong>VENDOR TYPES</strong></h2>' ; 
+            data.location.vendorTypes.forEach(appendVendorType);
+            pageContent += '<br/><button  onclick="onAddVendorType()">Add Vendor Type ... </button><br/><br/><br/>'; 
+
+            //menu items
+            pageContent += '<h2><strong>MENU ITEMS</strong></h2>' ; 
+            data.location.menuItems.forEach(appendMenuItem);
+            pageContent += '<br/><button  onclick="onAddMenuItem()">Add Menu Item ... </button><br/><br/><br/>'; 
+
+            document.getElementById('details').innerHTML = pageContent;
+        }
+
+        function onUpdateAddress(id){
+
+        }
+
+        function onUpdatePhoneNumber(id){
+            
+        }
+
+        function onAddMenuItem(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-location-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId;
+        }
+
+        function onAddVendorType(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-location-vendor-types.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId;
+        }
+
+      
+
+
+        //menuItems
+        function editMenuItem(id) { 
+        }
+
+        function onRemoveMenuItem(id) {
+            removeMenuItemFromLocation(sessionId, id, locationId, init, onError);
+        }
+
+
+
+        function appendMenuItem(item) {
+            menuItemCount++; 
+            pageContent += '<p><strong>MENU ITEM ' + menuItemCount;
+            pageContent += '</strong ></p>';
+            pageContent += '<label>Name: ' + item.name + '</label><br/>';
+            pageContent += '<label>Price: ' + item.price + '</label><br/>';
+            pageContent += '<label>IsActive: ' + item.isActive + '</label><br/>';
+            pageContent += '<p>' + item.description + '</p><br/>';
+            pageContent += '<button  onclick="onRemoveMenuItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            pageContent += '<button  onclick = "editMenuItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;<br/><br/>';
+            
+        }
+
+        //vendor Types
+    
+
+        function onRemoveVendorType(id) {
+            removeVendorTypeFromLocation(sessionId, id, locationId, init, onError);
+        }
+
+
+
+        function appendVendorType(item) {
+            vendorTypesCount++;
+            pageContent += '<p><strong>VENDOR TYPE ' + vendorTypesCount;
+            pageContent += '</strong ></p>';
+            pageContent += '<label>Name: ' + item.name + '</label><br/>';
+            pageContent += '<p>' + item.description + '</p><br/>';
+            pageContent += '<button  onclick="onRemoveVendorType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;<br/><br/>'; 
+            
+        }
+
+        //
         function onSuccess(data) { 
             goBack();
         }
@@ -38,56 +144,6 @@
 <body>
     <button onclick="goBack()">Go Back</button><br/><br/>
     <div id="banner"></div>
-    <form id="theForm"> 
-        <label><strong>Address:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;County:&nbsp;</label><input id="addr-county" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
-        <label><strong>Phone:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
-        <button type="submit">Update</button><br />
-    </form>
-    <br /><br />
-    <div id="errorDiv"></div>
-    
-    <script>document.getElementById('theForm').onsubmit = function () {
-    var address =
-    {
-        streetLine1 : document.getElementById('street-1').value,
-        streetLine2 : document.getElementById('street-2').value,
-        streetNumber : document.getElementById('street-number').value,
-        city : document.getElementById('addr-city').value,
-        county : document.getElementById('addr-county').value,
-        state: document.getElementById('addr-state').value,
-        country : document.getElementById('addr-country').value,
-        gpsLocation : document.getElementById('addr-gps').value,
-        postalCode : document.getElementById('addr-post-code').value
-    };
-
-    var phoneNumber =
-            {
-                countryCode : document.getElementById('ctry-code').value,
-                numberText : document.getElementById('number').value,
-                features: document.getElementById('features').value,
-                type : document.getElementById('type').value 
-            };
-    addBusinessLocation(
-        businessId,
-        address,
-        phoneNumber,
-        onSuccess,
-        onError);
-            return false;
-        };</script>
-
+    <div id="details"></div>
 </body>
 </html>
