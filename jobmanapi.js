@@ -927,3 +927,10 @@ function removeVendorTypeFromLocation(sessionId, id, locationId, onSuccess, onEr
     sendJsonPostRequest(data, '/deleteFoodAndDrinkVendorTypesFromLocation', onSuccess, onError);
     
 }
+
+function searchForFoodAndDrinkVendorLocations( 
+    data,
+    onSuccess,
+    onError){
+        sendJsonPostRequest(data, '/searchForFoodAndDrinkVendorLocations', onSuccess, onError);
+    }

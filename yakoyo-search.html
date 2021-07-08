@@ -1,0 +1,195 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Search</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var privileges = getQueryParameter('privileges');
+        var searchResults = '';
+        var locationsCount = 0;
+        var menuItemCount = 0;
+        var currentLocationId = 0;
+        var locationsForMenu = {};
+        var businessesForLocations = {};
+
+        function onGotMenuItemCategories(data){
+            data.items.forEach(appendMenuItemCategory);
+            getFoodAndDrinkVendorTypes(onGotVendorTypes, onError);
+        }
+
+        function onGotVendorTypes(data){
+            data.items.forEach(appendVendorType); 
+        }
+
+        function onGotSearchResults(data)
+        {
+            locationsForMenu = {};
+            businessesForLocations = {};
+            locationsCount = 0;
+            searchResults = '<p><strong>SEARCH RESULTS </strong ></p>';
+
+            if(data.hits.length == 0)
+            {
+               searchResults += '<p>No Matching Menu Items Found For your Search</p>';
+            }
+            else
+            {
+                data.hits.forEach(appendLocationAndMenuItemsItem);
+            }
+            
+            
+            document.getElementById('resultDiv').innerHTML = searchResults;
+
+        }
+
+        function appendLocationAndMenuItemsItem(item){
+            locationsCount++; 
+            var location = item.location;
+            currentLocationId = location.locationId;
+            var address = location.address;
+            var phoneNumber = location.phoneNumber;
+            searchResults += '<h2><strong>LOCATION ' + locationsCount;
+            searchResults += '</strong ></h2>'; 
+
+            //address
+            searchResults += '<h4><strong>ADDRESS</strong></h4>' ;
+            searchResults += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndEmpty(address.streetLine2)) {
+                searchResults += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            searchResults += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            searchResults += '<label>' + address.country + '</label><br/>';
+            searchResults += '<label>GPS: ' + address.gpsLocation + '</label><br/>'; 
+
+            //phone
+            searchResults += '<h4><strong>PHONE NUMBER</strong></h4>' ;  
+            searchResults += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
+            if (!isStringAndEmpty(phoneNumber.features)) {
+                searchResults += '<label>Features : ' + phoneNumber.features + '</label><br/>';
+            }
+            if (!isStringAndEmpty(phoneNumber.type)) {
+                searchResults += '<label>Type : ' + phoneNumber.type + '</label><br/><br/>';
+            } 
+            searchResults += '<button  onclick="goToLocation(\'' + location.locationId + '\')">View Location ... </button>&nbsp;&nbsp;<br/>';
+            menuItemCount = 0;
+            item.fares.forEach(appendLocationMenuItemItem);
+        }
+  
+
+        function goToLocation(id){
+            window.open(getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessesForLocations[id] + '&locationId=' + id+ '&privileges=' + privileges, '_blank');
+
+        }
+
+        function goToLocationMenuItem(id){
+            var locationId = locationsForMenu[id];
+            var businessId = businessesForLocations[locationId];
+            window.open(getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&menuItemId=' + id+ '&privileges=' + privileges, '_blank');
+        }
+
+        function appendLocationMenuItemItem(item){
+            menuItemCount++; 
+            locationsForMenu[item.id] = currentLocationId;
+            businessesForLocations[currentLocationId] = item.businessId;
+            searchResults += '<p><strong>MENU ITEM ' + menuItemCount;
+            searchResults += '</strong ></p>';
+            searchResults += '<label>Name: ' + item.name + '</label><br/>';
+            searchResults += '<label>Price: ' + item.price + '</label><br/>';
+            searchResults += '<label>IsActive: ' + item.isActive + '</label><br/>';
+            searchResults += '<p>' + item.description + '</p><br/>'; 
+            //searchResults += '<button  onclick="goToLocationMenuItem(\'' + item.id + '\')">View Menu Item ...</button>&nbsp;&nbsp;<br/>'; 
+        }
+
+        function appendMenuItemCategory(item){
+            select = document.getElementById('menuItems'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+
+        function appendVendorType(item){
+            select = document.getElementById('vendorTypes'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+ 
+ 
+        function onError(details) {
+            document.getElementById('resultDiv').innerHTML = "Error Searching For Locations for Menu Items";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges ;
+        }
+
+ 
+        function init() {
+            getMenuItemCategories(onGotMenuItemCategories, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <form id="theForm"> 
+        
+        <input id="useMenuItemCategories" type="checkbox">Filter By Selected Menu Item Categories</input><br/> 
+        <select name="menuItems" id="menuItems" multiple> 
+        </select><br/><br/>
+
+        <input id="useVendorTypes" type="checkbox">Filter By Selected VendorTypes</input><br/> 
+        <select name="vendorTypes" id="vendorTypes" multiple> 
+        </select><br/><br/>
+
+        <input id="useProximity" type="checkbox">Filter By Proximity</input><br/> 
+        <label>GPS Co-ordinates For Your  Current Location  :&nbsp;&nbsp;</label><input id="startGps" type="text"></input><br/> 
+        <label>Maximum distance in Kilometers  :&nbsp;&nbsp;</label><input id="maxDistance" type="number"></input><br/><br/>
+        <button type="submit">Search</button><br />
+    </form>
+    <br /><br />
+    <div id="resultDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        var data = {
+            sessionId : sessionId,
+            useVendorTypes : document.getElementById('useVendorTypes').checked,
+            useProximity : document.getElementById('useProximity').checked,
+            useMenuItemCategories : document.getElementById('useMenuItemCategories').checked,
+            menuItemCategories : getSelectValues(document.getElementById('menuItems')),
+            vendorTypes : getSelectValues(document.getElementById('vendorTypes')),
+            startingLocationGPS : document.getElementById('startGps').value
+        };
+
+        if(data.useProximity){
+            var md = parseFloat(document.getElementById('maxDistance').value);
+            if( md > 0) {data.maxDistanceKm = md}else { data.maxDistanceKm = 1000000;} 
+        }
+    searchForFoodAndDrinkVendorLocations( 
+        data,
+        onGotSearchResults,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>
