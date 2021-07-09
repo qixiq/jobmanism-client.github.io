@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>TeleSchools - Add New School Group</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var schoolId = getQueryParameter('schoolId');
+
+        function onError(details) {
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-groups.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p><strong>ADD NEW SCHOOL GROUP</strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var t = document.getElementById('type');
+            var data = {
+                constraints : 'any',
+                schoolId : parseInt(schoolId),
+                sessionId: sessionId,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value
+            };  
+            addSchoolGroup(
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

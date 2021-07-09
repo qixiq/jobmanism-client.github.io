@@ -934,3 +934,76 @@ function searchForFoodAndDrinkVendorLocations(
     onError){
         sendJsonPostRequest(data, '/searchForFoodAndDrinkVendorLocations', onSuccess, onError);
     }
+
+function addSchoolGroup(
+        data,
+        onSuccess,
+        onError)
+        {
+            sendJsonPostRequest(data, '/addSchoolGroup', onSuccess, onError);
+        }
+
+function getSchoolGroups(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolGroups?sessionId=' + getQueryParameter('sessionId') + '&filter=schoolId-' + schoolId  , onSuccess, onError);
+
+}
+
+function getUsersInSchoolGroups(schoolId, onSuccess, onError){
+    sendGetRequest('/getUsersInSchoolGroup?sessionId=' + getQueryParameter('sessionId') + '&filter=schoolId-' + schoolId  , onSuccess, onError);
+
+}
+
+function removeSchoolGroup(sessionId, id, schoolId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(schoolId)
+    };
+
+    sendJsonPostRequest(data, '/deleteSchoolGroups', onSuccess, onError);
+}
+
+function getSchoolGroup(groupId, onSuccess, onError){
+    sendGetRequest('/getSchoolGroup?sessionId=' + getQueryParameter('sessionId') + '&groupId=' + groupId  , onSuccess, onError);
+}
+
+function deleteSchoolGroupMember(groupId , memberId,
+        onSuccess,
+        onError){
+            var data =
+            {
+                sessionId: getQueryParameter('sessionId'), 
+                itemIds: [parseInt(memberId)],
+                targetId : parseInt(groupId)
+            };
+        
+            sendJsonPostRequest(data, '/deleteUsersFromSchoolGroup', onSuccess, onError);
+        }
+
+function addUsersToSchoolGroup(
+            groupId,
+            memberIds,
+            onSuccess,
+            onError)
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'), 
+                    itemIds: memberIds,
+                    targetId : parseInt(groupId)
+                };
+
+                sendJsonPostRequest(data, '/addUsersToSchoolGroup', onSuccess, onError);
+            }
+
+function getSchoolUsersNotInGroup(schoolId, groupId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemId: parseInt(groupId),
+        targetId : parseInt(schoolId)
+    };
+
+    sendJsonPostRequest(data, '/getSchoolUsersNotInGroup', onSuccess, onError);
+}

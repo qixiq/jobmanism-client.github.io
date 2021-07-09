@@ -1,0 +1,78 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools School Groups Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var itemsCount = 0;
+
+        function onGotSchool(data){
+            var school = data.school; 
+            var banner = document.getElementById('banner');
+            banner.innerHTML = '<strong>' + school.name + ' Groups </strong>';
+
+            getSchoolGroups(schoolId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('itemsList').innerHTML = '';
+            data.groups.forEach(appendGroup); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="onAddSchoolGroup()">Add New School Group ...</button><br/><br/>'
+        }
+
+
+ 
+
+        function appendGroup(item)
+        {  
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>GROUP ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveGroup(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editGroup(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;<br/><br/>';
+        }
+ 
+        function editGroup(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-group.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&groupId=' + id;
+        }
+
+        function onRemoveGroup(id) {
+            removeSchoolGroup(sessionId, id, schoolId, init, onError);
+        }
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function onAddSchoolGroup() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-group.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function goBackToSchoolPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+
+  
+    <button onclick="goBackToSchoolPage()">Go back To School Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

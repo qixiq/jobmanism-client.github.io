@@ -30,6 +30,10 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-school-students.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
         }
 
+        function manageSchoolGroups(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-groups.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
         function onSuccess(data) {
             var school = data.school;
             var address = school.address;
@@ -50,7 +54,7 @@
                 pageContent += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
             }
             
-            pageContent += '<button  onclick="manageAddresses()">Manage Addresses</button><br/><br/><br/>'; 
+            pageContent += '<button  onclick="manageAddresses()">Manage Addresses ... </button><br/><br/><br/>'; 
 
             if(school.phoneNumber.phoneNumberId > 0)
             {
@@ -65,13 +69,15 @@
                 } 
             }
 
-            pageContent += '<button  onclick="managePhoneNumbers()">Manage PhoneNumbers</button><br/><br/><br/>'; 
+            pageContent += '<button  onclick="managePhoneNumbers()">Manage PhoneNumbers ... </button><br/><br/><br/>'; 
 
-            pageContent += '<button  onclick="manageLevels()">Manage Levels</button><br/><br/><br/>'; 
+            pageContent += '<button  onclick="manageLevels()">Manage Levels ... </button><br/><br/><br/>'; 
 
-            pageContent += '<button  onclick="manageStaff()">Manage Staff</button><br/><br/><br/>'; 
+            pageContent += '<button  onclick="manageStaff()">Manage Staff ... </button><br/><br/><br/>'; 
 
-            pageContent += '<button  onclick="manageStudents()">Manage Students</button><br/><br/><br/>'; 
+            pageContent += '<button  onclick="manageStudents()">Manage Students ... </button><br/><br/><br/>'; 
+
+            pageContent += '<button  onclick="manageSchoolGroups()">Manage School Groups ... </button><br/><br/><br/>';
 
             document.getElementById('contentDiv').innerHTML = pageContent;
         }

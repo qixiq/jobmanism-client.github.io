@@ -1,0 +1,76 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools School Group Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var groupId = getQueryParameter('groupId'); 
+        var levelCount = 0;
+        var school ;
+
+        function onGotSchool(data){
+             school = data.school;   
+            getSchoolGroup(groupId, onSuccess, onError);
+        }
+
+        function onSuccess(data) {
+            document.getElementById('members').innerHTML = '<h4><strong> Manage Group "'+ data.group.name + '" for ' + school.name +'</strong></h4>';
+            data.group.users.forEach(appendSchoolGroupMember); 
+            document.getElementById('members').innerHTML += '<button onclick="onAddGroupMember()">Add New Group Members</button><br/><br/>';
+        }
+
+        function removeSchoolGroupMember(id) {
+            deleteSchoolGroupMember(groupId, id,
+                init,
+                onError);
+        }
+
+   
+ 
+ 
+
+        function appendSchoolGroupMember(member)
+        { 
+            var listDiv = document.getElementById('members');  
+            listDiv.innerHTML += '<p>' + member.name  + ' </p>';
+    
+            
+            listDiv.innerHTML += '<button  onclick="removeSchoolGroupMember(\'' + member.userId + '\')">Remove</button><br/><br/>' ; 
+           
+           
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function onAddGroupMember() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-group-members.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&groupId=' + groupId;
+        }
+
+        function goBackToSchoolGroupPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-groups.html?sessionId=' + sessionId + '&schoolId=' + schoolId ;
+        }
+
+        function init() {
+            getSchool(schoolId, onGotSchool, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    
+  
+    <button onclick="goBackToSchoolGroupPage()">Go back To School Groups Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="members">
+
+    </div> 
+
+</body>
+</html>
