@@ -35,6 +35,22 @@
         }
 
    
+        function onGotSubjectTeachers(data){
+
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += "<h2><strong>SUBJECT TEACHERS</strong></h2>"; 
+            if(data.subjects.length == 0)
+            {
+                listDiv.innerHTML += '<p><strong>Could Not Find Any SubjectTeachers</strong ></p>';
+            }
+            else
+            {
+                data.subjects.forEach(appendSubjectTeacher); 
+            }
+             
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewTeacherSubject()">Add New Teacher Subject ... </button><br /> '; 
+        }
 
 
         function onGotClassTeacher(data){
@@ -49,18 +65,28 @@
                 else{
                     classTeacherId = teacher.userId;
                     listDiv.innerHTML += '<label>'+ teacher.name + '</label><br/>'; 
-                    listDiv.innerHTML += '<button  onclick="onRemoveClassTeacher()">Remove</button>&nbsp;&nbsp;';        
+                    listDiv.innerHTML += '<button  onclick="onRemoveClassTeacher()">Remove</button>&nbsp;&nbsp;';   
+                    listDiv.innerHTML += '<button  onclick="onManageDevices(\'' + teacher.userId + '\')">Manage Devices ...</button><br/><br/>';     
                     listDiv.innerHTML += '<br /> <br /> <button  onclick="onUpdateClassTeacher(\'' + teacher.userId + '\')">Update Class Teacher ...</button>&nbsp;&nbsp;'; 
                 }
             
              
-    
+            getTeachersAssignedSubjectsForLevelArms(armId, onGotSubjectTeachers, onError);
 
         }
 
 
         function onError(details) {
 
+        }
+
+        function onRemoveTeacherSubject(userId, subjectId){ 
+            removeTeacherSubject(userId, armId, subjectId, init, onError);
+        }
+
+
+        function onEditTeacherSubject(userId, subjectId){ 
+            document.location.href = getPathPrefix(document.location.href) + '/change-teacher-subject.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&teacherId=' + userId + '&subjectId=' + subjectId;
         }
 
         function onRemoveClassTeacher(){
@@ -75,11 +101,28 @@
             document.location.href = getPathPrefix(document.location.href) + '/update-arm-teacher.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&teacherId=' + id;
         }
 
+        function onManageStudentSubjects(id){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-student-subjects.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&studentId=' + id;
+        }
+
+        function onManageDevices(id){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-devices.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&userId=' + id;
+        }
+
         function onRemoveStudent(id) {
             removeStudentFromLevelArm(sessionId, id, armId, init, onError);
         }
 
-
+        function appendSubjectTeacher(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SUBJECT TEACHER ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>'+ item.subjectName + ' , ' +  item.teacherName + '</label><br/>'; 
+            listDiv.innerHTML += '<button  onclick="onRemoveTeacherSubject(\'' + item.userId + '\', \'' + item.subjectId + '\')">Remove </button>&nbsp;&nbsp;';
+            //listDiv.innerHTML += '<button  onclick="onEditTeacherSubject(\'' + item.userId + '\', \'' + item.subjectId + '\')">Change Teacher ...  </button><br/><br/>';
+            
+        }
 
         function appendStudent(item) {
             itemsCount++;
@@ -87,12 +130,18 @@
             listDiv.innerHTML += '<p><strong>STUDENT ' + itemsCount;
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>'+ item.name + '</label><br/>'; 
-            listDiv.innerHTML += '<button  onclick="onRemoveStudent(\'' + item.userId + '\')">Remove</button>&nbsp;&nbsp;'; 
+            listDiv.innerHTML += '<button  onclick="onRemoveStudent(\'' + item.userId + '\')">Remove</button>&nbsp;&nbsp'; 
+            listDiv.innerHTML += '<button  onclick="onManageStudentSubjects(\'' + item.userId + '\')">Manage Subjects ...</button>&nbsp;&nbsp'; 
+            listDiv.innerHTML += '<button  onclick="onManageDevices(\'' + item.userId + '\')">Manage Devices ...</button><br/><br/>';
             
         }
 
         function addNewStudents() {
             document.location.href = getPathPrefix(document.location.href) + '/add-arm-students.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function addNewTeacherSubject() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-teacher-subjects.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
         }
 
         //

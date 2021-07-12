@@ -1,0 +1,97 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add Menu Item</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId');;
+        var levelId = getQueryParameter('levelId');
+        var armId = getQueryParameter('armId');
+        var userId = getQueryParameter('userId');
+ 
+
+        function onError(details) {
+
+        }
+
+
+        function onGotDetails(data) {
+            itemsCount = 0;
+            var details = data.details; 
+            
+            if(details.unassignedDeviceTypes.length == 0)
+            {
+                onSuccess();
+            }
+
+            details.unassignedDeviceTypes.forEach(appendDevice);  
+            document.getElementById('type').selectedIndex = 0;
+        }
+
+        function appendDevice(deviceType){ 
+            var el = document.createElement("option");
+            el.textContent = deviceType.name;
+            el.value = deviceType.id;
+            document.getElementById('type').appendChild(el); 
+
+        }
+         
+
+        function onSuccess(data) {
+            if(data.isError){
+                document.getElementById('errorDiv').innerHTML = 'Error Adding Device';
+                return;
+            }
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-devices.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&userId=' + userId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function init() { 
+            getDeviceDetailsForSingleUser(schoolId, userId, onGotDetails, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p ><strong>ADD NEW DEVICE</strong></p><br />   
+        <label>&nbsp;&nbsp;&nbsp;Type:&nbsp;</label><select id="type"></select><br /><br />  
+        <label>&nbsp;&nbsp;&nbsp;Code:&nbsp;</label><input id="code" type="text" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br /> 
+    <div id="errorDiv"></div> 
+    <script>
+          function getSelectValue(select) { 
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            return parseInt(opt.value);
+            }
+        }
+        return 0;
+        }
+    
+    var form = document.getElementById('theForm');
+        form.onsubmit = function () { 
+            var data = {
+                sessionId: sessionId,
+                devices :[{userId: parseInt(userId), schoolId : parseInt(schoolId),  code :document.getElementById('code').value, deviceTypeId : getSelectValue(document.getElementById('type'))}]
+            };  
+            assignNewDevicesToUsers( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

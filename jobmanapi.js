@@ -1007,3 +1007,48 @@ function getSchoolUsersNotInGroup(schoolId, groupId, onSuccess, onError){
 
     sendJsonPostRequest(data, '/getSchoolUsersNotInGroup', onSuccess, onError);
 }
+
+function  getTeachersAssignedSubjectsForLevelArms(armId, onSuccess, onError){
+    sendGetRequest('/getTeacherAssignedSubjectsForLevelArms?sessionId=' + getQueryParameter('sessionId') + '&selector=armId-' + armId  , onSuccess, onError);
+}
+
+function addTeacherSubjects(
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/assignTeacherSubjectsForLevelArms', onSuccess, onError);
+        
+    }
+
+
+function removeTeacherSubject(userId, armId, subjectId, onSuccess, onError){
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        subjects: [{armId : parseInt(armId), userId : parseInt(userId), subjectId : parseInt(subjectId)}]
+    };
+
+    sendJsonPostRequest(data, '/deleteTeacherAssignedSubjectsForLevelArms', onSuccess, onError);
+}
+
+function getDeviceDetailsForSingleUser(schoolId, userId, onSuccess, onError){
+    sendGetRequest('/getDeviceDetailsForSingleUser?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId + '&personId=' + userId , onSuccess, onError);
+}
+
+function assignNewDevicesToUsers( 
+    data,
+    onSuccess,
+    onError){
+        sendJsonPostRequest(data, '/assignNewDevicesToUsers ', onSuccess, onError);
+    }
+
+function removeUserDevice(sessionId, schoolId,userId, deviceTypeId, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        devices: [{schoolId : parseInt(schoolId), userId : parseInt(userId), deviceTypeId : parseInt(deviceTypeId)}]
+    };
+
+    sendJsonPostRequest(data, '/deleteUserAssignedDevices', onSuccess, onError);
+}

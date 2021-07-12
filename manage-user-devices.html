@@ -1,0 +1,79 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools UserDevices Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var levelId = getQueryParameter('levelId');
+        var armId = getQueryParameter('armId');
+        var userId = getQueryParameter('userId');
+        var itemsCount = 0;
+ 
+
+        function onSuccess(data) {
+            itemsCount = 0;
+            var details = data.details;
+            document.getElementById('itemsList').innerHTML = '<h2><strong>Devices for '+ details.userName + ' in ' + details.schoolName+ '</strong></h2>';
+            details.assignedDevices.forEach(appendDevice);  
+            if(details.unassignedDeviceTypes.length > 0)
+            {
+                document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="onAddDevice()">Add New Device ...</button><br/><br/>'
+            }
+        }
+
+
+ 
+
+        function appendDevice(item)
+        {  
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>DEVICE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Type: ' + item.deviceTypeName + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.code + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveDevice(\'' + item.deviceTypeId + '\')">Remove</button>&nbsp;&nbsp;';
+            //listDiv.innerHTML += '<button  onclick = "editGroup(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;<br/><br/>';
+        }
+ 
+        function editDevice(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-group.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&groupId=' + id;
+        }
+
+        function onRemoveDevice(typeId) {
+            removeUserDevice(sessionId, schoolId,userId, typeId, init, onError);
+        }
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function onAddDevice() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-school-device.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&userId=' + userId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function goBackToLevelArmPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function init() {
+            getDeviceDetailsForSingleUser(schoolId, userId, onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+
+  
+    <button onclick="goBackToLevelArmPage()">Go back To Level Arm Page</button><br/><br/>
+    <p id="banner"></p>
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

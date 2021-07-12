@@ -1,0 +1,116 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Telechools Student Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+        var levelId = getQueryParameter('levelId'); 
+        var armId = getQueryParameter('armId');  
+
+        function onGotStaff(data){
+            data.staff.forEach(appendTeacher);
+        }
+
+        function  onGotSubjects(data){
+            data.items.forEach(appendSubject);
+            getSchoolStaff(schoolId, onGotStaff, onError);
+        }
+
+        function appendTeacher(staff){
+
+            if(staff.isTeacher){
+                select = document.getElementById('teachers'); 
+                var opt = document.createElement('option');
+                opt.value = staff.userId;
+                opt.innerHTML = staff.name;
+                select.appendChild(opt);
+            }
+
+        }
+
+        function appendSubject(item){
+            select = document.getElementById('subjects'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Group Member";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function init() {
+            getSubjects(onGotSubjects, onError);
+        }
+
+        window.addEventListener('load', init);
+ 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <form id="theForm"> 
+        
+        <label for="teachers">Choose Teachers:</label><br/><br/>
+
+        <select name="teachers" id="teachers" multiple> 
+        </select><br/><br/>
+        <label for="subjects">Choose Subjects:</label><br/><br/>
+
+        <select name="subjects" id="subjects" multiple> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        var teacherIds = getSelectValues(document.getElementById('teachers'));
+        var subjectIds = getSelectValues(document.getElementById('subjects'));
+        var ts = [];
+        var arm = parseInt(armId);
+        
+        for (var i=0, iLen=teacherIds.length; i<iLen; i++) { 
+            for (var j=0, jLen=subjectIds.length; j<jLen; j++) { 
+                ts.push({armId : arm, userId : teacherIds[i], subjectId: subjectIds[j]})
+            }
+        }
+        
+        var data = {
+            sessionId : sessionId,
+            subjects : ts
+        }
+    addTeacherSubjects(
+        data,
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>
