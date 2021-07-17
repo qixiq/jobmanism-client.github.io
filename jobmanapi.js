@@ -1074,3 +1074,23 @@ function addDigitalAssetType(
     onError){
         sendFormDataPostRequest(data, '/addDigitalAssetType', onSuccess, onError);
     }
+
+
+function  addDigitalAssetToBusiness( 
+        data,
+        onSuccess,
+        onError)
+{
+    sendJsonPostRequest(data, '/addDigitalAssetTypeToBusiness', onSuccess, onError);
+}
+
+function removeBusinessDigitalAsset(sessionId, businessId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(businessId)
+    };
+
+    sendJsonPostRequest(data, '/deleteDigitalAssetTypesFromBusiness', onSuccess, onError);
+}

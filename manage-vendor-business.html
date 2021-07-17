@@ -20,8 +20,12 @@
             itemsCount = 0; 
             businessName = data.business.name ;
             document.getElementById('itemsList').innerHTML = '<p><strong>' + businessName + ' LOCATIONS </strong></p><br/>'; 
-            data.business.locations.forEach(appendLocation);  
+            data.business.locations.forEach(appendLocation); 
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addBusinessLocation()">Add New Location ...</button><br/><br/>';
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' DIGITAL ASSETS </strong></p><br/>'; 
+            data.business.digitalAssets.forEach(appendDigitalAsset); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAsset()">Add New Digital Asset ...</button><br/><br/>';
             getMenuItems(businessId, onGotBusinessMenuItems, onError);
         }
 
@@ -72,7 +76,24 @@
             listDiv.innerHTML += '<button  onclick = "editBusinessLocation(\'' + item.locationId + '\')" >Manage ... </button ><br/><br/>';
         }
 
+        function editDigitalAsset(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-digital-asset.html?sessionId=' + sessionId + '&businessId=' + businessId + '&assetId=' + id+ '&privileges=' + privileges;
+        }
+
+        function onRemoveDigitalAsset(id) {
+            removeBusinessDigitalAsset(sessionId, businessId, id, init, onError);
+        }
+
    
+        function appendDigitalAsset(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>DIGITAL ASSET ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>' + item.type.name + ' : <a href="' + item.specification + '">'+ item.specification + '</a><br/><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveDigitalAsset(\'' + item.assetId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editDigitalAsset(\'' + item.assetId + '\')" >Manage ... </button ><br/><br/>';
+        }
  
 
 
@@ -87,6 +108,10 @@
 
         function addBusinessLocation() {
             document.location.href = getPathPrefix(document.location.href) + '/add-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
+        }
+
+        function addDigitalAsset() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-digital-asset.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
         }
 
         function addMenuItem() {

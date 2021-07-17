@@ -1,0 +1,78 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add Menu Item</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = getQueryParameter('privileges');
+        var businessId = getQueryParameter('businessId'); 
+ 
+
+        function onError(details) {
+
+        }
+
+        function onGotDigitalAssetTypes(data){
+            if(data.assetTypes.length == 0)
+            {
+                onSuccess();
+            }
+            data.assetTypes.forEach(appendDigitalAssetType); 
+            document.getElementById('assetType').selectedIndex = 0;
+        }
+
+        function appendDigitalAssetType(category){ 
+            var el = document.createElement("option");
+            el.textContent = category.name;
+            el.value = category.digitalAssetTypeId;
+            document.getElementById('assetType').appendChild(el); 
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId;
+        }
+
+        function init() { 
+            getDigitalAssetTypes(onGotDigitalAssetTypes, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p ><strong>ADD NEW DIGITAL ASSET</strong></p><br />  
+        <label>&nbsp;&nbsp;&nbsp;Digital Asset Type:&nbsp;</label><select id="assetType"></select><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Specification:&nbsp;</label><input id="specification"></input><br /><br /> 
+        
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () { 
+            var data = {
+                sessionId: sessionId,
+                asset : {
+                    digitalAssetTypeId : parseInt(document.getElementById('assetType').value),
+                    businessId : parseInt(businessId),
+                    specification : document.getElementById('specification').value,
+                } 
+            };  
+            addDigitalAssetToBusiness( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>
