@@ -49,11 +49,16 @@
             getDeviceDetailsForSingleUser(schoolId, userId, onGotDetails, onError);
         }
 
+        function goBackToUserDevicesPage(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-devices.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&userId=' + userId;
+        }
+
         window.addEventListener('load', init);</script>
           
     </script>
 </head>
 <body> 
+    <button onclick="goBackToUserDevicesPage()">Go back User Devices Page</button><br/><br/>
     <form id="theForm">
         <p ><strong>ADD NEW DEVICE</strong></p><br />   
         <label>&nbsp;&nbsp;&nbsp;Type:&nbsp;</label><select id="type"></select><br /><br />  

@@ -1,0 +1,62 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add New Digital Asset Type</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = getQueryParameter('privileges');
+        var uploadFiles = [];
+
+        function onError(details) {
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+
+        function init() {
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW DIGITAL ASSET TYPE</strong>';
+            document.getElementById('picture-file').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p id="heading"></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+
+<script>
+    var form = document.getElementById('theForm');
+    form.onsubmit = function ()
+    {  
+            var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resourceFile', uploadFiles[0]);
+
+            }
+            
+            data.append('sessionId', sessionId);
+            data.append('name', document.getElementById('name').value);
+            data.append('description', document.getElementById('description').value);
+            addDigitalAssetType( 
+                data,
+                onSuccess,
+                onError); 
+        
+        return false;
+    };</script>
+
+</body>
+</html>

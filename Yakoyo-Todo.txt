@@ -57,4 +57,30 @@ GetFoodAndDrinkVendorTypesAtLocation
 
 UpdateBusinessLocation
 
++
+
+AddDigitalAssetType
+AddDigitalAssetTypeToBusiness
+DeleteDigitalAssetTypes
+DeleteDigitalAssetTypesFromBusiness
+GetDigitalAssetType
+GetDigitalAssetTypes
+GetDigitalAssetTypesForBusiness
+UpdateDigitalAssetType
+UpdateDigitalAssetTypeForBusiness
+GetDigitalAssetTypeForBusiness
+
++
+
+AddAnnotationToMenuItem
+DeleteAnnotationsFromMenuItem
+GetMenuItemAnnotations
+UpdateMenuItemAnnotation
+
++
+
+UpdateMenuItemAnnotationSequences
+GetMenuItemAnnotation
+
+
 

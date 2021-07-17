@@ -86,7 +86,7 @@ CREATE TABLE LocationMenuItems
 (
    MenuItemId BIGINT NOT NULL,
    LocationId BIGINT NOT NULL,
-    Price DECIMAL (12,2) NOT NULL,
+   Price DECIMAL (12,2) NOT NULL,
    Active INT NOT NULL,
   CONSTRAINT FK_LocationMenuItems_MenuItemId FOREIGN KEY (MenuItemId)
   REFERENCES [dbo].[MenuItems] (MenuItemId)
@@ -100,4 +100,58 @@ CREATE TABLE LocationMenuItems
 
 CREATE UNIQUE INDEX uq_LocationMenuItems
   ON [dbo].[LocationMenuItems](MenuItemId, LocationId);
+
+CREATE TABLE DigitalAssetTypes
+(
+   DigitalAssetTypeId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+   Name VARCHAR(255) NOT NULL UNIQUE,
+   Description VARCHAR(1024) NOT NULL,
+   IconId BIGINT,
+  CONSTRAINT FK_DigitalAssetTypes_IconId FOREIGN KEY (IconId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+);
+
+CREATE TABLE BusinessDigitalAssets
+(
+  DigitalAssetId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  BusinessId BIGINT NOT NULL,
+  DigitalAssetTypeId BIGINT NOT NULL,
+  AssetSpec VARCHAR(1024) NOT NULL,
+  CONSTRAINT FK_BusinessDigitalAssets_BusinessId FOREIGN KEY (BusinessId)
+  REFERENCES [dbo].[Businesses] (BusinessId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_BusinessDigitalAssets_DigitalAssetTypeId FOREIGN KEY (DigitalAssetTypeId)
+  REFERENCES [dbo].[DigitalAssetTypes] (DigitalAssetTypeId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_BusinessDigitalAssets
+  ON [dbo].[BusinessDigitalAssets](BusinessId, DigitalAssetTypeId, AssetSpec);
+
+CREATE TABLE MenuItemAnnotations
+(
+  MenuItemAnnotationId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  MenuItemId BIGINT NOT NULL,
+  ResourceId BIGINT NOT NULL,
+  Sequence INT NOT NULL,
+  Comment VARCHAR(1024) NOT NULL,
+  CONSTRAINT FK_MenuItemAnnotations_MenuItemId FOREIGN KEY (MenuItemId)
+  REFERENCES [dbo].[MenuItems] (MenuItemId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_MenuItemAnnotations_ResourceId FOREIGN KEY (ResourceId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_MenuItemAnnotationsResources
+  ON [dbo].[MenuItemAnnotations](MenuItemId, ResourceId);
+
+  CREATE UNIQUE INDEX uq_MenuItemAnnotationsSequences
+  ON [dbo].[MenuItemAnnotations](MenuItemId, Sequence);
 

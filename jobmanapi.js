@@ -1052,3 +1052,25 @@ function removeUserDevice(sessionId, schoolId,userId, deviceTypeId, onSuccess, o
 
     sendJsonPostRequest(data, '/deleteUserAssignedDevices', onSuccess, onError);
 }
+
+
+function getDigitalAssetTypes(onSuccess, onError){
+    sendGetRequest('/getDigitalAssetTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+}
+
+function removeDigitalAssetType(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)]
+    };
+
+    sendJsonPostRequest(data, '/deleteDigitalAssetTypes', onSuccess, onError);
+}
+
+function addDigitalAssetType( 
+    data,
+    onSuccess,
+    onError){
+        sendFormDataPostRequest(data, '/addDigitalAssetType', onSuccess, onError);
+    }

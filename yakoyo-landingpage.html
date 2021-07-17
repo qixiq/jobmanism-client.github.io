@@ -9,12 +9,27 @@
         var userName = getQueryParameter('userName');
         var itemsCount = 0;
 
+        function onGotDigitalAssetTypes(data){ 
+            itemsCount = 0; 
+            document.getElementById('itemsList').innerHTML += "<p><strong>DIGITAL ASSET TYPES</strong></p><br/><br/>"; 
+            data.assetTypes.forEach(appendDigitalAssetType);   
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAssetType()">Add New Digital Asset Type ... </button><br /><br /> ';
+
+        }
+
+
         function onGotMenuItemCategories(data){
 
             itemsCount = 0; 
             document.getElementById('itemsList').innerHTML += "<p><strong>MENU ITEM CATEGORIES</strong></p><br/><br/>"; 
             data.items.forEach(appendMenuItemCategory);   
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewMenuItemCategory()">Add New Menu Item Category ... </button><br /><br /> ';
+
+            if((privileges & 1) != 0 || (privileges & 8) != 0)
+            {
+                //get digital Asset Types
+                getDigitalAssetTypes(onGotDigitalAssetTypes, onError); 
+            }
             
         }
 
@@ -77,6 +92,13 @@
             removeFoodAndDrinkVendorType(sessionId, id, init, onError);
         }
 
+        function editDigitalAssetType(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-digital-asset-type.html?sessionId=' + sessionId + '&typeId=' + id+ '&privileges=' + privileges;
+        }
+
+        function onRemoveDigitalAssetType(id) {
+            removeDigitalAssetType(sessionId, id, init, onError);
+        }
 
         function appendFoodAndDrinkVendorType(item){
             itemsCount++;
@@ -98,6 +120,22 @@
             listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
             listDiv.innerHTML += '<button  onclick="onRemoveMenuItemCategory(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
             listDiv.innerHTML += '<button  onclick = "editMenuItemCategory(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+        }
+
+        function appendDigitalAssetType(item){
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>DIGITAL ASSET TYPE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            if(item.iconResourceId > 0)
+            {
+                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.iconResourceId) +'"</img><br/>';
+            }
+            
+            listDiv.innerHTML += '<button  onclick="onRemoveDigitalAssetType(\'' + item.digitalAssetTypeId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editDigitalAssetType(\'' + item.digitalAssetTypeId + '\')" >Manage ... </button >&nbsp;&nbsp;';
         }
 
         function appendBusiness(item) {
@@ -126,6 +164,10 @@
 
         function addNewMenuItemCategory() {
             document.location.href = getPathPrefix(document.location.href) + '/add-business-object.html?sessionId=' + sessionId + '&objectType=MenuItemCategory&privileges=' + privileges;
+        }
+
+        function addDigitalAssetType() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-digital-asset-type.html?sessionId=' + sessionId + '&privileges=' + privileges;
         }
 
         function init() {
