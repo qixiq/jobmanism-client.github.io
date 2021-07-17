@@ -690,6 +690,9 @@ function addBusinessObject(
             sendJsonPostRequest(data, '/deleteBusinessLocations', onSuccess, onError);
         }
 
+    function getMenuItem(menuItemId, onSuccess, onError) {
+        sendGetRequest('/getMenuItem?sessionId=' + getQueryParameter('sessionId')+ '&menuItemId=' + menuItemId,  onSuccess, onError);
+    }
 
 function getMenuItemCategories(onSuccess, onError) {
     sendGetRequest('/getMenuItemCategories?sessionId=' + getQueryParameter('sessionId'),  onSuccess, onError);
@@ -1093,4 +1096,23 @@ function removeBusinessDigitalAsset(sessionId, businessId, id, onSuccess, onErro
     };
 
     sendJsonPostRequest(data, '/deleteDigitalAssetTypesFromBusiness', onSuccess, onError);
+}
+
+function removeMenuItemAnnotation(sessionId, menuItemId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(menuItemId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAnnotationsFromMenuItem', onSuccess, onError);
+}
+
+
+function addMenuItemAnnotation( 
+    data,
+    onSuccess,
+    onError){
+        sendFormDataPostRequest(data, '/addAnnotationToMenuItem', onSuccess, onError);
 }

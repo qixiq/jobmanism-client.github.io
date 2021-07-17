@@ -155,3 +155,26 @@ CREATE UNIQUE INDEX uq_MenuItemAnnotationsResources
   CREATE UNIQUE INDEX uq_MenuItemAnnotationsSequences
   ON [dbo].[MenuItemAnnotations](MenuItemId, Sequence);
 
+CREATE TABLE BusinessAnnotations
+(
+  BusinessAnnotationId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  BusinessId BIGINT NOT NULL,
+  ResourceId BIGINT NOT NULL,
+  Sequence INT NOT NULL,
+  Comment VARCHAR(1024) NOT NULL,
+  CONSTRAINT FK_BusinessAnnotations_BusinessId FOREIGN KEY (BusinessId)
+  REFERENCES [dbo].[Businesses] (BusinessId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_BusinessAnnotations_ResourceId FOREIGN KEY (ResourceId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_BusinessAnnotationsResources
+  ON [dbo].[BusinessAnnotations](BusinessId, ResourceId);
+
+  CREATE UNIQUE INDEX uq_BusinessAnnotationsSequences
+  ON [dbo].[BusinessAnnotations](BusinessId, Sequence);
+

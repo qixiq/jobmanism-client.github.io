@@ -1,13 +1,13 @@
 <html>
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
-    <title>Yakoyo - Add Menu Item</title>
+    <title>Yakoyo - Manage Menu Item</title>
     <script>
         var sessionId = getQueryParameter('sessionId'); 
         var privileges = getQueryParameter('privileges');
         var businessId = getQueryParameter('businessId'); 
         var menuItemId = getQueryParameter('menuItemId'); 
-        var selectedIndex = 0;
+        var itemsCount = 0;
  
 
         function onError(details) {
@@ -15,23 +15,13 @@
         }
 
         function onGotMenuItem(data){
-
-        }
-
-        function onGotMenuItemCategories(data){
-            if(data.items.length == 0){
-                onSuccess();
-            }
-            data.items.forEach(appendMenuItemCategory); 
+            var menuItem = data.menuItem;
+            document.getElementById('content').innerHTML = '<h4><strong> Menu Item: ' + menuItem.name + '</strong></h4>';
             
-            getMenuItem(menuItemId, onGotMenuItem, onError);
-        }
-
-        function appendMenuItemCategory(category){ 
-            var el = document.createElement("option");
-            el.textContent = category.name;
-            el.value = category.id;
-            document.getElementById('category').appendChild(el); 
+            itemsCount = 0;
+            document.getElementById('content').innerHTML += '<p><strong> MENU ITEM ANNOTATIONS </strong></p><br/>'; 
+            menuItem.annotations.forEach(appendAnnotation); 
+            document.getElementById('content').innerHTML += '<br/><br/><button onclick="addMenuItemAnnotation()">Add Menu Item Annotation ...</button><br/><br/>';
 
         }
          
@@ -40,8 +30,42 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId;
         }
 
+        function editMenuItemAnnotation(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId + '&annotationId=' + id+ '&privileges=' + privileges + '&menuItemId=' + menuItemId;
+        }
+
+        function onRemoveMenuItemAnnotation(id) {
+            removeMenuItemAnnotation(sessionId, menuItemId, id, init, onError);
+        }
+
+   
+        function appendAnnotation(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('content');
+            listDiv.innerHTML += '<p><strong>MENU ITEM ANNOTATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.comments + '</p><br/>';
+            if(item.resourceId > 0)
+            {
+                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.resourceId) +'"</img><br/>';
+            }
+            listDiv.innerHTML += '<button  onclick="onRemoveMenuItemAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editMenuItemAnnotation(\'' + item.annotationId + '\')" >Manage ... </button ><br/><br/>';
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function addMenuItemAnnotation() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-menu-item-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges + '&menuItemId=' + menuItemId;
+        }
+
         function init() { 
-            getMenuItemCategories(onGotMenuItemCategories, onError);
+            getMenuItem(menuItemId, onGotMenuItem, onError);
         }
 
         window.addEventListener('load', init);</script>
@@ -49,35 +73,7 @@
     </script>
 </head>
 <body> 
-    <form id="theForm">
-        <p ><strong>MANAGE MENU ITEM</strong></p><br /> 
-        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br /> 
-        <label>&nbsp;&nbsp;&nbsp;Category:&nbsp;</label><select id="category"></select><br /><br /> 
-        <button type="submit">Add</button><br />
-    </form>
-    <br /><br />
-    <div id="itemsList">
-
-    </div>
-    <script>var form = document.getElementById('theForm');
-        form.onsubmit = function () { 
-            var data = {
-                sessionId: sessionId,
-                menuItemCategoryId : parseInt(document.getElementById('category').value),
-                businessId : parseInt(businessId),
-                name: document.getElementById('name').value,
-                description: document.getElementById('description').value
-            };  
-            updateMenuItem( 
-                data,
-                onSuccess,
-                onError);
-            
-
-            return false;
-        };
-    </script>
-
+    <button onclick="onSuccess()">Go Back To Business Page</button><br/><br/>
+    <div id="content"></div>
 </body>
 </html>
