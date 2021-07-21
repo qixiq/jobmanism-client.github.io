@@ -1116,3 +1116,42 @@ function addMenuItemAnnotation(
     onError){
         sendFormDataPostRequest(data, '/addAnnotationToMenuItem', onSuccess, onError);
 }
+
+
+function removeBusinessAnnotation(sessionId, businessId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(businessId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAnnotationsFromBusiness', onSuccess, onError);
+}
+
+function removeLocationAnnotation(sessionId, locationId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(locationId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAnnotationsFromBusinessLocation', onSuccess, onError);
+}
+
+function addBusinessAnnotation( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendFormDataPostRequest(data, '/addAnnotationToBusiness', onSuccess, onError);
+    }
+
+function addBusinessLocationAnnotation( 
+        data,
+        onSuccess,
+        onError)
+        {
+            sendFormDataPostRequest(data, '/addAnnotationToBusinessLocation', onSuccess, onError);
+        }

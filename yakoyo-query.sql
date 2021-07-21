@@ -178,3 +178,43 @@ CREATE UNIQUE INDEX uq_BusinessAnnotationsResources
   CREATE UNIQUE INDEX uq_BusinessAnnotationsSequences
   ON [dbo].[BusinessAnnotations](BusinessId, Sequence);
 
+  CREATE TABLE BusinessLocationAnnotations
+(
+  LocationAnnotationId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  LocationId BIGINT NOT NULL,
+  ResourceId BIGINT NOT NULL,
+  Sequence INT NOT NULL,
+  Comment VARCHAR(1024) NOT NULL,
+  CONSTRAINT FK_BusinessLocationAnnotations_LocationId FOREIGN KEY (LocationId)
+  REFERENCES [dbo].[BusinessLocations] (LocationId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_BusinessLocationAnnotations_ResourceId FOREIGN KEY (ResourceId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_BusinessLocationAnnotationsResources
+  ON [dbo].[BusinessLocationAnnotations](LocationId, ResourceId);
+
+  CREATE UNIQUE INDEX uq_BusinessLocationAnnotationsSequences
+  ON [dbo].[BusinessLocationAnnotations](LocationId, Sequence);
+
+CREATE TABLE LocationOperatingHours
+(
+  LocationOperatingHoursId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  LocationId  BIGINT NOT NULL,
+  DayOfWeek INT NOT NULL,
+  OpenTime INT NOT NULL,
+  CloseTime INT NOT NULL ,
+  CONSTRAINT FK_LocationOperatingHours_LocationId FOREIGN KEY (LocationId)
+  REFERENCES [dbo].[BusinessLocations] (LocationId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+); 
+
+CREATE UNIQUE INDEX uq_LocationOperatingHours
+ON [dbo].[OperatingHours](LocationId, DayOfWeek);
+ 
+

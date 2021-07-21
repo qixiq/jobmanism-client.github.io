@@ -27,6 +27,11 @@
             data.business.digitalAssets.forEach(appendDigitalAsset); 
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAsset()">Add New Digital Asset ...</button><br/><br/>';
             getMenuItems(businessId, onGotBusinessMenuItems, onError);
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' ANNOTATIONS </strong></p><br/>'; 
+            data.business.annotations.forEach(appendAnnotation); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>';
+            getMenuItems(businessId, onGotBusinessMenuItems, onError);
         }
 
         function editBusinessLocation(id) {
@@ -95,6 +100,36 @@
             listDiv.innerHTML += '<button  onclick = "editDigitalAsset(\'' + item.assetId + '\')" >Manage ... </button ><br/><br/>';
         }
  
+
+        function editBusinessAnnotation(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId + '&annotationId=' + id+ '&privileges=' + privileges ;
+        }
+
+        function onRemoveBusinessAnnotation(id) {
+            removeBusinessAnnotation(sessionId, businessId, id, init, onError);
+        }
+
+   
+        function appendAnnotation(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>BUSINESS ANNOTATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.comments + '</p><br/>';
+            if(item.resourceId > 0)
+            {
+                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.resourceId) +'"</img><br/>';
+            }
+            listDiv.innerHTML += '<button  onclick="onRemoveBusinessAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editBusinessAnnotation(\'' + item.annotationId + '\')" >Manage ... </button ><br/><br/>';
+        }
+ 
+ 
+ 
+
+        function addAnnotation() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
+        }
 
 
         function onError(details) {

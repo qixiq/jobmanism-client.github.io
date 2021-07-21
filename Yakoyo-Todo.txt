@@ -76,11 +76,35 @@ AddAnnotationToMenuItem
 DeleteAnnotationsFromMenuItem
 GetMenuItemAnnotations
 UpdateMenuItemAnnotation
-
-+
-
 UpdateMenuItemAnnotationSequences
 GetMenuItemAnnotation
 
++
 
+AddAnnotationToBusiness
+DeleteAnnotationsFromBusiness
+GetBusinessAnnotations
+UpdateBusinessAnnotation
+UpdateBusinessAnnotationSequences
+GetBusinessAnnotation
+
++
+
+AddAnnotationToBusinessLocation
+DeleteAnnotationsFromBusinessLocation
+GetBusinessLocationAnnotations
+UpdateBusinessLocationAnnotation
+UpdateBusinessLocationAnnotationSequences
+GetBusinessLocationAnnotation
+
++
+
+AddBusinessHoursToLocation
+GetLocationBusinessHours
+UpdateBusinessHoursAtLocation
+DeleteLocationBusinessHours
+
++
+CopyLocationBusinessHours
+CopyLocationMenuItems
 

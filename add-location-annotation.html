@@ -6,7 +6,7 @@
         var sessionId = getQueryParameter('sessionId');
         var privileges = getQueryParameter('privileges');
         var businessId = getQueryParameter('businessId'); 
-        var menuItemId = getQueryParameter('menuItemId'); 
+        var locationId = getQueryParameter('locationId'); 
         var uploadFiles = [];
 
         function onError(details) {
@@ -15,11 +15,11 @@
          
 
         function onSuccess() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId + '&menuItemId=' + menuItemId;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId + '&locationId=' + locationId;
         }
 
         function init() {
-            document.getElementById('heading').innerHTML =  '<strong>ADD NEW ANNOTATION TO MENU ITEM</strong>';
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW ANNOTATION TO LOCATION</strong>';
             document.getElementById('picture-file').addEventListener('change', function () {
                 uploadFiles = this.files;
             }, false);
@@ -46,10 +46,10 @@
             if(uploadFiles.length > 0){
                 data.append('resource', uploadFiles[0]);
             }
-            data.append('targetId', parseInt(menuItemId));
+            data.append('targetId', parseInt(locationId));
             data.append('sessionId', sessionId); 
             data.append('comments', document.getElementById('comments').value);
-            addMenuItemAnnotation( 
+            addBusinessLocationAnnotation( 
                 data,
                 onSuccess,
                 onError); 
