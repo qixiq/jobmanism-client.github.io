@@ -1160,3 +1160,41 @@ function addLocationOperatingHours(data, onSuccess, onError){
 
     sendJsonPostRequest(data, '/addBusinessHoursToLocation', onSuccess, onError);
 }
+
+function getDayOfWeekName(index){
+    switch(index){
+        case 0:
+            return 'Sunday';
+        case 1:
+            return 'Monday';
+        case 2:
+            return 'Tuesday';
+        case 3:
+            return 'Wednesday';
+        case 4:
+            return 'Thursday';
+        case 5:
+            return 'Friday';
+        case 6:
+            return 'Saturday';
+
+    }
+
+    return '';
+}
+
+function getTwoDigitPaddedNumber(num){
+    var padded = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09'];
+    return num <= 9 ? padded[num] : num;
+}
+
+function removeLocationOperatingHours(sessionId, locationId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(locationId)
+    };
+
+    sendJsonPostRequest(data, '/deleteLocationBusinessHours', onSuccess, onError);
+}

@@ -167,7 +167,7 @@
         }
 
         function onRemoveLocationOperatingHour(id) {
-            removeLocationOperatingHour(sessionId, locationId, id, init, onError);
+            removeLocationOperatingHours(sessionId, locationId, id, init, onError);
         }
 
    
@@ -175,7 +175,7 @@
             itemsCount++; 
             pageContent += '<p><strong>OPERATING HOURS ' + itemsCount;
             pageContent  += '</strong ></p>'; 
-            
+            pageContent += '<p><strong>' + getDayOfWeekName(item.dayOfWeek) + ',&nbsp;</strong>' + getTwoDigitPaddedNumber(item.open.hour) + ':' + getTwoDigitPaddedNumber(item.open.minute) + '&nbsp;HRS - ' + getTwoDigitPaddedNumber(item.close.hour) + ':' + getTwoDigitPaddedNumber(item.close.minute) + '&nbsp;HRS<br/> <br/>';
             pageContent += '<button  onclick="onRemoveLocationOperatingHour(\'' + item.operatingHoursId + '\')">Remove</button>&nbsp;&nbsp;';
             pageContent += '<button  onclick = "editLocationOperatingHour(\'' + item.operatingHoursId + '\')" >Manage ... </button ><br/><br/>';
         }

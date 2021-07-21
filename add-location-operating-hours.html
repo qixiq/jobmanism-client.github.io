@@ -7,7 +7,7 @@
         var privileges = getQueryParameter('privileges');
         var businessId = getQueryParameter('businessId'); 
         var locationId = getQueryParameter('locationId');  
-        var padded = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09'];
+        
 
         function onError(details) {
 
@@ -29,13 +29,13 @@
 
         function populateHours(select){
             for(var i = 0; i < 24; ++i){
-                appendSelect(select, i,  i <= 9 ? padded[i] : i);
+                appendSelect(select, i,  getTwoDigitPaddedNumber(i));
             }
         }
 
         function populateMinutes(select){
             for(var i = 0; i < 60; ++i){
-                appendSelect(select, i, i <= 9 ? padded[i] : i);
+                appendSelect(select, i, getTwoDigitPaddedNumber(i));
             }
         } 
 
@@ -129,7 +129,7 @@
         var hours = [];
 
         for(var i = 0; i < days.length; ++i){
-            hours.push({ dayOfWeek : days[i], open : {hour : open/100 , minute : open % 100} , close : { hour : close/100 , minute : close%100 }});
+            hours.push({ dayOfWeek : days[i], open : {hour : parseInt((open/100).toString()) , minute : open % 100} , close : { hour : parseInt((close/100).toString()) , minute : close%100 }});
 
         }
         
