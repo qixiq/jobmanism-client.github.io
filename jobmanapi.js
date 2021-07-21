@@ -1155,3 +1155,8 @@ function addBusinessLocationAnnotation(
         {
             sendFormDataPostRequest(data, '/addAnnotationToBusinessLocation', onSuccess, onError);
         }
+
+function addLocationOperatingHours(data, onSuccess, onError){
+
+    sendJsonPostRequest(data, '/addBusinessHoursToLocation', onSuccess, onError);
+}

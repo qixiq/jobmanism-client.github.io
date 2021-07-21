@@ -6,23 +6,51 @@
         var sessionId = getQueryParameter('sessionId');
         var privileges = getQueryParameter('privileges');
         var businessId = getQueryParameter('businessId'); 
-        var menuItemId = getQueryParameter('menuItemId'); 
-        var uploadFiles = [];
+        var locationId = getQueryParameter('locationId');  
+        var padded = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09'];
 
         function onError(details) {
 
+            document.getElementById('errorDiv').innerHTML = details;
+        }
+
+        function appendSelect(selectName, value, text){
+            select = document.getElementById(selectName); 
+            var opt = document.createElement('option');
+            opt.value = value;
+            opt.innerHTML = text;
+            select.appendChild(opt);
         }
          
 
         function onSuccess() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId + '&menuItemId=' + menuItemId;
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId + '&locationId=' + locationId;
+        }
+
+        function populateHours(select){
+            for(var i = 0; i < 24; ++i){
+                appendSelect(select, i,  i <= 9 ? padded[i] : i);
+            }
+        }
+
+        function populateMinutes(select){
+            for(var i = 0; i < 60; ++i){
+                appendSelect(select, i, i <= 9 ? padded[i] : i);
+            }
+        } 
+
+        function populateAmPm(select){
+            appendSelect(select, 0, 'AM');
+            appendSelect(select, 1, 'PM');
         }
 
         function init() {
-            document.getElementById('heading').innerHTML =  '<strong>ADD NEW ANNOTATION TO MENU ITEM</strong>';
-            document.getElementById('picture-file').addEventListener('change', function () {
-                uploadFiles = this.files;
-            }, false);
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW BUSINESS HOURS TO LOCATION</strong>';
+            populateHours('openHour');
+            populateHours('closeHour');
+            populateMinutes('openMinute');
+            populateMinutes('closeMinute');
+
         }
 
         window.addEventListener('load', init);</script>
@@ -31,25 +59,86 @@
 </head>
 <body> 
     <form id="theForm">
-        <p id="heading"></p><br />  
-        <label>&nbsp;&nbsp;&nbsp;Comments:&nbsp;</label><textarea id="comments"></textarea><br /><br /> 
-        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <p id="heading"></p><br />   
+        <label for="days">Choose Days For Which Operating Hours Should Be Added:</label><br/>
+
+        <select name="days" id="days" multiple> 
+            <option value="0">Sunday</option>
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+        </select><br/><br/>
+        <label>Open : &nbsp;&nbsp;</label><select id="openHour"></select>:<select id="openMinute"></select>&nbsp;HRS<br/><br/>
+        <label>Close : &nbsp;&nbsp;</label><select id="closeHour"></select>:<select id="closeMinute"></select>&nbsp;HRS<br/><br/>
         <button type="submit">Add</button><br />
+        <div id="errorDiv"></div>
     </form>
     <br /><br />
 
 <script>
+
+    function getSelectedValue(select) { 
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+                return parseInt(opt.value);
+            }
+        }
+        return 0;
+        }
+
+    function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+
     var form = document.getElementById('theForm');
     form.onsubmit = function ()
     {  
-            var data = new FormData();
-            if(uploadFiles.length > 0){
-                data.append('resource', uploadFiles[0]);
+        onError('');
+        var days = getSelectValues(document.getElementById('days'));
+        if(days.length == 0)
+        {
+            onSuccess();
+        }
+
+        var open = getSelectedValue(document.getElementById('openHour')) * 100 + getSelectedValue(document.getElementById('openMinute')) ;
+        var close = getSelectedValue(document.getElementById('closeHour')) * 100 + getSelectedValue(document.getElementById('closeMinute')) ;
+
+        if(open >= close){
+            onError('Invalid Operating Hours');
+            return false;
+        }
+        var hours = [];
+
+        for(var i = 0; i < days.length; ++i){
+            hours.push({ dayOfWeek : days[i], open : {hour : open/100 , minute : open % 100} , close : { hour : close/100 , minute : close%100 }});
+
+        }
+        
+            var data = {
+                sessionId : sessionId,
+                targetId : parseInt(locationId),
+                operatingHours : hours
             }
-            data.append('targetId', parseInt(menuItemId));
-            data.append('sessionId', sessionId); 
-            data.append('comments', document.getElementById('comments').value);
-            addMenuItemAnnotation( 
+            addLocationOperatingHours( 
                 data,
                 onSuccess,
                 onError); 
