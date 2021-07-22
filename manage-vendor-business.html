@@ -30,8 +30,7 @@
             itemsCount = 0;
             document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' ANNOTATIONS </strong></p><br/>'; 
             data.business.annotations.forEach(appendAnnotation); 
-            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>';
-            getMenuItems(businessId, onGotBusinessMenuItems, onError);
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>'; 
         }
 
         function editBusinessLocation(id) {
