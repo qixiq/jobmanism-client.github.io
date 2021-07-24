@@ -1,0 +1,92 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Address Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');
+        var addressCount = 0;
+        var primaryAddressId = 0;
+
+        function onSuccess(data) {
+            addressCount = 0; 
+            primaryAddressId = data.primaryAddressId;
+            document.getElementById('addressList').innerHTML = '<h4><strong>USER ADDRESSES for ' + data.fullName +' </strong></h4>';
+            data.addresses.forEach(appendAddress);  
+            document.getElementById('addressList').innerHTML += '<button onclick="addUserAddress()">Add New Address ... </button><br /><br /> ';
+        }
+
+        function removeAddress(id) {
+            deleteUserAddress(id,
+                init,
+                onError);
+        }
+
+        function makeAddressPrimary(id) {
+            setUserPrimaryAddress(id,
+                function () {
+                    primaryAddressId = id;
+                    init();
+                },
+                onError);
+        } 
+
+        function addUserAddress(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-user-address.html?sessionId=' + sessionId ;
+        }
+
+        function updateAddress(id){ 
+            document.location.href = getPathPrefix(document.location.href) + '/update-user-address.html?sessionId=' + sessionId + '&addressId=' + id;
+        }
+
+        function appendAddress(address)
+        {
+            addressCount++;
+            var isPrimary = address.addressId == primaryAddressId;
+            var listDiv = document.getElementById('addressList');
+            listDiv.innerHTML += '<p><strong>ADDRESS ' + addressCount;
+            if (isPrimary) {
+                listDiv.innerHTML += '(Primary Address)';
+            }
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+            if (!isStringAndEmpty(address.streetLine2)) {
+                listDiv.innerHTML += '<label>' + address.streetLine2 + '</label><br/>';
+            }
+            listDiv.innerHTML += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            listDiv.innerHTML += '<label>' + address.country + '</label><br/>';
+            listDiv.innerHTML += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            listDiv.innerHTML += '<button  onclick="updateAddress(\'' + address.addressId + '\')">Update ...</button>&nbsp;&nbsp';
+            if (!isPrimary) {
+                listDiv.innerHTML += '<button  onclick="removeAddress(\'' + address.addressId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makeAddressPrimary(\'' + address.addressId + '\')">Set As Primary</button><br /><br/>';
+            }
+            else{
+                listDiv.innerHTML += '<br/><br/>';
+            }
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() { 
+            getUserAddresses(onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br/><br/> 
+    <br /><br />
+    <div id="addressList">
+
+    </div>  
+
+</body>
+</html>

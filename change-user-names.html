@@ -1,0 +1,56 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Update User Names</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+
+        function onError(details) {
+
+        }
+         
+        function onGotUserProfile(data){
+            var userNames = data.userNames;
+            document.getElementById('firstName').value = userNames.firstName;
+            document.getElementById('middleNames').value = userNames.middleNames;
+            document.getElementById('lastName').value = userNames.lastName;
+
+        }
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getUserProfile(onGotUserProfile, onError);
+        }
+
+        window.addEventListener('load', init);
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p><strong>UPDATE USER NAMES</strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;First Name&nbsp;:&nbsp;</label><input id="firstName" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Middle Names&nbsp;:&nbsp;</label><input id="middleNames" type="text"/><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Last Name&nbsp;:&nbsp;</label><input id="lastName" type="text"/><br /><br /> 
+        <button type="submit">Update</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+ 
+            updateUserNames(document.getElementById('firstName').value, 
+            document.getElementById('middleNames').value, 
+            document.getElementById('lastName').value, 
+            onSuccess, onError); 
+            return false;
+        };
+    </script>
+
+</body>
+</html>

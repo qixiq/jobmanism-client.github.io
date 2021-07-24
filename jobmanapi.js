@@ -1198,3 +1198,31 @@ function removeLocationOperatingHours(sessionId, locationId, id, onSuccess, onEr
 
     sendJsonPostRequest(data, '/deleteLocationBusinessHours', onSuccess, onError);
 }
+
+function getUserAddress(addressId, onSuccess, onError){
+    sendGetRequest('/getUserAddress?sessionId=' + getQueryParameter('sessionId') + '&addressId=' + addressId, onSuccess, onError);
+}
+
+function getUserPhoneNumber(phoneNumberId, onSuccess, onError){
+    sendGetRequest('/getUserPhoneNumber?sessionId=' + getQueryParameter('sessionId') + '&phoneNumberId=' + phoneNumberId, onSuccess, onError);
+}
+
+function updateAddress(address, targetId, onSuccess, onError) {
+    var data =
+    {
+        address: address,
+        targetId : targetId,
+        sessionId : getQueryParameter('sessionId')
+    } 
+    sendJsonPostRequest(data, '/updateUserAddress', onSuccess, onError);
+}
+
+function updatePhoneNumber( phoneNumber, targetId, onSuccess, onError){
+    var data =
+    {
+        phoneNumber: phoneNumber,
+        targetId : targetId,
+        sessionId : getQueryParameter('sessionId')
+    } 
+    sendJsonPostRequest(data, '/updateUserPhoneNumber', onSuccess, onError);
+}

@@ -14,32 +14,104 @@
 
         function onSuccess(data) {
             isSuperAdmin = data.privileges == 1;
-            document.getElementById('userName').textContent = data.userName;
+            var userNames = data.userNames;
             userName = data.userName;
             userId = data.userId;
-         
-            document.getElementById('firstName').value = data.userNames.firstName;
-            document.getElementById('middleNames').value = data.userNames.middleNames;
-            document.getElementById('lastName').value = data.userNames.lastName;
-     
-            document.getElementById('street-1').value = data.address.streetLine1;
-            document.getElementById('street-2').value = data.address.streetLine2;
-            document.getElementById('street-number').value = data.address.streetNumber;
-            document.getElementById('addr-city').value = data.address.city;
-            document.getElementById('addr-state').value = data.address.state;
-            document.getElementById('addr-country').value = data.address.country;
-            document.getElementById('addr-gps').value = data.address.gpsLocation;
-            document.getElementById('addr-post-code').value = data.address.postalCode;
-            primaryAddressId = data.address.addressId;
-         
-            document.getElementById('phone-ctry-code').value = data.phoneNumber.countryCode;
-            document.getElementById('phone-number').value = data.phoneNumber.numberText;
-            document.getElementById('phone-features').value = data.phoneNumber.features;
-            document.getElementById('phone-type').value = data.phoneNumber.type;
-            primaryPhoneNumberId = data.phoneNumber.phoneNumberId;
+
+            var pageContent = '';
+            var fullName = userNames.lastName + ' , ' + userNames.firstName + ' ' + userNames.middleNames;
+
+            pageContent += '<h2><strong>FULL NAME</strong></h2>' ; 
+            if(fullName.length > 5){ 
+
+                pageContent += '<p>' + fullName + '</p>';
+            }
+            else{
+                pageContent += '<p>No Names Found</p>';
+            }
+            pageContent += '<br/><button  onclick="onChangeNames()">Change Names ... </button><br/><br/><br/>'; 
+ 
             
-            document.getElementById('current-picture').src = getResourceUrl(data.currentPictureId);
+            primaryAddressId = data.address.addressId;
+            pageContent += '<h2><strong>ADDRESS</strong></h2>' ;
+            if(primaryAddressId > 0)
+            {
+                var address = data.address;
+                pageContent += '<p><strong>Primary Address</strong></p>' ;
+                pageContent += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
+                if (!isStringAndEmpty(address.streetLine2)) {
+                    pageContent += '<label>' + address.streetLine2 + '</label><br/>';
+                }
+                pageContent += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+                pageContent += '<label>' + address.country + '</label><br/>';
+                pageContent += '<label>GPS: ' + address.gpsLocation + '</label><br/>';
+            }
+            else{
+                pageContent += '<p>No Primary Address Found</p>';
+            }
+            
+            pageContent += '<button  onclick="manageAddresses()">Manage Addresses ... </button><br/><br/>'; 
+            primaryPhoneNumberId = data.phoneNumber.phoneNumberId;
+            pageContent += '<h2><strong>PHONE NUMBER</strong></h2>' ;
+            if(primaryPhoneNumberId > 0)
+            {
+                var phoneNumber = data.phoneNumber;
+                pageContent += '<p><strong>Primary Phone Number</strong></p>' ;  
+                pageContent += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
+                if (!isStringAndEmpty(phoneNumber.features)) {
+                    pageContent += '<label>Features : ' + phoneNumber.features + '</label><br/>';
+                }
+                if (!isStringAndEmpty(phoneNumber.type)) {
+                    pageContent += '<label>Type : ' + phoneNumber.type + '</label><br/>';
+                } 
+            }
+            else{
+                pageContent += '<p>No Primary Phone Number Found</p>';
+            }
+
+            pageContent += '<button  onclick="managePhoneNumbers()">Manage PhoneNumbers ... </button><br/><br/>'; 
+
+            //document.getElementById('current-picture').src = ;
             primaryPictureId = data.currentPictureId;
+            pageContent += '<h2><strong>PROFILE PICTURES</strong></h2>' ;
+            if(primaryPictureId > 0){
+                pageContent += '<img src="' + getResourceUrl(data.currentPictureId) + '"/><br/>';
+
+            }
+            else{
+                pageContent += '<p>No Profile Picture Found</p>';
+            }
+
+            pageContent += '<button  onclick="manageProfilePictures()">Manage Profile Pictures ... </button><br/><br/>'; 
+
+            pageContent += '<h2><strong>FUNCTIONS</strong></h2>' ;
+
+            if(isSuperAdmin){
+                pageContent += '<button  onclick="manageServiceCategoriesForAdmin()">Manage Services ... </button><br/><br/>'; 
+
+                pageContent += '<button  onclick="manageEvidenceTypes()">Manage Evidence Types ... </button><br/><br/>'; 
+
+                pageContent += '<button  onclick="manageCoveredItems()">Manage Covered Items ... </button><br/><br/>'; 
+
+                pageContent += '<button  onclick="manageWarrantyRemedies()">Manage Warranty Remedies ... </button><br/><br/>'; 
+
+                pageContent += '<button  onclick="manageUserGroups()">Manage User Groups ... </button><br/><br/>';
+
+                pageContent += '<button  onclick="manageFunctionPermissions()">Manage Function Permissions ... </button><br/><br/>';
+
+            }
+            else{
+                pageContent += '<button  onclick="manageServiceCategoriesForNonAdmin()">Manage Services ... </button><br/><br/>';
+
+            }
+
+            pageContent += '<button  onclick="manageJobs()">Manage Jobs ... </button><br/><br/>';
+
+
+            document.getElementById('contentDiv').innerHTML = pageContent; 
+            
+            
+
 
             var query = document.location.search;
             const urlParams = new URLSearchParams(query);
@@ -47,23 +119,34 @@
 
         }
 
-        function manageAddresses() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-addresses.html?sessionId=' + sessionId + '&userName=' + userName + '&primaryId=' + primaryAddressId;
+        function onChangeNames(){
+            document.location.href = getPathPrefix(document.location.href) + '/change-user-names.html?sessionId=' + sessionId ;
         }
 
-        function managePhoneNumbers() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-phones.html?sessionId=' + sessionId + '&userName=' + userName + '&primaryId=' + primaryPhoneNumberId;
+        function manageProfilePictures(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-profile-pictures.html?sessionId=' + sessionId ;
         }
 
-        function managePictures() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-pictures.html?sessionId=' + sessionId + '&userName=' + userName + '&primaryId=' + primaryPictureId;
+        function manageJobs(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-jobs.html?sessionId=' + sessionId ;
         }
 
-        function manageServiceCategories() {
-            if (isSuperAdmin)
-                document.location.href = getPathPrefix(document.location.href) + '/manage-service-categories.html?sessionId=' + sessionId;
-            else
-                document.location.href = getPathPrefix(document.location.href) + '/manage-my-services.html?sessionId=' + sessionId + '&userName=' + userName;
+        function managePhoneNumbers(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-phones.html?sessionId=' + sessionId ;
+
+        }
+
+        function manageAddresses(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-addresses.html?sessionId=' + sessionId ;
+
+        }
+
+        function manageServiceCategoriesForNonAdmin(){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-my-services.html?sessionId=' + sessionId + '&userName=' + userName;
+        }
+
+        function manageServiceCategoriesForAdmin() { 
+                document.location.href = getPathPrefix(document.location.href) + '/manage-service-categories.html?sessionId=' + sessionId; 
         }
 
         function manageEvidenceTypes() { 
@@ -91,60 +174,16 @@
         }
 
         function init() {
-            getUserProfile(onSuccess, onError)
+            getUserProfile(onSuccess, onError);
         }
 
         window.addEventListener('load', init);
     </script>
 </head>
 <body>
-    <form id="theForm">
-        <p><strong>USER PROFILE</strong> for <span id="userName"></span></p><br />
-        <label><strong>First Name :&nbsp;</strong></label><input id="firstName" type="text" /><br /><br />
-        <label><strong>Middle Names :&nbsp;</strong></label><input id="middleNames" type="text" /><br /><br />
-        <label><strong>Last Name:&nbsp;</strong></label><input id="lastName" type="text" /><br /><br />
-        <button type="submit">Update My Names</button><br />
-    </form>
-    <div>
-        <label><strong>Primary Address:&nbsp;</strong></label><button onclick="manageAddresses()">Manage Addresses</button><br /><br /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" readonly /><br /><br />
 
-        <label><strong>Primary Phone:&nbsp;</strong></label><button onclick="managePhoneNumbers()">Manage Phone Numbers</button><br /><br /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="phone-ctry-code" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="phone-number" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="phone-features" type="text" readonly /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="phone-type" type="text" readonly /><br /><br />
-
-        <label><strong>Profile Picture:&nbsp;</strong></label><button onclick="managePictures()">Manage Pictures</button><br /><br />
-        <img id="current-picture" alt="Please upload an Image" width="300" height="300" /><br /><br />
-        <label><strong>Service Categories:&nbsp;</strong></label><button onclick="manageServiceCategories()">Manage Service Categories</button><br /><br />
-        <label><strong>Evidence Types:&nbsp;</strong></label><button onclick="manageEvidenceTypes()">Manage Service Evidence Types</button><br /><br />
-        <label><strong>Covered Items:&nbsp;</strong></label><button onclick="manageCoveredItems()">Manage Covered Items</button><br /><br />
-        <label><strong>Warranty Remedies:&nbsp;</strong></label><button onclick="manageWarrantyRemedies()">Manage Warranty Remedies</button><br /><br />
-        <label><strong>Groups:&nbsp;</strong></label><button onclick="manageUserGroups()">Manage User Groups</button><br /><br />
-        <label><strong>Access Control:&nbsp;</strong></label><button onclick="manageFunctionPermissions()">Manage Function Permissions</button><br /><br />
-
-    </div>
-    <br /><br />
-    <button onclick="init();">Refresh</button>
-    <br />
-    
-    <script>document.getElementById('theForm').onsubmit = function () {
-            updateUserNames(
-                document.getElementById('firstName').value,
-                document.getElementById('middleNames').value,
-                document.getElementById('lastName').value,
-                init,
-                onError);
-            return false;
-        };</script>
+<div id="contentDiv"></div>
+     
 
 </body>
 </html>

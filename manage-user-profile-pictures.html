@@ -2,19 +2,18 @@
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
     <title>Jobman Picture Management Page</title>
-    <script>var userName = getQueryParameter('userName');
-        var primaryPictureId = getQueryParameter('primaryId');
+    <script> 
+        var primaryPictureId = 0;
         var sessionId = getQueryParameter('sessionId');
-        var pictureCount = 0;
-        var uploadFiles = [];
+        var pictureCount = 0; 
 
         function onSuccess(data) {
             pictureCount = 0;
-            document.getElementById('picture-file').value = ""; 
             document.getElementById('pictureList').innerHTML = "";
-
-            data.forEach(appendPicture);
-
+            primaryPictureId = data.userAndResources.primaryResourceId;
+            document.getElementById('pictureList').innerHTML = '<h4><strong>USER PICTURES for ' + data.userAndResources.fullName +' </strong></h4>';
+            data.userAndResources.resources.forEach(appendPicture); 
+            document.getElementById('pictureList').innerHTML += '<button onclick="addUserPicture()">Add User Picture ... </button><br /><br /> ';
 
         }
 
@@ -46,6 +45,17 @@
             if (!isPrimary) {
                 listDiv.innerHTML += '<button  onclick="removePicture(\'' + resourceId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makePicturePrimary(\'' + resourceId + '\')">Set As Primary</button><br /><br/>';
             }
+            else{
+                listDiv.innerHTML += '<br/><br/>';
+            }
+        }
+
+        function addUserPicture(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-user-profile-picture.html?sessionId=' + sessionId ;
+        }
+
+        function updateUserPicture(id){ 
+            document.location.href = getPathPrefix(document.location.href) + '/update-user-profile-picture.html?sessionId=' + sessionId + '&resourceId=' + id;
         }
 
 
@@ -58,11 +68,7 @@
             document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
         }
 
-        function init() {
-            document.getElementById('userName').textContent = userName;
-            document.getElementById('picture-file').addEventListener('change', function () {
-                uploadFiles = this.files;
-            }, false);
+        function init() { 
             getUserResources("image/*", onSuccess, onError)
         }
 
@@ -72,32 +78,10 @@
 </head>
 <body>
     <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
-    <form id="theForm" method="post" enctype="multipart/form-data">
-        <p><strong>MANAGE PICTURES </strong> for <span id="userName"></span></p><br />
-        <label><strong>Add Picture:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
-        <button type="submit">Add</button><br />
-    </form>
     <br /><br />
     <div id="pictureList">
 
     </div>
-    <script>
-        var form = document.getElementById('theForm');
-        form.onsubmit = function ()
-        {
-            if (uploadFiles.length > 0) {
-                var data = new FormData();
-                data.append('resource1', uploadFiles[0]);
-                data.append('sessionId', sessionId)
-                            addUserResources(
-                                data,
-                                init,
-                                onError);
-            }
-            
-            return false;
-        };</script>
 
 </body>
 </html>

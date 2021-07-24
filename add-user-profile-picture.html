@@ -1,0 +1,74 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Add Picture Page</title>
+    <script>var userName = getQueryParameter('userName'); 
+        var sessionId = getQueryParameter('sessionId');
+        var pictureCount = 0;
+        var uploadFiles = [];
+
+        function onSuccess(data) {
+            pictureCount = 0;
+            document.getElementById('userName').innerHTML = data.userAndResources.fullName;
+            document.getElementById('picture-file').value = "";  
+
+
+        }
+
+ 
+
+
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = details;
+
+        }
+
+        function goBack(data) {
+            if(data.isError){
+                onError(data.error);
+                return;
+            }
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-profile-pictures.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('picture-file').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+            getUserResources("image/*", onSuccess, onError)
+        }
+
+
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back To Profile Pictures </button><br /><br />
+    <form id="theForm" method="post" enctype="multipart/form-data">
+        <p><strong>ADD NEW PICTURE </strong> for <span id="userName"></span></p><br />
+        <label><strong>Add Picture:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <div id="errorDiv"></div>
+    <br /><br /> 
+    <script>
+        var form = document.getElementById('theForm');
+        form.onsubmit = function ()
+        {
+            if (uploadFiles.length > 0) {
+                var data = new FormData();
+                data.append('resource1', uploadFiles[0]);
+                data.append('sessionId', sessionId)
+                            addUserResources(
+                                data,
+                                goBack,
+                                onError);
+            }
+            
+            return false;
+        };</script>
+
+</body>
+</html>

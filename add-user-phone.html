@@ -1,0 +1,66 @@
+ <html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Phone Management Page</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');
+        var phoneCount = 0;
+
+        function onGotUserPhoneNumbers(data) {
+            phoneCount = 0;
+            document.getElementById('userName').innerHTML = data.userAndPhones.fullName;
+            document.getElementById('ctry-code').value = "";
+            document.getElementById('number').value = "";
+            document.getElementById('features').value = "";
+            document.getElementById('type').value = "";  
+
+        }
+
+
+
+        function onError(details) {
+
+        }
+ 
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-phones.html?sessionId=' + sessionId;
+        }
+
+        function init() { 
+            getUserPhoneNumbers(onGotUserPhoneNumbers, onError)
+        }
+
+        window.addEventListener('load', init);
+        </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back To User Phones</button><br /><br />
+    <form id="theForm">
+        <p><strong>ADD NEW PHONE NUMBER</strong> for <span id="userName"></span></p><br />
+        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+
+    </div>
+    <script>document.getElementById('theForm').onsubmit = function () {
+            var phoneNumber =
+            {
+                countryCode : document.getElementById('ctry-code').value,
+                numberText : document.getElementById('number').value,
+                features: document.getElementById('features').value,
+                type : document.getElementById('type').value 
+            };
+    addUserPhoneNumber(
+        phoneNumber,
+                goBack,
+                onError);
+            return false;
+        };</script>
+
+</body>
+</html>

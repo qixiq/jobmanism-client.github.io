@@ -1,22 +1,18 @@
 <html>
 <head>
     <script type="text/javascript" src="jobmanapi.js"></script>
-    <title>Jobman Phone Management Page</title>
-    <script>var userName = getQueryParameter('userName');
-        var primaryPhoneNumberId = getQueryParameter('primaryId');
+    <title>Jobman Phones Management Page</title>
+    <script>
         var sessionId = getQueryParameter('sessionId');
         var phoneCount = 0;
+        var primaryPhoneNumberId = 0;
 
         function onSuccess(data) {
-            phoneCount = 0;
-            document.getElementById('ctry-code').value = "";
-            document.getElementById('number').value = "";
-            document.getElementById('features').value = "";
-            document.getElementById('type').value = ""; 
-            document.getElementById('phoneNumberList').innerHTML = "";
-
-            data.forEach(appendPhoneNumber);
-
+            phoneCount = 0; 
+            primaryPhoneNumberId = data.userAndPhones.primaryPhoneNumberId;
+            document.getElementById('phoneNumberList').innerHTML = '<h4><strong>USER PHONE NUMBERS for ' + data.userAndPhones.fullName +' </strong></h4>';
+            data.userAndPhones.phoneNumbers.forEach(appendPhoneNumber);
+            document.getElementById('phoneNumberList').innerHTML += '<button onclick="addUserPhoneNumber()">Add New Phone Number ... </button><br /><br /> ';
 
         }
 
@@ -35,6 +31,14 @@
                 onError);
         }
 
+        function addUserPhoneNumber(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-user-phone.html?sessionId=' + sessionId ;
+        }
+
+        function updateUserPhoneNumber(id){ 
+            document.location.href = getPathPrefix(document.location.href) + '/update-user-phone.html?sessionId=' + sessionId + '&phoneNumberId=' + id;
+        }
+
         function appendPhoneNumber(phoneNumber) {
             phoneCount++;
             var isPrimary = phoneNumber.phoneNumberId == primaryPhoneNumberId;
@@ -50,9 +54,14 @@
             }
             if (!isStringAndEmpty(phoneNumber.type)) {
                 listDiv.innerHTML += '<label>Type : ' + phoneNumber.type + '</label><br/>';
-            }
+            } 
+
+            listDiv.innerHTML += '<button  onclick="updateUserPhoneNumber(\'' + phoneNumber.phoneNumberId + '\')">Update ...</button>&nbsp;&nbsp';
             if (!isPrimary) {
                 listDiv.innerHTML += '<button  onclick="removePhoneNumber(\'' + phoneNumber.phoneNumberId + '\')">Remove</button>&nbsp;&nbsp;<button  onclick="makePhoneNumberPrimary(\'' + phoneNumber.phoneNumberId + '\')">Set As Primary</button><br /><br/>';
+            }
+            else{
+                listDiv.innerHTML += '<br/><br/>';
             }
         }
 
@@ -67,41 +76,17 @@
         }
 
         function init() {
-            document.getElementById('userName').textContent = userName;
             getUserPhoneNumbers(onSuccess, onError)
         }
 
         window.addEventListener('load', init);</script>
 </head>
 <body>
-    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
-    <form id="theForm">
-        <p><strong>MANAGE PHONES NUMBERS </strong> for <span id="userName"></span></p><br />
-        <label><strong>Add Phone Number:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
-        <button type="submit">Add</button><br />
-    </form>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button>
     <br /><br />
     <div id="phoneNumberList">
 
     </div>
-    <script>document.getElementById('theForm').onsubmit = function () {
-            var phoneNumber =
-            {
-                countryCode : document.getElementById('ctry-code').value,
-                numberText : document.getElementById('number').value,
-                features: document.getElementById('features').value,
-                type : document.getElementById('type').value 
-            };
-    addUserPhoneNumber(
-        phoneNumber,
-                init,
-                onError);
-            return false;
-        };</script>
 
 </body>
 </html>
