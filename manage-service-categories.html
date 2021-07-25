@@ -8,15 +8,16 @@
         var uploadFiles = [];
 
         function onSuccess(data) {
-            serviceCategoriesCount = 0;
-            document.getElementById('name').value = "";
-            document.getElementById('description').value = "";
-            document.getElementById('aliases').value = "";
-            document.getElementById('serviceCategoriesList').innerHTML = "";
-
-            data.forEach(appendServiceCategory);
+            document.getElementById('serviceCategoriesList').innerHTML = '<h4><strong>SERVICE CATEGORIES</strong ></h4>';
+            serviceCategoriesCount = 0; 
+            data.services.forEach(appendServiceCategory);  
+            document.getElementById('serviceCategoriesList').innerHTML += '<button onclick="addServiceCategory()">Add New Service Category ... </button><br /><br /> ';
 
             
+        }
+
+        function addServiceCategory(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/add-service-category.html?sessionId=' + sessionId;
         }
 
         function editServiceCategory(id) {
@@ -48,7 +49,7 @@
             listDiv.innerHTML += '<label>Name: ' + serviceCategory.name + '</label><br/>';
             listDiv.innerHTML += '<p>' + serviceCategory.description + '</p><br/>';
             listDiv.innerHTML += '<button  onclick="onRemoveServiceCategory(\'' + serviceCategory.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editServiceCategory(\'' + serviceCategory.id + '\')" > Edit</button >&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editServiceCategory(\'' + serviceCategory.id + '\')" > Make Changes ... </button >&nbsp;&nbsp;';
             if (serviceCategory.published) {
                 listDiv.innerHTML += '<button  onclick = "onUnPublishServiceCategory(\'' + serviceCategory.id + '\')" > UnPublish</button >&nbsp;&nbsp;<br /><br/>';
             }
@@ -75,35 +76,10 @@
     </script>
 </head>
 <body>
-    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br />
-    <form id="theForm">
-        <p><strong>MANAGE SERVICE CATEGORIES </strong></p><br />
-        <label><strong>Add Service Category:&nbsp;</strong></label><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
-        <label>&nbsp;&nbsp;&nbsp;Aliases:&nbsp;</label><textarea id="aliases"></textarea><br /><br /> 
-        <button type="submit">Add</button><br />
-    </form>
-    <br /><br />
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br /> 
     <div id="serviceCategoriesList">
 
-    </div>
-    <script>var form = document.getElementById('theForm');
-        form.onsubmit = function () {
-            var data = new FormData(); 
-            data.append('sessionId', sessionId);
-            data.append('name', document.getElementById('name').value);
-            data.append('description', document.getElementById('description').value);
-            data.append('aliases', document.getElementById('aliases').value.split(','));
-            addServiceCategory(
-                data,
-                init,
-                onError);
-            
-
-            return false;
-        };
-    </script>
+    </div> 
 
 </body>
 </html>

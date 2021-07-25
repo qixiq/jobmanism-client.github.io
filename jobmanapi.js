@@ -211,8 +211,8 @@ function completeSignup(user, pwd,  onSuccess, onError) {
     sendJsonPostRequest(data, '/completesignup', onSuccess, onError);
 }
 
-function addServiceCategory(formData, onSuccess, onError) {
-    sendFormDataPostRequest(formData, '/addServiceCategory', onSuccess, onError);
+function addServiceCategory(data, onSuccess, onError) {
+    sendJsonPostRequest(data, '/addServiceCategory', onSuccess, onError);
 }
 
 function getAdminViewOfServiceCategories(onSuccess, onError) {

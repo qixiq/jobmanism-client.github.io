@@ -1,0 +1,55 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Service Categories Management Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+
+        function onSuccess(data) { 
+            document.getElementById('name').value = "";
+            document.getElementById('description').value = "";
+            document.getElementById('aliases').value = "";  
+        }
+
+        function onError(details) {
+        }
+
+        function goBack(data) {
+            if(data.isError){
+                onError(data.error);
+                return;
+            }
+            document.location.href = getPathPrefix(document.location.href) + '/manage-service-categories.html?sessionId=' + sessionId;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back To Service Categories</button><br /><br />
+    <form id="theForm">
+        <p><strong>ADD NEW SERVICE CATEGORY </strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description"></textarea><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Aliases:&nbsp;</label><textarea id="aliases"></textarea><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br /> 
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var data = {
+                sessionId : sessionId,
+                name : document.getElementById('name').value,
+                description : document.getElementById('description').value,
+                aliases : document.getElementById('aliases').value.split(',')
+            } ; 
+            addServiceCategory(
+                data,
+                goBack,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>
