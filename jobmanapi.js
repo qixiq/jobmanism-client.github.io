@@ -1294,4 +1294,18 @@ function getUserJobRequisitions(onSuccess, onError){
 function getInfoForNewJobCreation(onSuccess, onError){
     sendGetRequest('/getInfoForNewJobCreation?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
+
+function getTextForJobRequisitionStatus(status){
+    switch(status)
+    {
+        case 1:
+            return 'Published';
+            case 2:
+                return 'Active';
+                case 3:
+                    return 'Completed';
+    }
+
+    return 'Not Published';
+}
         

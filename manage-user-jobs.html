@@ -44,7 +44,7 @@
             listDiv.innerHTML += '<label>Service Category: ' + job.serviceCategory + '</label><br/>';
             listDiv.innerHTML += '<label>Service Address: ' + job.serviceAddress + '</label><br/>';
             listDiv.innerHTML += '<label>Contact Phone Number: ' + job.contactPhoneNumber + '</label><br/>';
-            listDiv.innerHTML += '<label>Published: ' + (job.published ? 'Yes' : 'No') + '</label><br/>';
+            listDiv.innerHTML += '<label>Status : ' + getTextForJobRequisitionStatus(job.published) + '</label><br/>';
             listDiv.innerHTML += '<button  onclick="onRemoveJob(\'' + job.id + '\')">Remove</button>&nbsp;&nbsp;';
             listDiv.innerHTML += '<button  onclick = "editJob(\'' + job.id + '\')" > Manage Job ... </button >';  
         }
