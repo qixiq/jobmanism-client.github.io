@@ -216,5 +216,7 @@ CREATE TABLE LocationOperatingHours
 
 CREATE UNIQUE INDEX uq_LocationOperatingHours
 ON [dbo].[OperatingHours](LocationId, DayOfWeek);
+
+
  
 

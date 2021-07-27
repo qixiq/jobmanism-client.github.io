@@ -4,9 +4,83 @@
     <title>Jobman Edit Service</title>
     <script>
         var sessionId = getQueryParameter('sessionId');
+        var serviceId = getQueryParameter('serviceId');
+ 
+
+
+        function onGotServiceCategoryDetails(data){
+
+            //ANNOTATIONS
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = '<p><strong>' + data.service.name + ' ANNOTATIONS </strong></p><br/>'; 
+            data.service.annotations.forEach(appendAnnotation); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>'; 
+
+            //EVIDENCE SPECIFICATIONS
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + data.service.name + ' EVIDENCE SPECIFICATIONS </strong></p><br/>'; 
+            data.service.evidenceSpecifications.forEach(appendEvidenceSpecification); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addEvidenceSpecification()">Add New Evidence Specification ...</button><br/><br/>'; 
+        }
+
+        //annotations
+
+        function editServiceCategoryAnnotation(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/update-service-category-annotation.html?sessionId=' + sessionId + '&serviceId=' + serviceId + '&annotationId=' + id ;
+        }
+
+        function onRemoveServiceCategoryAnnotation(id) {
+            removeServiceCategoryAnnotation(sessionId, serviceId, id, init, onError);
+        }
+
+   
+        function appendAnnotation(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SERVICE CATEGORY ANNOTATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.comments + '</p><br/>';
+            if(item.resourceId > 0)
+            {
+                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.resourceId) +'"</img><br/>';
+            }
+            listDiv.innerHTML += '<button  onclick="onRemoveServiceCategoryAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editServiceCategoryAnnotation(\'' + item.annotationId + '\')" >Make Changes ... </button ><br/><br/>';
+        }
+ 
  
  
 
+        function addAnnotation() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-service-category-annotation.html?sessionId=' + sessionId + '&serviceId=' + serviceId  ;
+        }
+
+        //evidence specifications
+        function editServiceCategoryEvidenceSpecification(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/update-service-category-evidence-specification.html?sessionId=' + sessionId + '&serviceId=' + serviceId + '&evidenceTypeId=' + id ;
+        }
+
+        function onRemoveServiceCategoryEvidenceSpecification(id) {
+            removeServiceCategoryEvidenceSpecification(sessionId, serviceId, id, init, onError);
+        }
+
+   
+        function appendEvidenceSpecification(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SERVICE CATEGORY EVIDENCE SPECIFICATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.name + ' ( ' + (item.mandatory ? 'Mandatory' : 'Not Mandatory') + ' For Registering To Provide This Service )</p>';
+            listDiv.innerHTML += '<button  onclick="onRemoveServiceCategoryEvidenceSpecification(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editServiceCategoryEvidenceSpecification(\'' + item.id + '\')" >Make Changes ... </button ><br/><br/>';
+        }
+ 
+ 
+ 
+
+        function addEvidenceSpecification() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-service-category-evidence-specification.html?sessionId=' + sessionId + '&serviceId=' + serviceId  ;
+        }
 
         function onError(details) {
 
@@ -17,14 +91,14 @@
         }
 
         function init() { 
+            getServiceCategoryDetails(serviceId, onGotServiceCategoryDetails, onError);
         }
 
         window.addEventListener('load', init);
     </script>
 </head>
 <body>
-    <button onclick="goBackToManagingServices()">Go Back To Managing Services</button><br /><br />
-    <p>Under Construction</p>
-
+    <button onclick="goBackToManagingServices()">Go Back To Managing Services</button><br /><br /> 
+    <div id="itemsList"></div>
 </body>
 </html>

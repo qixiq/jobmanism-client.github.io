@@ -167,5 +167,96 @@ CREATE UNIQUE INDEX uq_UserPermissions
 CREATE UNIQUE INDEX uq_GroupPermissions
   ON [dbo].[GroupPermissions](GroupId, MethodId, PermissionId);
 
+CREATE TABLE ServiceCategoryAnnotations
+(
+  ServiceCategoryAnnotationId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  ServiceCategoryId BIGINT NOT NULL,
+  ResourceId BIGINT,
+  Sequence INT NOT NULL,
+  Comment VARCHAR(1024),
+  CONSTRAINT FK_ServiceCategoryAnnotations_ServiceCategoryId FOREIGN KEY (ServiceCategoryId)
+  REFERENCES [dbo].[ServiceCategories] (ServiceCategoryId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_ServiceCategoryAnnotations_ResourceId FOREIGN KEY (ResourceId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_ServiceCategoryAnnotationsResources
+  ON [dbo].[ServiceCategoryAnnotations](ServiceCategoryId, ResourceId);
+
+  CREATE UNIQUE INDEX uq_ServiceCategoryAnnotationsSequences
+  ON [dbo].[ServiceCategoryAnnotations](ServiceCategoryId, Sequence);
+
+CREATE TABLE JobRequisitions
+(
+  JobRequisitionId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  UserId BIGINT NOT NULL,
+  ServiceCategoryId BIGINT NOT NULL,
+  SummaryOfWork VARCHAR(max) NOT NULL,
+  Title VARCHAR(256) NOT NULL,
+  AddressId BIGINT NOT NULL,
+  PhoneNumberId BIGINT NOT NULL,
+  Published INT NOT NULL DEFAULT 0,
+  CONSTRAINT FK_JobRequisitions_ServiceCategoryId FOREIGN KEY (ServiceCategoryId)
+  REFERENCES [dbo].[ServiceCategories] (ServiceCategoryId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_JobRequisitions_UserId FOREIGN KEY (UserId)
+  REFERENCES [dbo].[UserProfiles] (UserId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_JobRequisitions_AddressId FOREIGN KEY (AddressId)
+  REFERENCES [dbo].[Addresses] (AddressId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_JobRequisitions_PhoneNumberId FOREIGN KEY (PhoneNumberId)
+  REFERENCES [dbo].[PhoneNumbers] (PhoneNumberId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+  CREATE UNIQUE INDEX uq_JobRequisitions
+  ON [dbo].[JobRequisitions](UserId, Title);
+
+
+CREATE TABLE JobRequisitionAnnotations
+(
+  JobRequisitionAnnotationId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+  JobRequisitionId BIGINT NOT NULL,
+  ResourceId BIGINT NOT NULL,
+  Sequence INT NOT NULL,
+  Comment VARCHAR(1024) NOT NULL,
+  CONSTRAINT FK_JobRequisitionAnnotations_JobRequisitionId FOREIGN KEY (JobRequisitionId)
+  REFERENCES [dbo].[JobRequisitions] (JobRequisitionId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_JobRequisitionAnnotations_ResourceId FOREIGN KEY (ResourceId)
+  REFERENCES [dbo].[Resources] (ResourceId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_JobRequisitionAnnotationsResources
+  ON [dbo].[JobRequisitionAnnotations](JobRequisitionId, ResourceId);
+
+CREATE UNIQUE INDEX uq_JobRequisitionAnnotationsSequences
+  ON [dbo].[JobRequisitionAnnotations](JobRequisitionId, Sequence);
+
+CREATE TABLE JobRequisitionProviderRequirements
+(
+  JobRequisitionId BIGINT NOT NULL,
+  Requirement VARCHAR(max) NOT NULL,
+  CONSTRAINT FK_PublishedJobRequisitions_JobRequisitionId FOREIGN KEY (JobRequisitionId)
+  REFERENCES [dbo].[JobRequisitions] (JobRequisitionId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE 
+);
+
+CREATE UNIQUE INDEX uq_JobRequisitionProviderRequirements
+  ON [dbo].[JobRequisitionProviderRequirements](JobRequisitionId, Requirement);
+
 
 

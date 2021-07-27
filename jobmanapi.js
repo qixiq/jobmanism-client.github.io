@@ -1207,6 +1207,10 @@ function getUserPhoneNumber(phoneNumberId, onSuccess, onError){
     sendGetRequest('/getUserPhoneNumber?sessionId=' + getQueryParameter('sessionId') + '&phoneNumberId=' + phoneNumberId, onSuccess, onError);
 }
 
+function getServiceCategoryDetails(serviceId, onSuccess, onError){
+    sendGetRequest('/getServiceCategoryDetails?sessionId=' + getQueryParameter('sessionId') + '&serviceId=' + serviceId, onSuccess, onError);
+}
+
 function updateAddress(address, targetId, onSuccess, onError) {
     var data =
     {
@@ -1226,3 +1230,68 @@ function updatePhoneNumber( phoneNumber, targetId, onSuccess, onError){
     } 
     sendJsonPostRequest(data, '/updateUserPhoneNumber', onSuccess, onError);
 }
+
+function removeServiceCategoryAnnotation(sessionId, serviceId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(serviceId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAnnotationsFromServiceCategory', onSuccess, onError);
+}
+
+function addServiceCategoryAnnotation( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendFormDataPostRequest(data, '/addAnnotationToServiceCategory', onSuccess, onError);
+    }
+
+function addJob( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addJobRequisition', onSuccess, onError);
+    }
+
+   function addEvidenceRequirementForServiceCategory( 
+        data,
+        onSuccess,
+        onError)
+        {
+            sendJsonPostRequest(data, '/addEvidenceRequirementForServiceCategory', onSuccess, onError);
+        }
+
+function removeServiceCategoryEvidenceSpecification(sessionId, serviceId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        serviceCategoryId : parseInt(serviceId),
+        evidenceTypeId : parseInt(id)
+    };
+
+    sendJsonPostRequest(data, '/removeEvidenceRequirementForServiceCategory', onSuccess, onError);
+}
+
+function removeJob(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)]
+    };
+
+    sendJsonPostRequest(data, '/deleteJobRequisitions', onSuccess, onError);
+}
+
+function getUserJobRequisitions(onSuccess, onError){
+    sendGetRequest('/GetJobRequisitions?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+
+function getInfoForNewJobCreation(onSuccess, onError){
+    sendGetRequest('/getInfoForNewJobCreation?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
+}
+        

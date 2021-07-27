@@ -1,0 +1,76 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Jobs Management Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var count = 0;
+
+        function onGotUserProfile(data){
+            document.getElementById('itemsList').innerHTML = '<h4><strong>JOB REQUISITIONS for ' + data.userName + '</strong ></h4>';
+            getUserJobRequisitions(onSuccess, onError); 
+
+        }
+
+        function onSuccess(data) {
+            
+            count = 0; 
+            data.jobs.forEach(appendJob);  
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addJob()">Add New Job ... </button><br /><br /> ';
+
+            
+        }
+
+        function addJob() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-job.html?sessionId=' + sessionId;
+        }
+
+        function editJob(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/edit-job.html?sessionId=' + sessionId + '&jobId=' + id;
+        }
+
+        function onRemoveJob(id) {
+            removeJob(sessionId, id, init, onError);
+        } 
+
+        function appendJob(job)
+        {
+            count++; 
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>PENDING JOB ' + count; 
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + job.title + '</label><br/>';
+            listDiv.innerHTML += '<p>' + job.summaryOfWork + '</p><br/>';
+            listDiv.innerHTML += '<label>Service Category: ' + job.serviceCategory + '</label><br/>';
+            listDiv.innerHTML += '<label>Service Address: ' + job.serviceAddress + '</label><br/>';
+            listDiv.innerHTML += '<label>Contact Phone Number: ' + job.contactPhoneNumber + '</label><br/>';
+            listDiv.innerHTML += '<label>Published: ' + (job.published ? 'Yes' : 'No') + '</label><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveJob(\'' + job.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editJob(\'' + job.id + '\')" > Manage Job ... </button >';  
+        }
+ 
+
+
+        function onError(details) {
+
+        }
+
+        function goBackToUserProfile() {
+            document.location.href = getPathPrefix(document.location.href) + '/landingpage.html?sessionId=' + sessionId;
+        }
+
+        function init() {
+            getUserProfile(onGotUserProfile, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToUserProfile()">Go back To User Profile</button><br /><br /> 
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

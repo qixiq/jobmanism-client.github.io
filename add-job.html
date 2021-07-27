@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Add A New Job  Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+
+        function onSuccess(data) { 
+
+            if(data.info.phoneNumbers.length == 0){
+                onError("No Phone Numbers Available"); 
+                return; 
+            }
+
+            data.info.phoneNumbers.forEach(function(item){appendNameAndId('phoneNumber', item)});
+
+            if(data.info.addresses.length == 0){
+                onError("No Addresses Available"); 
+                return;
+            }
+
+            data.info.addresses.forEach(function(item){ appendNameAndId('address',item)});
+
+            if(data.info.serviceCategories.length == 0){
+                onError("No Service Categories Available"); 
+                return;
+            }
+
+            data.info.serviceCategories.forEach(function(item){appendNameAndId('serviceCategory', item)} );
+
+            document.getElementById('addButton').disabled = false;
+        }
+
+        function appendNameAndId(select, item){ 
+            var el = document.createElement("option");
+            el.textContent = item.name;
+            el.value = item.id;
+            document.getElementById(select).appendChild(el); 
+
+        }
+
+        function onError(details) { 
+            document.getElementById('errorDiv').innerHTML = '<strong >' + details + '</strong>';
+        }
+
+        function goBack(data) {
+            if(data && data.isError){
+                onError(data.error);
+                return;
+            }
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-jobs.html?sessionId=' + sessionId;
+        }
+
+        function init() { 
+            getInfoForNewJobCreation(onSuccess, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back To Jobs Page</button><br /><br />
+    <form id="theForm">
+        <p><strong>ADD NEW JOB REQUISITION </strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Title:&nbsp;</label><input id="title" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Summary Of Work:&nbsp;</label><textarea id="summary"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Service Category:&nbsp;</label><select id="serviceCategory"></select><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Service Address:&nbsp;</label><select id="address"></select><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Contact Phone Number:&nbsp;</label><select id="phoneNumber"></select><br /><br />
+        <button id="addButton" type="submit" disabled >Add</button><br />
+    </form>
+    <br /><br /> 
+    <div id="errorDiv"></div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var data = {
+                sessionId : sessionId,
+                job : {
+                    title : document.getElementById('title').value,
+                    summaryOfWork : document.getElementById('summary').value,
+                    serviceCategory : parseInt(document.getElementById('serviceCategory').value),
+                    serviceAddress : parseInt(document.getElementById('address').value),
+                    contactPhoneNumber : parseInt(document.getElementById('phoneNumber').value)
+
+                }
+            } ; 
+            addJob(
+                data,
+                goBack,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

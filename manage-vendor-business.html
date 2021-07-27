@@ -26,11 +26,11 @@
             document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' DIGITAL ASSETS </strong></p><br/>'; 
             data.business.digitalAssets.forEach(appendDigitalAsset); 
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAsset()">Add New Digital Asset ...</button><br/><br/>';
-            getMenuItems(businessId, onGotBusinessMenuItems, onError);
             itemsCount = 0;
             document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' ANNOTATIONS </strong></p><br/>'; 
             data.business.annotations.forEach(appendAnnotation); 
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>'; 
+            getMenuItems(businessId, onGotBusinessMenuItems, onError);
         }
 
         function editBusinessLocation(id) {
