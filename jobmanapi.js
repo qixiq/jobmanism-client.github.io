@@ -1287,6 +1287,17 @@ function removeJob(sessionId, id, onSuccess, onError){
     sendJsonPostRequest(data, '/deleteJobRequisitions', onSuccess, onError);
 }
 
+function removeJobAnnotation(sessionId, jobId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(jobId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAnnotationsFromJobRequisition', onSuccess, onError);
+}
+
 function getUserJobRequisitions(onSuccess, onError){
     sendGetRequest('/GetJobRequisitions?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
@@ -1308,4 +1319,16 @@ function getTextForJobRequisitionStatus(status){
 
     return 'Not Published';
 }
+
+function getJobRequisitionDetails(jobId, onSuccess, onError){
+    sendGetRequest('/getJobRequisition?sessionId=' + getQueryParameter('sessionId') + '&requisitionId=' + jobId, onSuccess, onError);
+}
+
+function addJobRequisitionAnnotation( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendFormDataPostRequest(data, '/addAnnotationToJobRequisition', onSuccess, onError);
+    }
         

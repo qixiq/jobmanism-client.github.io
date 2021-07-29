@@ -24,20 +24,25 @@ GetServiceCategoryAnnotation
 
 AddJobRequisition
 DeleteJobRequisitions
-GetJobRequisition
-GetJobRequisitions
-UpdateJobRequisitions
+-GetJobRequisition
+GetJobRequisitions 
 GetInfoForNewJobCreation
  
 +
 
-PublishJobRequisition
-UnpublishJobRequisition
+UpdateJobRequisitionHeaderInfo
+
++
+
+UpdateJobRequisitionStatus
 
 +
 AddAnnotationToJobRequistion 
-
-
+GetJobRequisitionAnnotations
+GetJobRequisitionAnnotation
+UpdateJobRequisitionAnnotation 
+UpdateJobRequisitionAnnotationSequences
+DeleteAnnotationsFromJobRequisition
 +
 
 AddBidForJobRequisition

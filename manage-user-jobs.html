@@ -26,7 +26,7 @@
         }
 
         function editJob(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/edit-job.html?sessionId=' + sessionId + '&jobId=' + id;
+            document.location.href = getPathPrefix(document.location.href) + '/edit-job-requisition.html?sessionId=' + sessionId + '&jobId=' + id;
         }
 
         function onRemoveJob(id) {
@@ -37,7 +37,7 @@
         {
             count++; 
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>PENDING JOB ' + count; 
+            listDiv.innerHTML += '<p><strong>JOB REQUISITION ' + count; 
             listDiv.innerHTML += '</strong ></p>';
             listDiv.innerHTML += '<label>Name: ' + job.title + '</label><br/>';
             listDiv.innerHTML += '<p>' + job.summaryOfWork + '</p><br/>';

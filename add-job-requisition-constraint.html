@@ -1,0 +1,75 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Add New Service Category Evidence Specification</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var serviceId = getQueryParameter('serviceId'); 
+ 
+
+        function onError(details) {
+
+        }
+
+        function onGotEvidenceTypes(data){
+            if(data.types.length == 0)
+            {
+            onSuccess();
+            }
+            data.types.forEach(appendEvidenceType); 
+            document.getElementById('category').selectedIndex = 0;
+        }
+
+        function appendEvidenceType(category){ 
+            var el = document.createElement("option");
+            el.textContent = category.name;
+            el.value = category.id;
+            document.getElementById('category').appendChild(el); 
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/edit-service.html?sessionId=' + sessionId + '&serviceId=' + serviceId;
+        }
+
+        function init() { 
+            getEvidenceTypes(onGotEvidenceTypes, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p ><strong>ADD NEW EVIDENCE SPECIFICATION</strong></p><br />  
+        <label for="category">&nbsp;&nbsp;&nbsp;EvidenceType:&nbsp;</label><select id="category"></select><br /><br /> 
+        <input type="checkbox" id="mandatory">
+        <label for="mandatory">Mandatory ?</label><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () { 
+            var data = {
+                sessionId: sessionId,
+                evidenceTypeId : parseInt(document.getElementById('category').value),
+                serviceCategoryId : parseInt(serviceId),
+                mandatory: document.getElementById('mandatory').checked 
+            };  
+            addEvidenceRequirementForServiceCategory( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

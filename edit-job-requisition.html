@@ -1,0 +1,105 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Edit Service</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var jobId = getQueryParameter('jobId');
+        var itemsCount = 0;
+ 
+
+
+        function onGotJobRequisitionDetails(data){
+
+            //ANNOTATIONS
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = '<p><strong>' + data.job.title + ' ANNOTATIONS </strong></p><br/>'; 
+            data.job.annotations.forEach(appendAnnotation); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>'; 
+
+            //CONSTRAINTS
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + data.job.title + ' JOB REQUISITION CONSTRAINTS </strong></p><br/>'; 
+            data.job.constraints.forEach(appendConstraint); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addConstraint()">Add New Constraints ...</button><br/><br/>'; 
+        }
+
+        //annotations
+
+        function editJobAnnotation(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/update-job-requisition-annotation.html?sessionId=' + sessionId + '&jobId=' + jobId + '&annotationId=' + id ;
+        }
+
+        function onRemoveJobAnnotation(id) {
+            removeJobAnnotation(sessionId, jobId, id, init, onError);
+        }
+
+   
+        function appendAnnotation(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>JOB REQUISITION ANNOTATION ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.comments + '</p><br/>';
+            if(item.resourceId > 0)
+            {
+                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.resourceId) +'"</img><br/>';
+            }
+            listDiv.innerHTML += '<button  onclick="onRemoveJobAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editJobAnnotation(\'' + item.annotationId + '\')" >Make Changes ... </button ><br/><br/>';
+        }
+ 
+ 
+ 
+
+        function addAnnotation() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-job-requisition-annotation.html?sessionId=' + sessionId + '&jobId=' + jobId  ;
+        }
+
+        //constraints
+        function editJobConstraint(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/update-job-requisition-constraint.html?sessionId=' + sessionId + '&jobId=' + serviceId + '&constraintId=' + id ;
+        }
+
+        function onRemoveJobConstraint(id) {
+            removeJobConstraint(sessionId, serviceId, id, init, onError);
+        }
+
+   
+        function appendConstraint(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>JOB REQUISITION CONSTRAINT' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            //listDiv.innerHTML += '<p>' + item.name + ' ( ' + (item.mandatory ? 'Mandatory' : 'Not Mandatory') + ' For Registering To Provide This Service )</p>';
+            //listDiv.innerHTML += '<button  onclick="onRemoveServiceCategoryEvidenceSpecification(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+           // listDiv.innerHTML += '<button  onclick = "editServiceCategoryEvidenceSpecification(\'' + item.id + '\')" >Make Changes ... </button ><br/><br/>';
+        }
+ 
+ 
+ 
+
+        function addConstraint() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-job-requisition-constraint.html?sessionId=' + sessionId + '&jobId=' + jobId  ;
+        }
+
+        function onError(details) {
+
+        }
+
+        function goBackToJobs() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-user-jobs.html?sessionId=' + sessionId;
+        }
+
+        function init() { 
+            getJobRequisitionDetails(jobId, onGotJobRequisitionDetails, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBackToJobs()">Go Back To Managing Jobs</button><br /><br /> 
+    <div id="itemsList"></div>
+</body>
+</html>

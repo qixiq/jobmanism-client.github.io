@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Add Job Requisition Annotation</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var jobId = getQueryParameter('jobId'); 
+        var uploadFiles = [];
+
+        function onError(details) {
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/edit-job-requisition.html?sessionId=' + sessionId + '&jobId=' + jobId  ;
+        }
+
+        function init() {
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW ANNOTATION TO JOB REQUISITION </strong>';
+            document.getElementById('picture-file').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p id="heading"></p><br />  
+        <label>&nbsp;&nbsp;&nbsp;Comments:&nbsp;</label><textarea id="comments"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Select Picture File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+
+<script>
+    var form = document.getElementById('theForm');
+    form.onsubmit = function ()
+    {  
+            var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resource', uploadFiles[0]);
+            }
+            data.append('targetId', parseInt(jobId));
+            data.append('sessionId', sessionId); 
+            data.append('comments', document.getElementById('comments').value);
+            addJobRequisitionAnnotation( 
+                data,
+                onSuccess,
+                onError); 
+        
+        return false;
+    };</script>
+
+</body>
+</html>

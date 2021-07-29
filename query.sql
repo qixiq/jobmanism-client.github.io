@@ -245,18 +245,18 @@ CREATE UNIQUE INDEX uq_JobRequisitionAnnotationsResources
 CREATE UNIQUE INDEX uq_JobRequisitionAnnotationsSequences
   ON [dbo].[JobRequisitionAnnotations](JobRequisitionId, Sequence);
 
-CREATE TABLE JobRequisitionProviderRequirements
+CREATE TABLE JobRequisitionConstraints
 (
+  JobRequisitionConstraintId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
   JobRequisitionId BIGINT NOT NULL,
-  Requirement VARCHAR(max) NOT NULL,
+  JobConstraint VARCHAR(max) NOT NULL,
   CONSTRAINT FK_PublishedJobRequisitions_JobRequisitionId FOREIGN KEY (JobRequisitionId)
   REFERENCES [dbo].[JobRequisitions] (JobRequisitionId)
   ON DELETE CASCADE
   ON UPDATE CASCADE 
 );
 
-CREATE UNIQUE INDEX uq_JobRequisitionProviderRequirements
-  ON [dbo].[JobRequisitionProviderRequirements](JobRequisitionId, Requirement);
+
 
 
 
