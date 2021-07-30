@@ -1,0 +1,80 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Student Subjects Management Page</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var armId = getQueryParameter('armId'); 
+        var levelId = getQueryParameter('levelId'); 
+        var studentId = getQueryParameter('studentId'); 
+        var classTeacherId = 0;
+        var itemsCount = 0;
+
+        function onGotSubjects(data){ 
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML = "<h2><strong>STUDENT SUBJECTS FOR :</strong></h2>"; 
+            var info = data.studentAndSubjects;
+            listDiv.innerHTML += '<p>' + info.studentFullName + '</p>';
+            listDiv.innerHTML += '<p>' + info.schoolName + ' , ' + info.level + info.arm +'</p>';
+            var subjects = info.subjects;
+            if(subjects.length == 0)
+            {
+                listDiv.innerHTML += '<p><strong>Could Not Find Any Student Subjects</strong ></p>';
+            }
+            else
+            {
+                subjects.forEach(appendStudentSubject); 
+            }
+             
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewStudentSubjects()">Add New Student Subjects ... </button><br /> ';  
+            
+        }
+  
+
+        function onError(details) {
+
+        }
+
+        function onRemoveStudentSubject(subjectId){ 
+            removeStudentSubject(studentId, armId, subjectId, init, onError);
+        }
+  
+
+        function appendStudentSubject(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SUBJECT ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>'+ item.name + '</label><br/>'; 
+            listDiv.innerHTML += '<button  onclick="onRemoveStudentSubject(\'' + item.id + '\')">Remove </button>&nbsp;&nbsp;'; 
+            
+        }
+ 
+
+        function addNewStudentSubjects() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-student-subjects.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&studentId=' + studentId;
+        }
+  
+
+        function goBackToSchoolLevelArmsPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arms.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId;
+        }
+
+        function init() {
+            getStudentSubjects(armId, studentId, onGotSubjects, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body> 
+  
+    <button onclick="goBackToSchoolLevelArmsPage()">Go back To School Level Arms Page</button><br/><br/>
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

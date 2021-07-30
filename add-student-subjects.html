@@ -1,0 +1,90 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Add Location Vendor Type</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');  
+        var schoolId = getQueryParameter('schoolId'); 
+        var levelId = getQueryParameter('levelId');
+        var armId = getQueryParameter('armId');
+        var studentId = getQueryParameter('studentId');
+
+        function onGotSubjectsNotAssignedToStudent(data){
+            var listDiv = document.getElementById('nameSpan'); 
+            var info = data.studentAndSubjects;
+            listDiv.innerHTML += '<p>' + info.studentFullName + '</p>';
+            listDiv.innerHTML += '<p>' + info.schoolName + ' , ' + info.level + info.arm +'</p>';
+            info.subjects.forEach(appendSubject);
+        }
+
+        function appendSubject(subject){
+            select = document.getElementById('subjects'); 
+            var opt = document.createElement('option');
+            opt.value = subject.id;
+            opt.innerHTML = subject.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Subjects";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-student-subjects.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&studentId=' + studentId;
+        }
+
+ 
+        function init() {
+            getSubjectsNotAssignedToStudent(armId, studentId, onGotSubjectsNotAssignedToStudent, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <h4>ADD NEW SUBJECTS FOR: </h4><br/><br/>
+    <div id="nameSpan"></div>
+    <form id="theForm"> 
+        
+        <label for="subjects">Choose Subjects to Add:</label><br/>
+
+        <select name="subjects" id="subjects" multiple> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    addStudentSubjects(
+        studentId,
+        armId,
+        getSelectValues(document.getElementById('subjects')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

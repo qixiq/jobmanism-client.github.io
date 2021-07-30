@@ -1324,6 +1324,11 @@ function getJobRequisitionDetails(jobId, onSuccess, onError){
     sendGetRequest('/getJobRequisition?sessionId=' + getQueryParameter('sessionId') + '&requisitionId=' + jobId, onSuccess, onError);
 }
 
+function getStudentSubjects(armId, studentId, onSuccess, onError)
+{
+    sendGetRequest('/getSubjectsForStudent?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId + '&studentId=' + studentId, onSuccess, onError);
+}
+
 function addJobRequisitionAnnotation( 
     data,
     onSuccess,
@@ -1331,4 +1336,50 @@ function addJobRequisitionAnnotation(
     {
         sendFormDataPostRequest(data, '/addAnnotationToJobRequisition', onSuccess, onError);
     }
+
+function getSubjectsNotAssignedToStudent(armId, studentId, onSuccess, onError){
+    sendGetRequest('/getSubjectsNotAssignedToStudent?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId + '&studentId=' + studentId, onSuccess, onError);
+    }
         
+
+    function addStudentSubjects(
+        studentId,
+        armId,
+        subjectIds,
+        onSuccess,
+        onError)
+        {
+            var subjects = [];
+            for(var i = 0; i < subjectIds.length; ++i){
+                subjects.push(
+                    {
+                        userId : parseInt(studentId),
+                        subjectId : subjectIds[i],
+                        armId : parseInt(armId)
+                    }
+                );
+            }
+            var data =
+            {
+                sessionId: sessionId, 
+                subjects: subjects
+            };
+        
+            sendJsonPostRequest(data, '/assignStudentsSubjects', onSuccess, onError);
+        }
+
+
+function removeStudentSubject(userId, armId, subjectId, onSuccess, onError){
+    var subjects = [{
+        userId : parseInt(userId),
+        subjectId : parseInt(subjectId),
+        armId : parseInt(armId)
+    }]; 
+    var data =
+    {
+        sessionId: sessionId, 
+        subjects: subjects
+    };
+
+    sendJsonPostRequest(data, '/deleteStudentsFromSubject', onSuccess, onError);
+}
