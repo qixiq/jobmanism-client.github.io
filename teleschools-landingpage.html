@@ -29,6 +29,14 @@
             listDiv.innerHTML += "<h2><strong>DEVICE TYPES</strong></h2>"; 
             data.items.forEach(appendDeviceType);   
             listDiv.innerHTML += '<br /> <br /> <button onclick="addNewDeviceType()">Add New Device Type ... </button><br /> ';
+            //
+            //
+            listDiv.innerHTML += "<h2><strong>SCHOOL CLUSTERING</strong></h2>"; 
+            listDiv.innerHTML += '<br /> <br /> <button onclick="clusterSchools()">Cluster Schools ... </button><br /> ';
+        }
+
+        function clusterSchools() {
+            document.location.href = getPathPrefix(document.location.href) + '/cluster-schools.html?sessionId=' + sessionId;
         }
 
         //schools

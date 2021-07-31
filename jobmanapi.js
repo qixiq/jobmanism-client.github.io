@@ -1329,6 +1329,37 @@ function getStudentSubjects(armId, studentId, onSuccess, onError)
     sendGetRequest('/getSubjectsForStudent?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId + '&studentId=' + studentId, onSuccess, onError);
 }
 
+function getSchoolLocations(onSuccess, onError){
+    sendGetRequest('/getSchoolLocations?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+}
+
+function getSchoolsByLocation(
+    country,
+    state,
+    county,
+    onSuccess,
+    onError)
+    {
+        var url = '/getSchools?sessionId=' + getQueryParameter('sessionId') + '&selector=';
+
+        if(country && country !== '')
+        {
+            url += 'country-' + encodeURIComponent(country);
+        }
+
+        if(state && state !== '')
+        {
+            url += ':state-' + encodeURIComponent(state);
+        }
+
+        if(county && county !== '')
+        {
+            url += ':county-' + encodeURIComponent(county);
+        }
+        sendGetRequest( url, onSuccess, onError)
+    }
+
+
 function addJobRequisitionAnnotation( 
     data,
     onSuccess,
