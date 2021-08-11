@@ -1,0 +1,72 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Update Menu Item Annotation</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = getQueryParameter('privileges');
+        var businessId = getQueryParameter('businessId'); 
+        var locationId = getQueryParameter('locationId'); 
+        var annotationId = getQueryParameter('annotationId'); 
+        var uploadFiles = [];
+
+        function onGotAnnotation(data){
+            document.getElementById('heading').innerHTML =  '<strong>UPDATE LOCATION ANNOTATION</strong>';
+            document.getElementById('comments').innerHTML =  data.annotation.comments;
+            document.getElementById('image').src = getResourceUrl(data.annotation.resourceId)
+            document.getElementById('picture-file').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+
+        }
+
+        function onError(details) {
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId + '&locationId=' + locationId;
+        }
+
+        function init() {
+            getBusinessLocationAnnotation(locationId, annotationId, onGotAnnotation, onError)
+
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p id="heading"></p><br />  
+        <label>&nbsp;&nbsp;&nbsp;Comments:&nbsp;</label><textarea id="comments"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Current Annotation:&nbsp;</label><img id="image"  ></img><br/> 
+        <label>&nbsp;&nbsp;&nbsp;Select New Annotation File File:&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <button type="submit">Update</button><br />
+    </form>
+    <br /><br />
+
+<script>
+    var form = document.getElementById('theForm');
+    form.onsubmit = function ()
+    {  
+            var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resource', uploadFiles[0]);
+            }
+            data.append('annotationId', parseInt(annotationId));
+            data.append('targetId', parseInt(locationId));
+            data.append('sessionId', sessionId); 
+            data.append('comments', document.getElementById('comments').value);
+            updateBusinessLocationAnnotation( 
+                data,
+                onSuccess,
+                onError); 
+        
+        return false;
+    };</script>
+
+</body>
+</html>

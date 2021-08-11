@@ -97,6 +97,7 @@
 
         //menuItems
         function editMenuItem(id) { 
+            document.location.href = getPathPrefix(document.location.href) + '/update-location-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&menuItemId=' + id+ '&privileges=' + privileges + '&locationId=' + locationId;
         }
 
         function onRemoveMenuItem(id) {
@@ -114,7 +115,7 @@
             pageContent += '<label>IsActive: ' + item.isActive + '</label><br/>';
             pageContent += '<p>' + item.description + '</p><br/>';
             pageContent += '<button  onclick="onRemoveMenuItem(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            pageContent += '<button  onclick = "editMenuItem(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;<br/><br/>';
+            pageContent += '<button  onclick = "editMenuItem(\'' + item.id + '\')" >Update ... </button >&nbsp;&nbsp;<br/><br/>';
             
         }
 
@@ -139,7 +140,7 @@
 
         //annotations
         function editLocationAnnotation(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-location-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId + '&annotationId=' + id+ '&privileges=' + privileges + '&locationId=' + locationId;
+            document.location.href = getPathPrefix(document.location.href) + '/update-location-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId + '&annotationId=' + id+ '&privileges=' + privileges + '&locationId=' + locationId;
         }
 
         function onRemoveLocationAnnotation(id) {
@@ -154,16 +155,16 @@
             pageContent += '<p>' + item.comments + '</p><br/>';
             if(item.resourceId > 0)
             {
-                pageContent += '<img  src="'+ getResourceUrl(item.resourceId) +'"</img><br/>';
+                pageContent += '<img  src="'+ getResourceUrl(item.resourceId) +'"></img><br/>';
             }
             pageContent += '<button  onclick="onRemoveLocationAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
-            pageContent += '<button  onclick = "editLocationAnnotation(\'' + item.annotationId + '\')" >Manage ... </button ><br/><br/>';
+            pageContent += '<button  onclick = "editLocationAnnotation(\'' + item.annotationId + '\')" >Update ... </button ><br/><br/>';
         }
  
 
         //operating Hours
         function editLocationOperatingHour(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-location-operating-hours.html?sessionId=' + sessionId + '&businessId=' + businessId + '&hoursId=' + id+ '&privileges=' + privileges + '&locationId=' + locationId;
+            document.location.href = getPathPrefix(document.location.href) + '/update-location-operating-hours.html?sessionId=' + sessionId + '&businessId=' + businessId + '&hoursId=' + id+ '&privileges=' + privileges + '&locationId=' + locationId;
         }
 
         function onRemoveLocationOperatingHour(id) {
@@ -177,7 +178,7 @@
             pageContent  += '</strong ></p>'; 
             pageContent += '<p><strong>' + getDayOfWeekName(item.dayOfWeek) + ',&nbsp;</strong>' + getTwoDigitPaddedNumber(item.open.hour) + ':' + getTwoDigitPaddedNumber(item.open.minute) + '&nbsp;HRS - ' + getTwoDigitPaddedNumber(item.close.hour) + ':' + getTwoDigitPaddedNumber(item.close.minute) + '&nbsp;HRS<br/> <br/>';
             pageContent += '<button  onclick="onRemoveLocationOperatingHour(\'' + item.operatingHoursId + '\')">Remove</button>&nbsp;&nbsp;';
-            pageContent += '<button  onclick = "editLocationOperatingHour(\'' + item.operatingHoursId + '\')" >Manage ... </button ><br/><br/>';
+            pageContent += '<button  onclick = "editLocationOperatingHour(\'' + item.operatingHoursId + '\')" >Update ... </button ><br/><br/>';
         }
 
         //

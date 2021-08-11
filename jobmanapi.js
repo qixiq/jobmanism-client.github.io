@@ -1455,3 +1455,42 @@ function updateBusinessLocationAddress(
         } 
         sendJsonPostRequest(data, '/updateBusinessLocationAddress', onSuccess, onError);
     }
+
+
+ 
+function getBusinessLocationAnnotation(locationId, annotationId, onSuccess, onError){
+    sendGetRequest('/getBusinessLocationAnnotation?sessionId=' + getQueryParameter('sessionId') + '&annotationId=' + annotationId + '&locationId=' + locationId, onSuccess, onError);
+}
+
+function updateBusinessLocationAnnotation( 
+            data,
+            onSuccess,
+            onError){
+                sendFormDataPostRequest(data, '/updateBusinessLocationAnnotation', onSuccess, onError);
+
+            }
+
+function getBusinessAnnotation(businessId, annotationId, onSuccess, onError){
+    sendGetRequest('/getBusinessAnnotation?sessionId=' + getQueryParameter('sessionId') + '&annotationId=' + annotationId + '&businessId=' + businessId, onSuccess, onError);
+}
+            
+function updateBusinessAnnotation( 
+                data,
+                onSuccess,
+                onError)
+                {
+                    sendFormDataPostRequest(data, '/updateBusinessAnnotation', onSuccess, onError);
+                }
+
+
+function getMenuItemAnnotation(menuItemId, annotationId, onSuccess, onError){
+    sendGetRequest('/getMenuItemAnnotation?sessionId=' + getQueryParameter('sessionId') + '&annotationId=' + annotationId + '&menuItemId=' + menuItemId, onSuccess, onError);
+}
+
+function updateMenuItemAnnotation( 
+                    data,
+                    onSuccess,
+                    onError)
+                    {
+                        sendFormDataPostRequest(data, '/updateMenuItemAnnotation', onSuccess, onError);
+                    }
