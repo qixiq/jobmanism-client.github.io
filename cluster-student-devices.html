@@ -1,0 +1,149 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Cluster Schools</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');  
+        var schoolCountries ; 
+        var schoolStates;
+        var initDone = false; 
+        var itemsCount = 0;
+
+        function onGotSchoolLocations(data){
+            schoolCountries = data.schoolCountries;
+            data.schoolCountries.forEach(appendCountry);
+            initDone = true;
+            document.getElementById('countries').selectedIndex = 0;
+            onCountryChanged();
+        }
+
+        function appendCountry(country){
+            select = document.getElementById('countries'); 
+            var opt = document.createElement('option');
+            opt.value = country.country;
+            opt.innerHTML = country.country;
+            select.appendChild(opt);
+        }
+
+        function appendState(state){
+            select = document.getElementById('states'); 
+            var opt = document.createElement('option');
+            opt.value = state.state;
+            opt.innerHTML = state.state;
+            select.appendChild(opt);
+        }
+
+        function appendLocalGovernment(lg){
+            select = document.getElementById('lgs'); 
+            var opt = document.createElement('option');
+            opt.value = lg.localGovernment;
+            opt.innerHTML = lg.localGovernment;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = '';
+            data.items.forEach(appendSchool);
+        }
+
+        function appendSchool(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>SCHOOL ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            
+        }
+ 
+        function onError(details) {
+            document.getElementById('itemsList').innerHTML = "Error Arm Student Devices";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/teleschools-landingpage.html?sessionId=' + sessionId ;
+        }
+
+        function onCountryChanged(){
+
+            if(!initDone){
+                return;
+            }
+            
+            var selected = document.getElementById('countries').value;
+            var statesElem = document.getElementById('states');
+            statesElem.length = 0;
+            appendState({state : ''});
+            for(var i = 0; i < schoolCountries.length; ++i)
+            {
+                if(schoolCountries[i].country == selected)
+                {
+                    schoolStates = schoolCountries[i].schoolStates;
+                    schoolCountries[i].schoolStates.forEach(appendState);
+                    break;
+                }
+            }
+
+            onStateChanged();
+
+        }
+
+        function onStateChanged(){
+
+            if(!initDone){
+                return;
+            }
+
+            var selected = document.getElementById('states').value;
+            var lgsElem = document.getElementById('lgs');
+            lgsElem.length = 0;
+            appendLocalGovernment({localGovernment : ''});
+            for(var i = 0; i < schoolStates.length; ++i)
+            {
+                if(schoolStates[i].state == selected)
+                {
+                    schoolStates[i].schoolLocalGovernments.forEach(appendLocalGovernment);
+                    break;
+                }
+            } 
+
+        }
+
+ 
+        function init() {
+            getSchoolLocations(onGotSchoolLocations, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <h4>SELECT CLUSTERING CRITERIA: </h4><br/><br/>
+    <div id="nameSpan"></div>
+    <form id="theForm"> 
+        
+        <label for="subjects">Country:</label><select name="countries" id="countries" onchange="onCountryChanged()">  </select>&nbsp;&nbsp;
+        <label for="states">State:</label><select name="states" id="states" onchange="onStateChanged()">  </select>&nbsp;&nbsp;
+        <label for="states">Local Government:</label><select name="lgs" id="lgs" >  </select><br/><br/>
+        <br/><br/>
+        <button type="submit">Cluster</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList"></div>
+    
+    <script> 
+    document.getElementById('theForm').onsubmit = function () {
+        
+    getSchoolsByLocation(
+        document.getElementById('countries').value,
+        document.getElementById('states').value,
+        document.getElementById('lgs').value,
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

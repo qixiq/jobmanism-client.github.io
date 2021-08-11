@@ -1414,3 +1414,44 @@ function removeStudentSubject(userId, armId, subjectId, onSuccess, onError){
 
     sendJsonPostRequest(data, '/deleteStudentsFromSubject', onSuccess, onError);
 }
+
+
+function getBusinessLocationPhoneNumber(locationId, phoneNumberId, onSuccess, onError){
+    sendGetRequest('/getBusinessLocationPhoneNumber?sessionId=' + getQueryParameter('sessionId') + '&phoneNumberId=' + phoneNumberId + '&locationId=' + locationId, onSuccess, onError);
+} 
+
+ 
+function updateBusinessLocationPhoneNumber(
+phoneNumber,
+locationId,
+        onSuccess,
+        onError)
+        {
+            var data =
+            {
+                phoneNumber: phoneNumber,
+                targetId : parseInt(locationId),
+                sessionId : getQueryParameter('sessionId')
+            } 
+            sendJsonPostRequest(data, '/updateBusinessLocationPhoneNumber', onSuccess, onError);
+        }
+
+
+function getBusinessLocationAddress(locationId, addressId, onSuccess, onError) {
+    sendGetRequest('/getBusinessLocationAddress?sessionId=' + getQueryParameter('sessionId') + '&addressId=' + addressId + '&locationId=' + locationId, onSuccess, onError);
+        }
+
+ 
+function updateBusinessLocationAddress(
+    address,
+    locationId,
+    onSuccess,
+    onError){
+        var data =
+        {
+            address: address,
+            targetId : parseInt(locationId),
+            sessionId : getQueryParameter('sessionId')
+        } 
+        sendJsonPostRequest(data, '/updateBusinessLocationAddress', onSuccess, onError);
+    }

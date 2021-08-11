@@ -1,0 +1,86 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Update User Address</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');
+        var addressId = getQueryParameter('addressId');
+        var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges');
+        var locationId = getQueryParameter('locationId');
+
+        var addressCount = 0;
+
+        function onGotAddress(data) { 
+            var address = data.nameAndAddress.address;
+            document.getElementById('street-1').value = address.streetLine1;
+            document.getElementById('street-2').value = address.streetLine2;
+            document.getElementById('street-number').value = address.streetNumber;
+            document.getElementById('addr-city').value = address.city;
+            document.getElementById('addr-state').value = address.state;
+            document.getElementById('addr-country').value = address.country;
+            document.getElementById('addr-gps').value = address.gpsLocation;
+            document.getElementById('addr-post-code').value = address.postalCode;
+            document.getElementById('addr-county').value = address.county; 
+            document.getElementById('userName').innerHTML = data.nameAndAddress.businessAndLocationName;           
+        }
+ 
+
+        function onError(details) {
+
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId;
+        }
+
+        function init() { 
+            getBusinessLocationAddress(locationId, addressId, onGotAddress, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go back To Business Location</button><br/><br/>
+    <form id="theForm">
+        <p><strong>UPDATE ADDRESS FOR </strong> for <span id="userName"></span></p><br />
+        <label><strong>Update Address:&nbsp;</strong></label><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line1:&nbsp;</label><input id="street-1" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Street Line2:&nbsp;</label><input id="street-2" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Number:&nbsp;</label><input id="street-number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;City:&nbsp;</label><input id="addr-city" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;County:&nbsp;</label><input id="addr-county" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Province Or State:&nbsp;</label><input id="addr-state" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Country:&nbsp;</label><input id="addr-country" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;GPS Co-ordinates:&nbsp;</label><input id="addr-gps" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Postal Code:&nbsp;</label><input id="addr-post-code" type="text" /><br /><br />
+        <button type="submit">Update</button><br />
+    </form>
+    <br /><br />
+
+    </div> 
+    <script>document.getElementById('theForm').onsubmit = function () {
+    var address =
+    {
+        addressId : parseInt(addressId),
+        streetLine1 : document.getElementById('street-1').value,
+        streetLine2 : document.getElementById('street-2').value,
+        streetNumber : document.getElementById('street-number').value,
+        city : document.getElementById('addr-city').value,
+        state: document.getElementById('addr-state').value,
+        country : document.getElementById('addr-country').value,
+        gpsLocation : document.getElementById('addr-gps').value,
+        postalCode : document.getElementById('addr-post-code').value,
+        county : document.getElementById('addr-county').value
+    };
+    updateBusinessLocationAddress(
+        address,
+        locationId,
+        goBack,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

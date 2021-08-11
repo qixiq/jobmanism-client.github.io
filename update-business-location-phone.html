@@ -1,0 +1,69 @@
+ <html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Jobman Phone Management Page</title>
+    <script>var userName = getQueryParameter('userName'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var phoneNumberId = getQueryParameter('phoneNumberId'); 
+        var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges');
+        var locationId = getQueryParameter('locationId');
+
+        function onSuccess(data) {
+            var phone = data.nameAndPhoneNumber.phoneNumber;
+            document.getElementById('userName').innerHTML = data.nameAndPhoneNumber.businessAndLocationName;
+            document.getElementById('ctry-code').value = phone.countryCode;
+            document.getElementById('number').value = phone.numberText;
+            document.getElementById('features').value = phone.features;
+            document.getElementById('type').value = phone.type; 
+
+        }
+
+
+        function onError(details) {
+
+        }
+
+        function goBack () {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId;
+        }
+
+        function init() { 
+            getBusinessLocationPhoneNumber(locationId, phoneNumberId, onSuccess, onError)
+        }
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <button onclick="goBack()">Go back To Business Location</button><br /><br />
+    <form id="theForm">
+        <p><strong>UPDATE PHONE NUMBER </strong> for <span id="userName"></span></p><br />
+        <label>&nbsp;&nbsp;&nbsp;Country Code:&nbsp;</label><input id="ctry-code" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Number:&nbsp;</label><input id="number" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Features:&nbsp;</label><input id="features" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Phone Type:&nbsp;</label><input id="type" type="text" /><br /><br />
+        <button type="submit">Update</button><br />
+    </form>
+    <br /><br />
+    <div id="phoneNumberList">
+
+    </div>
+    <script>document.getElementById('theForm').onsubmit = function () {
+            var phoneNumber =
+            {
+                phoneNumberId : parseInt(phoneNumberId),
+                countryCode : document.getElementById('ctry-code').value,
+                numberText : document.getElementById('number').value,
+                features: document.getElementById('features').value,
+                type : document.getElementById('type').value 
+            };
+    updateBusinessLocationPhoneNumber(
+        phoneNumber,
+        locationId,
+                goBack,
+                onError);
+            return false;
+        };</script>
+
+</body>
+</html>

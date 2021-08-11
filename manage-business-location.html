@@ -70,11 +70,11 @@
         }
 
         function onUpdateAddress(id){
-
+            document.location.href = getPathPrefix(document.location.href) + '/update-business-location-address.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId + '&addressId=' + id; 
         }
 
         function onUpdatePhoneNumber(id){
-            
+            document.location.href = getPathPrefix(document.location.href) + '/update-business-location-phone.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&locationId=' + locationId + '&phoneNumberId=' + id; 
         }
 
         function onAddOperatingHous(){

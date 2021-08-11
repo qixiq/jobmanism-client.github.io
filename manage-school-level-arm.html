@@ -31,6 +31,7 @@
             }
              
             listDiv.innerHTML += '<br /> <br /> <button onclick="addNewStudents()">Add New Students ... </button><br /> '; 
+            listDiv.innerHTML += '<br /> <br /> <button onclick="clusterStudentDevices()">Cluster Student Devices ... </button><br /> '; 
             getClassTeacherForLevelArm(armId, onGotClassTeacher, onError); 
         }
 
@@ -134,6 +135,10 @@
             listDiv.innerHTML += '<button  onclick="onManageStudentSubjects(\'' + item.userId + '\')">Manage Subjects ...</button>&nbsp;&nbsp'; 
             listDiv.innerHTML += '<button  onclick="onManageDevices(\'' + item.userId + '\')">Manage Devices ...</button><br/><br/>';
             
+        }
+
+        function clusterStudentDevices(){
+            document.location.href = getPathPrefix(document.location.href) + '/cluster-student-devices.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
         }
 
         function addNewStudents() {
