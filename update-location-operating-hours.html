@@ -7,7 +7,26 @@
         var privileges = getQueryParameter('privileges');
         var businessId = getQueryParameter('businessId'); 
         var locationId = getQueryParameter('locationId');  
+        var operatingHoursId = getQueryParameter('operatingHoursId');
+        var dayOfWeek;
         
+
+        function onGotHours(data){
+            document.getElementById('heading').innerHTML =  '<strong>UPDATE LOCATION BUSINESS HOURS</strong>';
+            populateHours('openHour');
+            populateHours('closeHour');
+            populateMinutes('openMinute');
+            populateMinutes('closeMinute');
+
+            document.getElementById('openHour').selectedIndex = data.operatingHours.open.hour;
+            document.getElementById('closeHour').selectedIndex = data.operatingHours.close.hour;
+            document.getElementById('openMinute').selectedIndex = data.operatingHours.open.minute;
+            document.getElementById('closeMinute').selectedIndex = data.operatingHours.close.minute;
+            document.getElementById('dayOfWeek').innerHTML = getDayOfWeekName(data.operatingHours.dayOfWeek);
+            dayOfWeek = data.operatingHours.dayOfWeek;
+
+
+        }
 
         function onError(details) {
 
@@ -39,18 +58,8 @@
             }
         } 
 
-        function populateAmPm(select){
-            appendSelect(select, 0, 'AM');
-            appendSelect(select, 1, 'PM');
-        }
-
         function init() {
-            document.getElementById('heading').innerHTML =  '<strong>ADD NEW BUSINESS HOURS TO LOCATION</strong>';
-            populateHours('openHour');
-            populateHours('closeHour');
-            populateMinutes('openMinute');
-            populateMinutes('closeMinute');
-
+            getLocationBusinessHoursForSingleDay(locationId, operatingHoursId, onGotHours, onError);
         }
 
         window.addEventListener('load', init);</script>
@@ -59,21 +68,12 @@
 </head>
 <body> 
     <form id="theForm">
+        <button onclick="onSuccess()">Go Back</button><br/><br/>
         <p id="heading"></p><br />   
-        <label for="days">Choose Days For Which Operating Hours Should Be Added:</label><br/>
-
-        <select name="days" id="days" multiple> 
-            <option value="0">Sunday</option>
-            <option value="1">Monday</option>
-            <option value="2">Tuesday</option>
-            <option value="3">Wednesday</option>
-            <option value="4">Thursday</option>
-            <option value="5">Friday</option>
-            <option value="6">Saturday</option>
-        </select><br/><br/>
+        <div>Change Business Hours For <span id="dayOfWeek"></span></div><br/>
         <label>Open : &nbsp;&nbsp;</label><select id="openHour"></select>:<select id="openMinute"></select>&nbsp;HRS<br/><br/>
         <label>Close : &nbsp;&nbsp;</label><select id="closeHour"></select>:<select id="closeMinute"></select>&nbsp;HRS<br/><br/>
-        <button type="submit">Add</button><br />
+        <button type="submit">Update</button><br />
         <div id="errorDiv"></div>
     </form>
     <br /><br />
@@ -94,30 +94,12 @@
         return 0;
         }
 
-    function getSelectValues(select) {
-        var result = [];
-        var options = select && select.options;
-        var opt;
-
-        for (var i=0, iLen=options.length; i<iLen; i++) {
-            opt = options[i];
-
-            if (opt.selected) {
-            result.push(parseInt(opt.value));
-            }
-        }
-        return result;
-        }
 
     var form = document.getElementById('theForm');
     form.onsubmit = function ()
     {  
         onError('');
-        var days = getSelectValues(document.getElementById('days'));
-        if(days.length == 0)
-        {
-            onSuccess();
-        }
+  
 
         var open = getSelectedValue(document.getElementById('openHour')) * 100 + getSelectedValue(document.getElementById('openMinute')) ;
         var close = getSelectedValue(document.getElementById('closeHour')) * 100 + getSelectedValue(document.getElementById('closeMinute')) ;
@@ -126,19 +108,17 @@
             onError('Invalid Operating Hours');
             return false;
         }
-        var hours = [];
 
-        for(var i = 0; i < days.length; ++i){
-            hours.push({ dayOfWeek : days[i], open : {hour : parseInt((open/100).toString()) , minute : open % 100} , close : { hour : parseInt((close/100).toString()) , minute : close%100 }});
-
-        }
         
             var data = {
                 sessionId : sessionId,
                 targetId : parseInt(locationId),
-                operatingHours : hours
+                operatingHoursId : parseInt(operatingHoursId),
+                dayOfWeek : dayOfWeek, 
+                open : {hour : parseInt((open/100).toString()) , minute : open % 100} , 
+                close : { hour : parseInt((close/100).toString()) , minute : close%100 }
             }
-            addLocationOperatingHours( 
+            updateBusinessHoursAtLocation( 
                 data,
                 onSuccess,
                 onError); 

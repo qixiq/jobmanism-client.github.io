@@ -1494,3 +1494,15 @@ function updateMenuItemAnnotation(
                     {
                         sendFormDataPostRequest(data, '/updateMenuItemAnnotation', onSuccess, onError);
                     }
+
+function  getLocationBusinessHoursForSingleDay(locationId, operatingHoursId, onSuccess, onError){
+    sendGetRequest('/getLocationBusinessHoursForSingleDay?sessionId=' + getQueryParameter('sessionId') + '&operatingHoursId=' + operatingHoursId + '&locationId=' + locationId, onSuccess, onError);
+}
+
+function updateBusinessHoursAtLocation( 
+    data,
+    onSuccess,
+    onError) 
+    {
+        sendJsonPostRequest(data, '/updateBusinessHoursAtLocation', onSuccess, onError);
+    }
