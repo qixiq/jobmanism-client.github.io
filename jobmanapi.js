@@ -1506,3 +1506,16 @@ function updateBusinessHoursAtLocation(
     {
         sendJsonPostRequest(data, '/updateBusinessHoursAtLocation', onSuccess, onError);
     }
+
+    function getLocationMenuItem(menuItemId, locationId, onSuccess, onError){
+        sendGetRequest('/getLocationMenuItem?sessionId=' + getQueryParameter('sessionId') + '&locationId=' + locationId + '&menuItemId=' + menuItemId, onSuccess, onError);
+    }
+
+function updateMenuItemAtLocation(
+        data,
+
+        onSuccess,
+        onError)
+        {
+            sendJsonPostRequest(data, '/updateMenuItemAtLocation', onSuccess, onError);
+        }

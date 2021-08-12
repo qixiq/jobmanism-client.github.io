@@ -7,15 +7,22 @@
         var businessId = getQueryParameter('businessId'); 
         var privileges = getQueryParameter('privileges');
         var locationId = getQueryParameter('locationId');
+        var menuItemId = getQueryParameter('menuItemId');
 
 
+        function onGotLocationMenuItem(data){
+            document.getElementById('menuName').innerHTML = data.menuItem.name;
+            document.getElementById('price').value = data.menuItem.price;
+            document.getElementById('active').checked = data.menuItem.isActive;
+
+        }
 
         function onSuccess(data) { 
-            goBack();
+             goBack();
         }
  
         function onError(details) {
-            document.getElementById('errorDiv').innerHTML = "Error Adding Menu Item";
+            document.getElementById('errorDiv').innerHTML = "Error Updating Menu Item";
         }
 
         function goBack() {
@@ -24,7 +31,7 @@
 
  
         function init() {
-            getLocationMenuItem(businessId, locationId, onGotMenuItemsNotAvailableInLocation, onError)
+            getLocationMenuItem(menuItemId, locationId, onGotLocationMenuItem, onError)
         }
 
         window.addEventListener('load', init);
@@ -33,9 +40,10 @@
 <body>
     <button onclick="goBack()">Go Back</button><br/><br/>
     <form id="theForm"> 
+        <div>Update Price and(or) Availability of <span id="menuName"></span></div>
         <label>Price  :&nbsp;&nbsp;</label><input id="price" type="number"></input><br/><br/>
         <label>Active  :&nbsp;&nbsp;</label><input id="active" type="checkbox"></input><br/><br/>
-        <button type="submit">Add</button><br />
+        <button type="submit">Update</button><br />
     </form>
     <br /><br />
     <div id="errorDiv"></div>
@@ -57,17 +65,17 @@
         }
     document.getElementById('theForm').onsubmit = function () {
         
-        var menuItemInfos = [{
-            menuItemId : getSelectValues(document.getElementById('menuItems')),
+        var menuItemInfo  = {
+            menuItemId : parseInt(menuItemId),
             price : parseFloat(document.getElementById('price').value),
             isActive : document.getElementById('active').checked
 
-        }];
-    addMenuItemToLocation(
+        };
+        updateMenuItemAtLocation(
         {
             sessionId : sessionId,
             locationId : parseInt(locationId),
-            items : menuItemInfos
+            itemInfo : menuItemInfo 
         },
 
         onSuccess,
