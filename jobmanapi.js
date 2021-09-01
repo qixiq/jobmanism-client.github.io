@@ -1519,3 +1519,34 @@ function updateMenuItemAtLocation(
         {
             sendJsonPostRequest(data, '/updateMenuItemAtLocation', onSuccess, onError);
         }
+
+function addAdditionalMenuItemCategoryToMenuItem(
+            menuItemId,
+            categories,
+            onSuccess,
+            onError)
+            {
+                var data =
+                {
+                    sessionId: getQueryParameter('sessionId'), 
+                    itemIds: categories,
+                    targetId : parseInt(menuItemId)
+                };
+
+                sendJsonPostRequest(data, '/addAdditionalMenuItemCategoryToMenuItem', onSuccess, onError);
+            }
+
+function getMenuItemCategoriesToWhichMenuItemDoesNotBelong(menuItemId, onSuccess, onError){
+    sendGetRequest('/getMenuItemCategoriesToWhichMenuItemDoesNotBelong?sessionId=' + getQueryParameter('sessionId') + '&menuItemId=' + menuItemId, onSuccess, onError);
+}
+function removeMenuItemAdditionalCategory(sessionId, menuItemId, id, onSuccess, onError)
+{
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(menuItemId)
+    };
+
+    sendJsonPostRequest(data, '/deleteAdditionalMenuItemCategoriesFromMenuItem', onSuccess, onError);
+}

@@ -23,6 +23,11 @@
             menuItem.annotations.forEach(appendAnnotation); 
             document.getElementById('content').innerHTML += '<br/><br/><button onclick="addMenuItemAnnotation()">Add Menu Item Annotation ...</button><br/><br/>';
 
+            itemsCount = 0;
+            document.getElementById('content').innerHTML += '<p><strong> ADDITIONAL CATEGORIES </strong></p><br/>'; 
+            menuItem.additionalCategories.forEach(appendAdditionalCategory); 
+            document.getElementById('content').innerHTML += '<br/><br/><button onclick="addAdditionalMenuItemCategories()">Add Additional Menu Item Categories ...</button><br/><br/>';
+
         }
          
 
@@ -38,6 +43,11 @@
             removeMenuItemAnnotation(sessionId, menuItemId, id, init, onError);
         }
 
+        function onRemoveMenuItemAdditionalCategory(menuItemId, id){
+            removeMenuItemAdditionalCategory(sessionId, menuItemId, id, init, onError);
+
+        }            
+
    
         function appendAnnotation(item) {
             itemsCount++;
@@ -52,6 +62,17 @@
             listDiv.innerHTML += '<button  onclick="onRemoveMenuItemAnnotation(\'' + item.annotationId + '\')">Remove</button>&nbsp;&nbsp;';
             listDiv.innerHTML += '<button  onclick = "editMenuItemAnnotation(\'' + item.annotationId + '\')" >Manage ... </button ><br/><br/>';
         }
+
+
+        function appendAdditionalCategory(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('content');
+            listDiv.innerHTML += '<p><strong>ADDITIONAL MENU ITEM CATEGORY ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemoveMenuItemAdditionalCategory(\'' + menuItemId + '\', \' ' + item.id + ' \')">Remove</button>&nbsp;&nbsp;';
+        }
  
 
 
@@ -59,6 +80,10 @@
 
         }
  
+
+        function addAdditionalMenuItemCategories(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-additional-menu-item-categories.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges + '&menuItemId=' + menuItemId;
+        }
 
         function addMenuItemAnnotation() {
             document.location.href = getPathPrefix(document.location.href) + '/add-menu-item-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges + '&menuItemId=' + menuItemId;

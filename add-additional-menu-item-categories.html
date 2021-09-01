@@ -1,0 +1,82 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Add Location Vendor Type</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges');
+        var menuItemId = getQueryParameter('menuItemId');
+
+        function onGetMenuItemCategoriesToWhichMenuItemDoesNotBelong(data){
+            data.items.forEach(appendMenuitemCategory);
+        }
+
+        function appendMenuitemCategory(menuItemCategory){
+            select = document.getElementById('menuItemCategories'); 
+            var opt = document.createElement('option');
+            opt.value = menuItemCategory.id;
+            opt.innerHTML = menuItemCategory.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Menu Item Categories";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges + '&menuItemId=' + menuItemId;
+        }
+
+ 
+        function init() {
+           getMenuItemCategoriesToWhichMenuItemDoesNotBelong(menuItemId, onGetMenuItemCategoriesToWhichMenuItemDoesNotBelong, onError)
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <form id="theForm"> 
+        
+        <label for="menuItemCategories">Choose Menu Item Categories to Add:</label><br/>
+
+        <select name="menuItemCategories" id="menuItemCategories" multiple> 
+        </select><br/><br/>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script>
+      function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+    document.getElementById('theForm').onsubmit = function () {
+        
+    addAdditionalMenuItemCategoryToMenuItem(
+        menuItemId,
+        getSelectValues(document.getElementById('menuItemCategories')),
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>
