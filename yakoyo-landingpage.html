@@ -9,12 +9,25 @@
         var userName = getQueryParameter('userName');
         var itemsCount = 0;
 
+        function onGotPaymentMethodTypes(data){ 
+            itemsCount = 0; 
+            document.getElementById('itemsList').innerHTML += "<p><strong>PAYMENT METHOD TYPES</strong></p><br/><br/>"; 
+            data.items.forEach(appendPaymentMethodType);   
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addPaymentMethodType()">Add New Payment Method  Type ... </button><br /><br /> '; 
+        }
+
+
         function onGotDigitalAssetTypes(data){ 
             itemsCount = 0; 
             document.getElementById('itemsList').innerHTML += "<p><strong>DIGITAL ASSET TYPES</strong></p><br/><br/>"; 
             data.assetTypes.forEach(appendDigitalAssetType);   
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAssetType()">Add New Digital Asset Type ... </button><br /><br /> ';
 
+            if((privileges & 1) != 0 || (privileges & 8) != 0)
+            {
+                //get Payment Method Types
+                getPaymentMethodTypes(onGotPaymentMethodTypes, onError); 
+            }
         }
 
 
@@ -100,6 +113,14 @@
             removeDigitalAssetType(sessionId, id, init, onError);
         }
 
+        function editPaymentMethodType(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-payment-method-type.html?sessionId=' + sessionId + '&paymentMethodTypeId=' + id+ '&privileges=' + privileges;
+        }
+
+        function onRemovePaymentMethodType(id) {
+            removePaymentMethodType(sessionId, id, init, onError);
+        }
+
         function appendFoodAndDrinkVendorType(item){
             itemsCount++;
             var listDiv = document.getElementById('itemsList');
@@ -120,6 +141,17 @@
             listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
             listDiv.innerHTML += '<button  onclick="onRemoveMenuItemCategory(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
             listDiv.innerHTML += '<button  onclick = "editMenuItemCategory(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+        }
+
+        function appendPaymentMethodType(item){
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>PAYMENT METHOD ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
+            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
+            listDiv.innerHTML += '<button  onclick="onRemovePaymentMethodType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editPaymentMethodType(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
         }
 
         function appendDigitalAssetType(item){
@@ -153,6 +185,10 @@
 
         function onError(details) {
 
+        }
+
+        function addPaymentMethodType(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-payment-method-type.html?sessionId=' + sessionId + '&privileges=' + privileges;
         }
 
         function addNewVendorBusiness() {

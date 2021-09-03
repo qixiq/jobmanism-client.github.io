@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add New Payment Method Type</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = getQueryParameter('privileges'); 
+ 
+
+        function onError(details) {
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+
+        function init() {
+            document.getElementById('heading').innerHTML =  '<strong>ADD NEW PAYMENT METHOD TYPE </strong>'
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p id="heading"></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br />
+        <label>&nbsp;&nbsp;&nbsp;Description:&nbsp;</label><textarea id="description" rows="10" cols="80"></textarea><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Specification:&nbsp;</label><textarea id="specification" rows="20" cols="80"></textarea><br /><br /> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList">
+
+    </div>
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () {
+            var t = document.getElementById('type');
+            var data = {
+                sessionId: sessionId,
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                specification: document.getElementById('specification').value
+            };  
+            addPaymentMethodType( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

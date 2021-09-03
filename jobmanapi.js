@@ -1550,3 +1550,26 @@ function removeMenuItemAdditionalCategory(sessionId, menuItemId, id, onSuccess, 
 
     sendJsonPostRequest(data, '/deleteAdditionalMenuItemCategoriesFromMenuItem', onSuccess, onError);
 }
+
+function getPaymentMethodTypes(onSuccess, onError){
+    sendGetRequest('/getPaymentMethodTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+}
+
+function addPaymentMethodType( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addPaymentMethodType', onSuccess, onError);
+    }
+
+function removePaymentMethodType(sessionId, id, onSuccess, onError){
+
+    var data =
+    {
+        sessionId: getQueryParameter('sessionId'), 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deletePaymentMethodTypes', onSuccess, onError);
+
+}
