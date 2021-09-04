@@ -210,10 +210,15 @@
             getBusinesses('', onGotBusinesses, onError);
         }
 
+        function showUserPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-user-page.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+
         window.addEventListener('load', init);</script>
 </head>
 <body>
     <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
+    <button  onclick="showUserPage()">Go to User Page</button>
     <br /><br />
     <div id="itemsList">
 

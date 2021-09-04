@@ -1,0 +1,105 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Add Menu Item</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = getQueryParameter('privileges');
+        var businessId = getQueryParameter('businessId'); 
+        var specs = {}; 
+        var fields = {};
+ 
+
+        function onError(details) {
+
+        }
+
+        function onGotAddPaymentMethodInfo(data){
+
+            document.getElementById('busName').innerHTML = data.info.ownerName;
+            data.info.availablePaymentMethods.forEach(appendPaymentMethodType);
+            document.getElementById('paymentMethodTypes').selectedIndex = 0;
+            onPaymentMethodTypeChanged();
+        }
+
+        function appendPaymentMethodType(paymentMethodType){ 
+            var el = document.createElement("option");
+            el.textContent = paymentMethodType.name;
+            el.value = paymentMethodType.id;
+            document.getElementById('paymentMethodTypes').appendChild(el); 
+            specs[paymentMethodType.id] = paymentMethodType.specification;
+
+        }
+
+        function onPaymentMethodTypeChanged(){
+            var spec = specs[document.getElementById('paymentMethodTypes').value];
+
+            var obj = JSON.parse(spec);
+            document.getElementById('paymentFields').innerHTML = '';
+            fields = {};
+            console.log("Payment Mehtod type changed, new spec is -> " );
+            console.log( obj);
+            obj.forEach(appendFieldEntry)
+
+        }
+
+        function appendFieldEntry(fieldDesc){
+            var fieldId = 'paymentFields' + fieldDesc.name ;
+            fields[fieldId] = fieldDesc.name;
+            document.getElementById('paymentFields').innerHTML += '<label>&nbsp;&nbsp;&nbsp;' + fieldDesc.label + ' :&nbsp;</label><input id="' + fieldId + '" type="text" /><br /><br /> ';
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges + '&businessId=' + businessId;
+        }
+
+        function init() { 
+            getAddPaymentMethodInitInfoForBusiness(businessId, onGotAddPaymentMethodInfo, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <form id="theForm">
+        <p ><strong>ADD NEW PAYMENT METHOD for <span id="busName"></span></strong></p><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Name:&nbsp;</label><input id="name" type="text" /><br /><br /> 
+        <label>&nbsp;&nbsp;&nbsp;Payment Method Type:&nbsp;</label><select id="paymentMethodTypes" onchange="onPaymentMethodTypeChanged()"></select><br /><br /> 
+        <div id="paymentFields"></div>
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <script>var form = document.getElementById('theForm');
+        form.onsubmit = function () { 
+
+            var values = [];
+
+            for (const key in fields) {
+                 var name = fields[key];
+                 var value = document.getElementById(key).value;
+
+                 values.push(
+                     { name: name, value: value}
+                 );
+            }
+            var data = {
+                sessionId: sessionId,
+                paymentMethodTypeId : parseInt(document.getElementById('paymentMethodTypes').value),
+                ownerId : parseInt(businessId),
+                name: document.getElementById('name').value,
+                fields: JSON.stringify(values)
+            };  
+            addBusinessPaymentMethod( 
+                data,
+                onSuccess,
+                onError);
+            
+
+            return false;
+        };
+    </script>
+
+</body>
+</html>

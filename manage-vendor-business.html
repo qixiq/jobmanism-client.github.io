@@ -30,6 +30,10 @@
             document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' ANNOTATIONS </strong></p><br/>'; 
             data.business.annotations.forEach(appendAnnotation); 
             document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addAnnotation()">Add New Annotation ...</button><br/><br/>'; 
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML += '<p><strong>' + businessName + ' PAYMENT METHODS </strong></p><br/>'; 
+            data.business.paymentMethods.forEach(appendPaymentMethod); 
+            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addPaymentMethod()">Add New Payment Method ...</button><br/><br/>'; 
             getMenuItems(businessId, onGotBusinessMenuItems, onError);
         }
 
@@ -130,6 +134,34 @@
             document.location.href = getPathPrefix(document.location.href) + '/add-business-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
         }
 
+        //payment methods
+        function editPaymentMethod(id) {
+            document.location.href = getPathPrefix(document.location.href) + '/update-business-payment-method.html?sessionId=' + sessionId + '&businessId=' + businessId + '&paymentMethodId=' + id+ '&privileges=' + privileges ;
+        }
+
+        function onRemovePaymentMethod(id) {
+            removeBusinessPaymentMethod(sessionId, businessId, id, init, onError);
+        }
+
+   
+        function appendPaymentMethod(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>PAYMENT METHOD ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>'; 
+            listDiv.innerHTML += '<p>' + item.name + ', (' + item.type + ')</p><br/>';
+       
+            listDiv.innerHTML += '<button  onclick="onRemovePaymentMethod(\'' + item.paymentMethodId + '\')">Remove</button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick = "editPaymentMethod(\'' + item.paymentMethodId + '\')" >Manage ... </button ><br/><br/>';
+        }
+ 
+ 
+ 
+
+        function addPaymentMethod() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-payment-method.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
+        }
+        //
 
         function onError(details) {
 

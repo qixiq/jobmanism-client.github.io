@@ -1551,8 +1551,24 @@ function removeMenuItemAdditionalCategory(sessionId, menuItemId, id, onSuccess, 
     sendJsonPostRequest(data, '/deleteAdditionalMenuItemCategoriesFromMenuItem', onSuccess, onError);
 }
 
+function removeBusinessPaymentMethod(sessionId, businessId, id, onSuccess, onError)
+{
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)],
+        targetId : parseInt(businessId)
+    };
+
+    sendJsonPostRequest(data, '/deleteBusinessPaymentMethods', onSuccess, onError);
+}
+
 function getPaymentMethodTypes(onSuccess, onError){
     sendGetRequest('/getPaymentMethodTypes?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+}
+
+function getAddPaymentMethodInitInfoForBusiness(businessId, onSuccess, onError){
+    sendGetRequest('/getAddPaymentMethodInitInfoForBusiness?sessionId=' + getQueryParameter('sessionId') + '&businessId=' + businessId, onSuccess, onError);
 }
 
 function addPaymentMethodType( 
@@ -1573,3 +1589,11 @@ function removePaymentMethodType(sessionId, id, onSuccess, onError){
     sendJsonPostRequest(data, '/deletePaymentMethodTypes', onSuccess, onError);
 
 }
+
+function addBusinessPaymentMethod( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addBusinessPaymentMethod', onSuccess, onError);
+    }
