@@ -11,10 +11,6 @@
 
         function onGotSchoolLocations(data){
             schoolCountries = data.schoolCountries;
-            //var listDiv = document.getElementById('nameSpan'); 
-            //var info = data.studentAndSubjects;
-            //listDiv.innerHTML += '<p>' + info.studentFullName + '</p>';
-            //listDiv.innerHTML += '<p>' + info.schoolName + ' , ' + info.level + info.arm +'</p>';
             data.schoolCountries.forEach(appendCountry);
             initDone = true;
             document.getElementById('countries').selectedIndex = 0;
@@ -62,7 +58,7 @@
         }
  
         function onError(details) {
-            document.getElementById('itemsList').innerHTML = "Error Clustering Schools";
+            document.getElementById('itemsList').innerHTML = "Error Arm Student Devices";
         }
 
         function goBack() {
@@ -124,7 +120,7 @@
 </head>
 <body>
     <button onclick="goBack()">Go Back</button><br/><br/> 
-    <h4>SELECT SCHOOL CLUSTERING CRITERIA: </h4><br/><br/>
+    <h4>SELECT CLUSTERING CRITERIA: </h4><br/><br/>
     <div id="nameSpan"></div>
     <form id="theForm"> 
         

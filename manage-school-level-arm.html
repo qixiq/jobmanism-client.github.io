@@ -30,8 +30,7 @@
                 data.students.forEach(appendStudent); 
             }
              
-            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewStudents()">Add New Students ... </button><br /> '; 
-            listDiv.innerHTML += '<br /> <br /> <button onclick="clusterStudentDevices()">Cluster Student Devices ... </button><br /> '; 
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewStudents()">Add New Students ... </button><br /> ';  
             getClassTeacherForLevelArm(armId, onGotClassTeacher, onError); 
         }
 
@@ -137,9 +136,7 @@
             
         }
 
-        function clusterStudentDevices(){
-            document.location.href = getPathPrefix(document.location.href) + '/cluster-student-devices.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
-        }
+  
 
         function addNewStudents() {
             document.location.href = getPathPrefix(document.location.href) + '/add-arm-students.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;

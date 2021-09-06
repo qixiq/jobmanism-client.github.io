@@ -1571,6 +1571,10 @@ function getAddPaymentMethodInitInfoForBusiness(businessId, onSuccess, onError){
     sendGetRequest('/getAddPaymentMethodInitInfoForBusiness?sessionId=' + getQueryParameter('sessionId') + '&businessId=' + businessId, onSuccess, onError);
 }
 
+function getSchoolDeviceInfo(schoolId, onSuccess, onError){
+    sendGetRequest('/getSchoolDeviceInfo?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
+}
+
 function addPaymentMethodType( 
     data,
     onSuccess,
@@ -1596,4 +1600,20 @@ function addBusinessPaymentMethod(
     onError)
     {
         sendJsonPostRequest(data, '/addBusinessPaymentMethod', onSuccess, onError);
+    }
+
+function uploadBusinessesFromBulkFile( 
+        data,
+        onSuccess,
+        onError)
+        {
+            sendFormDataPostRequest(data, '/uploadBusinessesFromBulkFile', onSuccess, onError) ;
+        }
+
+function     clusterSchoolDevices(
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/clusterSchoolDevices', onSuccess, onError);
     }

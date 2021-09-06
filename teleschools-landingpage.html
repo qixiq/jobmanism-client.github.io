@@ -33,10 +33,13 @@
             //
             listDiv.innerHTML += "<h2><strong>SCHOOL CLUSTERING</strong></h2>"; 
             listDiv.innerHTML += '<br /> <br /> <button onclick="clusterSchools()">Cluster Schools ... </button><br /> ';
+
         }
 
+
+
         function clusterSchools() {
-            document.location.href = getPathPrefix(document.location.href) + '/cluster-schools.html?sessionId=' + sessionId;
+            document.location.href = getPathPrefix(document.location.href) + '/cluster-schools.html?sessionId=' + sessionId + '&schoolId=' + schoolId;;
         }
 
         //schools

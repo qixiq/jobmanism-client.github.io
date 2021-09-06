@@ -1,0 +1,126 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Cluster School Devices</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId');
+        var schoolId = getQueryParameter('schoolId');  
+        var itemsCount = 0;
+    
+
+        function onGotSchoolDeviceInfo(data){
+            data.details.arms.forEach(appendArm);
+            data.details.deviceTypes.forEach(appendDeviceType);
+            data.details.userTypes.forEach(appendUserType);
+        }
+
+        function appendArm(armInfo){
+            select = document.getElementById('arms'); 
+            var opt = document.createElement('option');
+            opt.value = armInfo.armId;
+            opt.innerHTML = armInfo.levelArm;
+            select.appendChild(opt);
+        }
+
+        function appendDeviceType(deviceType){
+            select = document.getElementById('devices'); 
+            var opt = document.createElement('option');
+            opt.value = deviceType.id;
+            opt.innerHTML = deviceType.name;
+            select.appendChild(opt);
+        }
+
+        function appendUserType(userType){
+            select = document.getElementById('userTypes'); 
+            var opt = document.createElement('option');
+            opt.value = userType.id;
+            opt.innerHTML = userType.name;
+            select.appendChild(opt);
+        }
+
+        function onSuccess(data) { 
+            itemsCount = 0;
+            document.getElementById('itemsList').innerHTML = '';
+            data.devices.forEach(appendDevice);
+        }
+
+        function appendDevice(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>DEVICE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>Device Code : ' + item.deviceCode + '</label><br/>'; 
+            
+        }
+ 
+        function onError(details) {
+            document.getElementById('itemsList').innerHTML = "Error Clustering  Devices";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
+        }
+
+ 
+
+ 
+
+ 
+        function init() {
+            getSchoolDeviceInfo(schoolId, onGotSchoolDeviceInfo, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <h4>SELECT SCHOOL DEVICE CLUSTERING CRITERIA: </h4><br/><br/>
+    <div id="nameSpan"></div>
+    <form id="theForm"> 
+        
+        <label for="arms">Arms:</label><select name="arms" id="arms" multiple>  </select><br/><br/>&nbsp;&nbsp;
+        <label for="deviceType">Device Type:</label><select name="devices" id="devices" >  </select><br/><br/>&nbsp;&nbsp;
+        <label for="userType">UserType:</label><select name="userTypes" id="userTypes" multiple></select><br/><br/>
+        <br/><br/>
+        <button type="submit">Cluster</button><br />
+    </form>
+    <br /><br />
+    <div id="itemsList"></div>
+    
+    <script> 
+          function getSelectValues(select) {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+            result.push(parseInt(opt.value));
+            }
+        }
+        return result;
+        }
+
+    document.getElementById('theForm').onsubmit = function () {
+
+        var data = 
+        {
+            sessionId: sessionId,
+            schoolId: parseInt(schoolId),
+            armIds : getSelectValues(document.getElementById('arms')),
+            deviceTypeId : parseInt(document.getElementById('devices').value),
+            userTypeIds : getSelectValues(document.getElementById('userTypes'))
+        }
+        
+    clusterSchoolDevices(
+        data,
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

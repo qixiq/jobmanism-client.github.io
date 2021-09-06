@@ -57,6 +57,10 @@
 
         function onGotBusinesses(data) {
             addSearchButton();
+            if((privileges & 1) != 0 || (privileges & 8) != 0)
+            {
+                document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="uploadBusinesses()">Upload Businesses ... </button><br /><br /> ';
+            }
             document.getElementById('itemsList').innerHTML += "<p><strong>VENDOR BUSINESSES</strong></p><br/><br/>"; 
             data.items.forEach(appendBusiness);  
 
@@ -72,6 +76,10 @@
         function addSearchButton(){
 
             document.getElementById('itemsList').innerHTML = '<br/><br/><button onclick="openSearchPage()">Search ... </button><br /><br /> ';
+        }
+
+        function uploadBusinesses(){
+            document.location.href = getPathPrefix(document.location.href) + '/upload-businesses.html?sessionId=' + sessionId +   '&privileges=' + privileges;
         }
 
         function openSearchPage() {

@@ -34,6 +34,12 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-school-groups.html?sessionId=' + sessionId + '&schoolId=' + schoolId;
         }
 
+        function clusterDevices() {
+            document.location.href = getPathPrefix(document.location.href) + '/cluster-school-devices.html?sessionId=' + sessionId + '&schoolId=' + schoolId;;
+        }
+
+
+
         function onSuccess(data) {
             var school = data.school;
             var address = school.address;
@@ -77,7 +83,9 @@
 
             pageContent += '<button  onclick="manageStudents()">Manage Students ... </button><br/><br/><br/>'; 
 
-            pageContent += '<button  onclick="manageSchoolGroups()">Manage School Groups ... </button><br/><br/><br/>';
+            pageContent += '<button  onclick="manageSchoolGroups()">Manage School Groups ... </button><br/><br/>';  
+
+            pageContent += '<button onclick="clusterDevices()">Cluster Devices ... </button><br/><br/><br/>';
 
             document.getElementById('contentDiv').innerHTML = pageContent;
         }
