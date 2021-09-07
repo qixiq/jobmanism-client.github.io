@@ -149,6 +149,9 @@
         <input id="useProximity" type="checkbox">Filter By Proximity</input><br/> 
         <label>GPS Co-ordinates For Your  Current Location  :&nbsp;&nbsp;</label><input id="startGps" type="text"></input><br/> 
         <label>Maximum distance in Kilometers  :&nbsp;&nbsp;</label><input id="maxDistance" type="number"></input><br/><br/>
+
+        <input id="useNameFragment" type="checkbox">Match Business Name Fragment</input><br/> 
+        <label>Business Name Fragment:&nbsp;&nbsp;</label><input id="nameFragment" type="text"></input><br/>  
         <button type="submit">Search</button><br />
     </form>
     <br /><br />
@@ -177,7 +180,9 @@
             useMenuItemCategories : document.getElementById('useMenuItemCategories').checked,
             menuItemCategories : getSelectValues(document.getElementById('menuItems')),
             vendorTypes : getSelectValues(document.getElementById('vendorTypes')),
-            startingLocationGPS : document.getElementById('startGps').value
+            startingLocationGPS : document.getElementById('startGps').value,
+            useVendorNameFragment : document.getElementById('useNameFragment').checked,
+            vendorNameFragment : document.getElementById('nameFragment').value
         };
 
         if(data.useProximity){
