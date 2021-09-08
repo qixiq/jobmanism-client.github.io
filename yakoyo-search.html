@@ -72,7 +72,10 @@
             } 
             searchResults += '<button  onclick="goToLocation(\'' + location.locationId + '\')">View Location ... </button>&nbsp;&nbsp;<br/>';
             menuItemCount = 0;
-            item.fares.forEach(appendLocationMenuItemItem);
+            if(item.fares && item.fares.length > 0){
+                item.fares.forEach(appendLocationMenuItemItem);
+            }
+            
         }
   
 

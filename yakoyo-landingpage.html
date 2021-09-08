@@ -60,8 +60,8 @@
             if((privileges & 1) != 0 || (privileges & 8) != 0)
             {
                 document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="uploadBusinesses()">Upload Businesses ... </button><br /><br /> ';
-            }
-            document.getElementById('itemsList').innerHTML += "<p><strong>VENDOR BUSINESSES</strong></p><br/><br/>"; 
+            } 
+            
             data.items.forEach(appendBusiness);  
 
             document.getElementById('itemsList').innerHTML += '<button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> ';
@@ -88,8 +88,8 @@
 
 
 
-        function editBusiness(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + id + '&privileges=' + privileges;
+        function editBusiness() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + document.getElementById('businesses').value + '&privileges=' + privileges;
         }
 
         function onRemoveBusiness(id) {
@@ -179,14 +179,11 @@
         }
 
         function appendBusiness(item) {
-            itemsCount++;
-            var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>VENDOR BUSINESS ' + itemsCount;
-            listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveBusiness(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editBusiness(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            select = document.getElementById('businesses'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
         }
 
 
@@ -226,7 +223,8 @@
 </head>
 <body>
     <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
-    <button  onclick="showUserPage()">Go to User Page</button>
+    <button  onclick="showUserPage()">Go to User Page</button><br/><br/>
+    <label>Businesses:&nbsp;&nbsp;</label><select id="businesses"></select><button onclick="editBusiness()">Manage Business ...</button>
     <br /><br />
     <div id="itemsList">
 
