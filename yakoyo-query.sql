@@ -217,6 +217,66 @@ CREATE TABLE LocationOperatingHours
 CREATE UNIQUE INDEX uq_LocationOperatingHours
 ON [dbo].[OperatingHours](LocationId, DayOfWeek);
 
+CREATE TABLE SubscriptionFeatures
+(
+   FeatureId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+   Name VARCHAR(255) NOT NULL UNIQUE,
+   Description VARCHAR(1024) NOT NULL
+);
+
+
+CREATE TABLE SubscriptionFeatureLevels
+9
+   LevelId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+   FeatureId BIGINT NOT NULL,
+   Name VARCHAR(255) NOT NULL,
+   Description VARCHAR(1024) NOT NULL,
+   Specification VARBINARY(max) NOT NULL,
+   MonthlyCost DECIMAL NOT NULL ,
+  CONSTRAINT FK_SubscriptionFeatureLevels_FeatureId FOREIGN KEY (FeatureId)
+  REFERENCES [dbo].[SubscriptionFeatures] (FeatureId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_SubscriptionFeatureLevels
+ON [dbo].[SubscriptionFeatureLevels](FeatureId, Name);
+
+CREATE TABLE ActivatedBusinessSubscriptionFeatureLevels
+(
+    LevelId BIGINT NOT NULL,
+    BusinessSubscriptionId BIGINT NOT NULL,
+    CONSTRAINT FK_ActivatedBusinessSubscriptionFeatureLevels_LevelId FOREIGN KEY (LevelId)
+    REFERENCES [dbo].[SubscriptionFeatureLevels] (LevelId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_ActivatedBusinessSubscriptionFeatureLevels_SubscriptionId FOREIGN KEY (BusinessSubscriptionId)
+    REFERENCES [dbo].[BusinessSubscriptions] (BusinessSubscriptionId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_ActivatedBusinessSubscriptionFeatureLevels
+ON [dbo].[ActivatedBusinessSubscriptionFeatureLevels](LevelId, SubscriptionId);
+
+
+CREATE TABLE UnActivatedBusinessSubscriptionFeatureLevels
+(
+    LevelId BIGINT NOT NULL,
+    BusinessSubscriptionId BIGINT NOT NULL,
+    CONSTRAINT FK_UnActivatedBusinessSubscriptionFeatureLevels_LevelId FOREIGN KEY (LevelId)
+    REFERENCES [dbo].[SubscriptionFeatureLevels] (LevelId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_UnActivatedBusinessSubscriptionFeatureLevels_SubscriptionId FOREIGN KEY (BusinessSubscriptionId)
+    REFERENCES [dbo].[BusinessSubscriptions] (BusinessSubscriptionId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_UnActivatedBusinessSubscriptionFeatureLevels
+ON [dbo].[UnActivatedBusinessSubscriptionFeatureLevels](LevelId, BusinessSubscriptionId);
+
 
  
 

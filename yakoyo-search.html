@@ -46,10 +46,10 @@
             locationsCount++; 
             var location = item.location;
             currentLocationId = location.locationId;
+            businessesForLocations[currentLocationId] = location.businessId;
             var address = location.address;
             var phoneNumber = location.phoneNumber;
-            searchResults += '<h2><strong>LOCATION ' + locationsCount;
-            searchResults += '</strong ></h2>'; 
+            searchResults += '<h2><strong> ' + location.businessName + '</strong ></h2>'; 
 
             //address
             searchResults += '<h4><strong>ADDRESS</strong></h4>' ;
@@ -93,7 +93,7 @@
         function appendLocationMenuItemItem(item){
             menuItemCount++; 
             locationsForMenu[item.id] = currentLocationId;
-            businessesForLocations[currentLocationId] = item.businessId;
+            
             searchResults += '<p><strong>MENU ITEM ' + menuItemCount;
             searchResults += '</strong ></p>';
             searchResults += '<label>Name: ' + item.name + '</label><br/>';
@@ -185,7 +185,7 @@
             vendorTypes : getSelectValues(document.getElementById('vendorTypes')),
             startingLocationGPS : document.getElementById('startGps').value,
             useVendorNameFragment : document.getElementById('useNameFragment').checked,
-            vendorNameFragment : document.getElementById('nameFragment').value
+            vendorNameFragment : '%' + document.getElementById('nameFragment').value + '%'
         };
 
         if(data.useProximity){
