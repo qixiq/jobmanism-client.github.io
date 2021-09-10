@@ -226,7 +226,7 @@ CREATE TABLE SubscriptionFeatures
 
 
 CREATE TABLE SubscriptionFeatureLevels
-9
+(
    LevelId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
    FeatureId BIGINT NOT NULL,
    Name VARCHAR(255) NOT NULL,

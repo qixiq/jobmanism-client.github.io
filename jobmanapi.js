@@ -1617,3 +1617,19 @@ function     clusterSchoolDevices(
     {
         sendJsonPostRequest(data, '/clusterSchoolDevices', onSuccess, onError);
     }
+
+function getSubscriptionFeatures(onSuccess, onError){
+    sendGetRequest('/getBusinessSubscriptionFeatures?sessionId=' + getQueryParameter('sessionId') , onSuccess, onError);
+}
+
+function getBusinessSubscriptionFeature(featureId, onSuccess, onError){
+    sendGetRequest('/getBusinessSubscriptionFeature?sessionId=' + getQueryParameter('sessionId') + '&featureId=' + featureId, onSuccess, onError);
+}
+
+function addBusinessSubscriptionFeatureLevel( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addBusinessSubscriptionFeatureLevel', onSuccess, onError);
+    }

@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Add Location Menu Item</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var featureId = getQueryParameter('featureId'); 
+        var privileges = getQueryParameter('privileges'); 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding Feature Level";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-subscription-feature.html?sessionId=' + sessionId + '&featureId=' + featureId + '&privileges=' + privileges ;
+        }
+
+  
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <form id="theForm"> 
+        <label>Name  :&nbsp;&nbsp;</label><input   id="name"></input><br/><br/>
+        <label>Description  :&nbsp;&nbsp;</label><textarea rows="10" cols="80" id="description" ></textarea><br/><br/>
+        <label>Specification  :&nbsp;&nbsp;</label><textarea rows="10" cols="80" id="specification"></textarea><br/><br/>
+        <label>Monthly Cost  :&nbsp;&nbsp;</label><input id="monthlyCost" type="number"></input><br/><br/>
+        
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    <div id="errorDiv"></div>
+    
+    <script> 
+    document.getElementById('theForm').onsubmit = function () {
+        
+     
+    addBusinessSubscriptionFeatureLevel(
+        {
+            sessionId : sessionId,
+            featureId : parseInt(featureId),
+            name : document.getElementById('name').value,
+            description: document.getElementById('description').value,
+            specification: document.getElementById('specification').value,
+            monthlyCost: parseFloat(document.getElementById('monthlyCost').value)
+        },
+
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

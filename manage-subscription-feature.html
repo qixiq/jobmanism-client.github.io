@@ -1,0 +1,71 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo - Manage Menu Item</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var privileges = getQueryParameter('privileges');
+        var featureId = getQueryParameter('featureId');
+        var itemsCount = 0;
+ 
+
+        function onError(details) {
+
+        }
+
+        function onGotSubscriptionFeature(data){
+            document.getElementById('featureName').innerHTML = data.feature.name;
+            document.getElementById('featureDesc').innerHTML = data.feature.description;
+            data.feature.levels.forEach(appendSubscriptionFeatureLevel); 
+
+        }
+         
+
+        function onSuccess() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges  ;
+        }
+
+        function editFeatureLevel() {
+            document.location.href = getPathPrefix(document.location.href) + '/update-subscription-feature-level.html?sessionId=' + sessionId + '&featureId=' + featureId+ '&privileges=' + privileges  + '&levelId=' + document.getElementById('levels').value ;
+        }
+
+        function onRemoveFeatureLevel() {
+            removeFeatureLevel(sessionId, featureId, document.getElementById('levels').value , init, onError);
+        }      
+
+
+        function appendSubscriptionFeatureLevel(item) {
+            select = document.getElementById('levels'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name + '( ' + item.monthlyCost + '/month ) ';
+            select.appendChild(opt);
+        }
+ 
+
+
+        function onError(details) {
+
+        } 
+
+        function addFeatureLevel() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-feature-level.html?sessionId=' + sessionId + '&featureId=' + featureId+ '&privileges=' + privileges  ;
+        }
+
+        function init() { 
+            getBusinessSubscriptionFeature(featureId, onGotSubscriptionFeature, onError);
+        }
+
+        window.addEventListener('load', init);</script>
+          
+    </script>
+</head>
+<body> 
+    <button onclick="onSuccess()">Go Back To Landing Page</button><br/><br/>
+    <div id="content"></div>
+    <h2 id="featureName"></h2> 
+    <p id="featureDesc"></p><br/>
+    <h2>Feature Levels</h2> <select id="levels"></select><button onclick="editFeatureLevel()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveFeatureLevel()">Remove </button><br/><br/>
+    <button onclick="addFeatureLevel()">Add New Feature Level ... </button><br /><br /> 
+</body>
+</html>

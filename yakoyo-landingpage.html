@@ -9,74 +9,54 @@
         var userName = getQueryParameter('userName');
         var itemsCount = 0;
 
-        function onGotPaymentMethodTypes(data){ 
-            itemsCount = 0; 
-            document.getElementById('itemsList').innerHTML += "<p><strong>PAYMENT METHOD TYPES</strong></p><br/><br/>"; 
-            data.items.forEach(appendPaymentMethodType);   
-            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addPaymentMethodType()">Add New Payment Method  Type ... </button><br /><br /> '; 
+        function onGotSubscriptionFeatures(data){  
+            
+            data.items.forEach(appendSubscriptionFeature);     
+        }
+
+        function onGotPaymentMethodTypes(data){  
+            data.items.forEach(appendPaymentMethodType);    
+                
+                getSubscriptionFeatures(onGotSubscriptionFeatures, onError);  
         }
 
 
-        function onGotDigitalAssetTypes(data){ 
-            itemsCount = 0; 
-            document.getElementById('itemsList').innerHTML += "<p><strong>DIGITAL ASSET TYPES</strong></p><br/><br/>"; 
-            data.assetTypes.forEach(appendDigitalAssetType);   
-            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addDigitalAssetType()">Add New Digital Asset Type ... </button><br /><br /> ';
+        function onGotDigitalAssetTypes(data){  
+            data.assetTypes.forEach(appendDigitalAssetType);    
 
-            if((privileges & 1) != 0 || (privileges & 8) != 0)
-            {
-                //get Payment Method Types
-                getPaymentMethodTypes(onGotPaymentMethodTypes, onError); 
-            }
+            
+                
+                getPaymentMethodTypes(onGotPaymentMethodTypes, onError);  
         }
 
 
         function onGotMenuItemCategories(data){
 
-            itemsCount = 0; 
-            document.getElementById('itemsList').innerHTML += "<p><strong>MENU ITEM CATEGORIES</strong></p><br/><br/>"; 
             data.items.forEach(appendMenuItemCategory);   
-            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewMenuItemCategory()">Add New Menu Item Category ... </button><br /><br /> ';
+            //document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewMenuItemCategory()">Add New Menu Item Category ... </button><br /><br /> ';
 
-            if((privileges & 1) != 0 || (privileges & 8) != 0)
-            {
+          
                 //get digital Asset Types
-                getDigitalAssetTypes(onGotDigitalAssetTypes, onError); 
-            }
+                getDigitalAssetTypes(onGotDigitalAssetTypes, onError);  
             
         }
 
         function onGotFoodAndDrinkVendorTypes(data)
-        {
-            itemsCount = 0; 
-            document.getElementById('itemsList').innerHTML += "<p><strong>FOOD AND DRINK VENDOR TYPES</strong></p><br/><br/>"; 
+        { 
             data.items.forEach(appendFoodAndDrinkVendorType);  
-            document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="addNewFoodAndDrinkVendorType()">Add New Food And Drink Vendor Type ... </button><br /><br /> ';
             getMenuItemCategories(onGotMenuItemCategories, onError);
         }
 
-        function onGotBusinesses(data) {
-            addSearchButton();
-            if((privileges & 1) != 0 || (privileges & 8) != 0)
-            {
-                document.getElementById('itemsList').innerHTML += '<br/><br/><button onclick="uploadBusinesses()">Upload Businesses ... </button><br /><br /> ';
-            } 
+        function onGotBusinesses(data) { 
+          
             
-            data.items.forEach(appendBusiness);  
-
-            document.getElementById('itemsList').innerHTML += '<button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> ';
-
-            if((privileges & 1) != 0 || (privileges & 8) != 0)
-            {
-                //get vendorTypes
-                getFoodAndDrinkVendorTypes(onGotFoodAndDrinkVendorTypes, onError); 
-            } 
+            
+            data.items.forEach(appendBusiness);   
+            getFoodAndDrinkVendorTypes(onGotFoodAndDrinkVendorTypes, onError); 
+            
         }
 
-        function addSearchButton(){
-
-            document.getElementById('itemsList').innerHTML = '<br/><br/><button onclick="openSearchPage()">Search ... </button><br /><br /> ';
-        }
+ 
 
         function uploadBusinesses(){
             document.location.href = getPathPrefix(document.location.href) + '/upload-businesses.html?sessionId=' + sessionId +   '&privileges=' + privileges;
@@ -96,29 +76,37 @@
             removeBusiness(sessionId, id, init, onError);
         }
 
-
-        function editMenuItemCategory(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-category.html?sessionId=' + sessionId + '&menuItemCategoryId=' + id+ '&privileges=' + privileges;
+        function editSubscriptionFeature() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-subscription-feature.html?sessionId=' + sessionId + '&featureId=' + document.getElementById('subscriptionFeatures').value + '&privileges=' + privileges;
         }
 
-        function onRemoveMenuItemCategory(id) {
-            removeMenuItemCategory(sessionId, id, init, onError);
+        function onRemoveSubscriptionFeature() {
+            removeSubscriptionFeature(sessionId, document.getElementById('subscriptionFeatures').value, init, onError);
         }
 
-        function editFoodAndDrinkVendorType(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-food-and-drink-vendor-type.html?sessionId=' + sessionId + '&vendorTypeId=' + id+ '&privileges=' + privileges;
+
+        function editMenuItemCategory() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item-category.html?sessionId=' + sessionId + '&menuItemCategoryId=' + document.getElementById('menuItemCategories').value+ '&privileges=' + privileges;
         }
 
-        function onRemoveFoodAndDrinkVendorType(id) {
-            removeFoodAndDrinkVendorType(sessionId, id, init, onError);
+        function onRemoveMenuItemCategory() {
+            removeMenuItemCategory(sessionId, document.getElementById('menuItemCategories').value, init, onError);
         }
 
-        function editDigitalAssetType(id) {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-digital-asset-type.html?sessionId=' + sessionId + '&typeId=' + id+ '&privileges=' + privileges;
+        function editFoodAndDrinkVendorType() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-food-and-drink-vendor-type.html?sessionId=' + sessionId + '&vendorTypeId=' + document.getElementById('vendorTypes').value + '&privileges=' + privileges;
         }
 
-        function onRemoveDigitalAssetType(id) {
-            removeDigitalAssetType(sessionId, id, init, onError);
+        function onRemoveFoodAndDrinkVendorType() {
+            removeFoodAndDrinkVendorType(sessionId, document.getElementById('vendorTypes').value, init, onError);
+        }
+
+        function editDigitalAssetType() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-digital-asset-type.html?sessionId=' + sessionId + '&typeId=' + document.getElementById('digitalAssetTypes').value + '&privileges=' + privileges;
+        }
+
+        function onRemoveDigitalAssetType() {
+            removeDigitalAssetType(sessionId, document.getElementById('digitalAssetTypes').value , init, onError);
         }
 
         function editPaymentMethodType(id) {
@@ -130,52 +118,35 @@
         }
 
         function appendFoodAndDrinkVendorType(item){
-            itemsCount++;
-            var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>FOOD AND DRINK VENDOR TYPE ' + itemsCount;
-            listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveFoodAndDrinkVendorType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editFoodAndDrinkVendorType(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            select = document.getElementById('vendorTypes'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
         }
 
         function appendMenuItemCategory(item){
-            itemsCount++;
-            var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>MENU ITEM CATEGORY ' + itemsCount;
-            listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemoveMenuItemCategory(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editMenuItemCategory(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            select = document.getElementById('menuItemCategories'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
         }
 
         function appendPaymentMethodType(item){
-            itemsCount++;
-            var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>PAYMENT METHOD ' + itemsCount;
-            listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            listDiv.innerHTML += '<button  onclick="onRemovePaymentMethodType(\'' + item.id + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editPaymentMethodType(\'' + item.id + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            select = document.getElementById('paymentMethodTypes'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
         }
 
         function appendDigitalAssetType(item){
-            itemsCount++;
-            var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>DIGITAL ASSET TYPE ' + itemsCount;
-            listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>Name: ' + item.name + '</label><br/>';
-            listDiv.innerHTML += '<p>' + item.description + '</p><br/>';
-            if(item.iconResourceId > 0)
-            {
-                listDiv.innerHTML += '<img  src="'+ getResourceUrl(item.iconResourceId) +'"</img><br/>';
-            }
-            
-            listDiv.innerHTML += '<button  onclick="onRemoveDigitalAssetType(\'' + item.digitalAssetTypeId + '\')">Remove</button>&nbsp;&nbsp;';
-            listDiv.innerHTML += '<button  onclick = "editDigitalAssetType(\'' + item.digitalAssetTypeId + '\')" >Manage ... </button >&nbsp;&nbsp;';
+            select = document.getElementById('digitalAssetTypes'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
         }
 
         function appendBusiness(item) {
@@ -186,10 +157,22 @@
             select.appendChild(opt);
         }
 
+        function appendSubscriptionFeature(item){
+            select = document.getElementById('subscriptionFeatures'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
 
 
         function onError(details) {
 
+        }
+
+        function addSubscriptionFeature(){
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-object.html?sessionId=' + sessionId + '&objectType=BusinessSubscriptionFeature&privileges=' + privileges;
         }
 
         function addPaymentMethodType(){
@@ -224,11 +207,21 @@
 <body>
     <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
     <button  onclick="showUserPage()">Go to User Page</button><br/><br/>
-    <label>Businesses:&nbsp;&nbsp;</label><select id="businesses"></select><button onclick="editBusiness()">Manage Business ...</button>
-    <br /><br />
-    <div id="itemsList">
-
-    </div> 
+    <button onclick="openSearchPage()">Search ... </button><br /><br /> 
+    <h2>Businesses</h2> <select id="businesses"></select><button onclick="editBusiness()">Manage ...</button><br/><br/>
+    <button onclick="addNewVendorBusiness()">Add New Vendor Business ... </button><br /><br /> 
+    <h2>Subscription Features</h2> <select id="subscriptionFeatures"></select><button onclick="editSubscriptionFeature()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveSubscriptionFeature()">Remove </button><br/><br/>
+    <button onclick="addSubscriptionFeature()">Add New Subscription Feature ... </button><br /><br />  
+    <h2>Food And Drink Vendor Types</h2> <select id="vendorTypes"></select><button onclick="editFoodAndDrinkVendorType()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveFoodAndDrinkVendorType()">Remove </button><br/><br/>
+    <button onclick="addNewFoodAndDrinkVendorType()">Add New Food And Drink Vendor Type ... </button><br /><br />  
+    <h2>Menu Item Categories</h2> <select id="menuItemCategories"></select><button onclick="editMenuItemCategory()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveMenuItemCategory()">Remove </button><br/><br/>
+    <button onclick="addNewMenuItemCategory()">Add New Menu Item Category ... </button><br /><br />  
+    <h2>Digital Asset Types</h2> <select id="digitalAssetTypes"></select><button onclick="editDigitalAssetType()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveDigitalAssetType()">Remove </button><br/><br/>
+    <button onclick="addDigitalAssetType()">Add New Digital Asset Type ... </button><br /><br /> 
+    <h2>Payment Method Types</h2> <select id="paymentMethodTypes"></select><button onclick="editPaymentMethodType()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemovePaymentMethodType()">Remove </button><br/><br/>
+    <button onclick="addPaymentMethodType()">Add Payment Method Type ... </button><br /><br /> 
+    <h2>Upload Businesses</h2><br/> 
+    <button onclick="uploadBusinesses()">Upload Businesses ... </button><br /><br /> 
 
 </body>
 </html>
