@@ -50,7 +50,12 @@
         function onGotBusinesses(data) { 
           
             
-            
+            document.getElementById('vendorTypes').innerHTML = '';
+            document.getElementById('menuItemCategories').innerHTML = ''; 
+            document.getElementById('paymentMethodTypes').innerHTML = ''; 
+            document.getElementById('digitalAssetTypes').innerHTML = '';
+            document.getElementById('businesses').innerHTML = ''; 
+            document.getElementById('subscriptionFeatures').innerHTML = ''; 
             data.items.forEach(appendBusiness);   
             getFoodAndDrinkVendorTypes(onGotFoodAndDrinkVendorTypes, onError); 
             
@@ -160,7 +165,7 @@
         function appendSubscriptionFeature(item){
             select = document.getElementById('subscriptionFeatures'); 
             var opt = document.createElement('option');
-            opt.value = item.id;
+            opt.value = item.featureId;
             opt.innerHTML = item.name;
             select.appendChild(opt);
         }

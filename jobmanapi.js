@@ -1626,10 +1626,35 @@ function getBusinessSubscriptionFeature(featureId, onSuccess, onError){
     sendGetRequest('/getBusinessSubscriptionFeature?sessionId=' + getQueryParameter('sessionId') + '&featureId=' + featureId, onSuccess, onError);
 }
 
+function getAddBusinessSubscriptionInfo(businessId, onSuccess, onError){
+    sendGetRequest('/getAddBusinessSubscriptionInfo?sessionId=' + getQueryParameter('sessionId') + '&businessId=' + businessId, onSuccess, onError);
+}
+
+function getBusinessSubscription(businessId, subscriptionId, onSuccess, onError){
+    sendGetRequest('/getBusinessSubscription?sessionId=' + getQueryParameter('sessionId') + '&businessId=' + businessId  + '&subscriptionId=' + subscriptionId, onSuccess, onError);
+}
+
 function addBusinessSubscriptionFeatureLevel( 
     data,
     onSuccess,
     onError)
     {
         sendJsonPostRequest(data, '/addBusinessSubscriptionFeatureLevel', onSuccess, onError);
+    }
+
+function removeSubscriptionFeature(sessionId, id, onSuccess, onError){
+    var data =
+    {
+        sessionId: sessionId, 
+        itemIds: [parseInt(id)]
+    };
+    sendJsonPostRequest(data, '/deleteBusinessSubscriptionFeatures', onSuccess, onError);
+}
+
+function addBusinessSubscription(
+    data, 
+    onSuccess,
+    onError)
+    {
+        sendJsonPostRequest(data, '/addBusinessSubscription', onSuccess, onError);  
     }

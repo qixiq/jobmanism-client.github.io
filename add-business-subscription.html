@@ -1,0 +1,142 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Add Business Subscription</title>
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var businessId = getQueryParameter('businessId'); 
+        var privileges = getQueryParameter('privileges');
+        var currentFeatureId = 0;
+        var content = '';
+        var features = {};
+        var levels = {};
+        var pms = {};
+
+        function onBusinessSubscriptionFeatures(data){
+            content  = '';
+            document.getElementById('busName').innerHTML = data.info.businessName;
+            data.info.paymentMethods.forEach(appendPaymentMethod);
+            data.info.features.forEach(appendSubscriptionFeature);
+            document.getElementById('subscriptions').innerHTML = content;
+            for (const key in features) { 
+                onFeatureChanged(key);
+            }
+        }
+
+        function appendPaymentMethod(item) {
+
+            pms[item.paymentMethodId] = item;
+            select = document.getElementById('paymentMethods'); 
+            var opt = document.createElement('option');
+            opt.value = item.paymentMethodId;
+            var name = item.name ;
+            if(item.type && item.type !== item.name)
+            {
+                name += ', (' + item.type + ')';
+            } 
+            opt.innerHTML = name;
+            select.appendChild(opt);
+        }
+
+        function onFeatureChanged(id){
+            var selection = document.getElementById('select_'+id);
+            if(selection){
+                var level = levels[selection.value];
+                if(level){
+                    document.getElementById('description_'+id).innerHTML = level.description; 
+                } 
+            } 
+        }
+
+        function appendSubscriptionFeature(item)
+        {
+            features [item.featureId] = {item : item};
+            currentFeatureId = item.featureId; 
+            content += ('<input type="checkbox" id="useFeature_' + item.featureId + '"></input>' );
+            content += ('<strong>' + item.name + '</strong><br/>');
+            content += ('<select  onchange="onFeatureChanged(\'' + item.featureId + '\')"  id="select_' + item.featureId + '" >');
+            for (var i = 0; i < item.levels.length; ++i ) {  
+                var level = item.levels[i];
+                levels[level.featureLevelId ] = level ;
+                content += ('<option title="' + level.description + '" value="' + level.featureLevelId + '" >' + level.name + ' (' + level.monthlyCost +  ' /month )</option>');
+            }
+            content += '</select><br/>';
+            content += ('<div id="description_' + item.featureId+ '"></div><br/><br/>');
+        }
+ 
+
+        function onSuccess(data) { 
+            goBack();
+        }
+ 
+        function onError(details) {
+            document.getElementById('errorDiv').innerHTML = "Error Adding New Subscription";
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + businessId + '&privileges=' + privileges ;
+        }
+
+ 
+        function init() {
+            getAddBusinessSubscriptionInfo(businessId, onBusinessSubscriptionFeatures, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/> 
+    <h2>Add New Business Subscription for <span id="busName"></span></h2>
+    <label>Name :&nbsp;&nbsp;</label><input   id="name"></input><br/><br/>
+    <label>Payment Method :&nbsp;&nbsp;</label><select   id="paymentMethods"></select><br/><br/>
+    <label>Renewal Term :&nbsp;&nbsp;</label><select   id="term">
+        <option value="0">Monthly</option>
+        <option value="1">6 Months(5% Discount) </option>
+        <option value="2">1 Year (10% Discount) </option> 
+    </select><br/>
+    <h4>Choose Subscription Features to Add</h4> 
+    <div id="subscriptions"></div><br/><br/>
+    <form id="theForm"> 
+        <button type="submit">Add</button><br />
+    </form>
+    <br /><br />
+    
+    <div id="errorDiv"></div>
+    
+    <script>
+        
+    document.getElementById('theForm').onsubmit = function () {
+        
+        var selectedFeatureLevels = [];
+
+        for (const featureId in features) { 
+            var checkName = 'useFeature_' + featureId;
+            var selectName = 'select_' + featureId;
+            if(document.getElementById(checkName).checked)
+            {
+                selectedFeatureLevels.push(parseInt(document.getElementById(selectName).value));
+            }
+        }
+        var sel = document.getElementById("paymentMethods").value;
+
+        var data = 
+        {
+            sessionId :sessionId,
+            ownerId : parseInt(businessId),
+            features :selectedFeatureLevels,
+            name : document.getElementById('name').value,
+            paymentMethodId : parseInt(document.getElementById('paymentMethods').value),
+            paymentMethodIsType : pms[parseInt(sel)].isPaymentMethodType,
+            term : parseInt(document.getElementById('term').value)
+        };
+
+        addBusinessSubscription(
+        data, 
+        onSuccess,
+        onError);
+            return false;
+        };</script>
+
+</body>
+</html>

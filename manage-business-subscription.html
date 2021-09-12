@@ -5,26 +5,25 @@
     <script>
         var sessionId = getQueryParameter('sessionId'); 
         var businessId = getQueryParameter('businessId'); 
+        var subscriptionId = getQueryParameter('subscriptionId'); 
         var privileges = getQueryParameter('privileges'); 
         var businessName = '';
         var itemsCount = 0;
         var annotations = {};
 
-        function onGotBusinessMenuItems(data){ 
-            data.menuItems.forEach(appendMenuItem);   
-            onAnnotationChanged();
-        }
+ 
 
-        function onGotBusiness(data) {
+        function onGotBusinessSubscription(data) {
 
             itemsCount = 0; 
-            businessName = data.business.name ; 
-            data.business.locations.forEach(appendLocation);  
-            data.business.digitalAssets.forEach(appendDigitalAsset);  
-            data.business.annotations.forEach(appendAnnotation);  
-            data.business.paymentMethods.forEach(appendPaymentMethod); 
-            data.business.subscriptions.forEach(appendSubscription); 
-            getMenuItems(businessId, onGotBusinessMenuItems, onError);
+            document.getElementById('busName').innerHTML = data.subscription.businessName;
+            document.getElementById('subName').innerHTML = data.subscription.name; 
+            data.subscription.activeFeatures.forEach(appendActiveFeature);  
+            data.subscription.inActiveFeatures.forEach(appendInActiveFeature); 
+            //data.business.digitalAssets.forEach(appendDigitalAsset);  
+            //data.business.annotations.forEach(appendAnnotation);  
+            //data.business.paymentMethods.forEach(appendPaymentMethod); 
+            //data.business.subscriptions.forEach(appendSubscription);  
         }
 
         function editSubscription() {
@@ -52,11 +51,19 @@
             removeMenuItem(sessionId, businessId, document.getElementById('menuItems').value, init, onError);
         }
 
-
-        function appendMenuItem(item){ 
-            select = document.getElementById('menuItems'); 
+        function appendInActiveFeature(item){ 
+            select = document.getElementById('inactives'); 
             var opt = document.createElement('option');
-            opt.value = item.id;
+            opt.value = item.featureLevelId;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+
+        }
+
+        function appendActiveFeature(item){ 
+            select = document.getElementById('actives'); 
+            var opt = document.createElement('option');
+            opt.value = item.featureLevelId;
             opt.innerHTML = item.name;
             select.appendChild(opt);
 
@@ -191,8 +198,8 @@
 
         }
 
-        function goBackToAllVendorsPage() {
-            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges+ '&businessId=' + businessId;
         }
 
 
@@ -209,29 +216,18 @@
         }
 
         function init() {
-            getBusiness(businessId, onGotBusiness, onError)
+            getBusinessSubscription(businessId, subscriptionId, onGotBusinessSubscription, onError);
         }
 
         window.addEventListener('load', init);
     </script>
 </head>
 <body>
-    <button onclick="goBackToAllVendorsPage()">Go Back To Landing Page</button><br/><br/>
-
-    <h2>Locations</h2> <select id="locations"></select><button onclick="editBusinessLocation()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveBusinessLocation()">Remove </button><br/><br/>
-    <button onclick="addBusinessLocation()">Add New Location ... </button><br /><br /> 
-    <h2>Subscriptions</h2> <select id="subscriptions"></select><button onclick="editSubscription()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveSubscription()">Remove </button><br/><br/>
-    <button onclick="addSubscription()">Add New Subscription ... </button><br /><br />  
-    <h2>Annotations</h2> <select id="annotations" onchange="onAnnotationChanged()"  ></select><button onclick="editAnnotation()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveBusinessAnnotation()">Remove </button><br/>
-    <img id="currentAnnotationImage" src=""/><br/>
-    <p id="currentAnnotationText"></p>
-    <button onclick="addAnnotation()">Add New Annotation ... </button><br /><br />  
-    <h2>Menu Items</h2> <select id="menuItems"></select><button onclick="editMenuItem()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveMenuItem()">Remove </button><br/><br/>
-    <button onclick="addMenuItem()">Add New Menu Item ... </button><br /><br />  
-    <h2>Digital Assets</h2> <select id="digitalAssets"></select><button onclick="editDigitalAsset()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemoveDigitalAsset()">Remove </button><br/><br/>
-    <button onclick="addDigitalAsset()">Add New Digital Asset ... </button><br /><br /> 
-    <h2>Payment Methods</h2> <select id="paymentMethods"></select><button onclick="editPaymentMethod()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemovePaymentMethod()">Remove </button><br/><br/>
-    <button onclick="addPaymentMethod()">Add Payment Method ... </button><br /><br /> 
+    <button onclick="goBack()">Go Back To Business Page</button><br/><br/>
+    <h4>Manage Subcription <span id="subName"></span> for <span id="busName" ></span></h4>
+    <h2>Activated Features</h2> <select id="actives"></select><button onclick="onRemoveActive()">Remove </button><br/><br/> 
+    <h2>Unactivated Features</h2> <select id="inactives"></select><button onclick="activate()">Activate ...</button>&nbsp;&nbsp;<button onclick="onRemoveInactive()">Remove </button><br/><br/>
+    <button onclick="updateFeatures()">Update ... </button><br /><br /> 
     
 </body>
 </html>
