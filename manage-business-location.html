@@ -23,11 +23,33 @@
 
             //address
             pageContent = '<h2><strong>ADDRESS</strong></h2>' ;
-            pageContent += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
-            if (!isStringAndEmpty(address.streetLine2)) {
-                pageContent += '<label>' + address.streetLine2 + '</label><br/>';
+            //
+            var displayName = '';
+            if(address.streetNumber)
+            {
+                displayName += address.streetNumber;
+                displayName += ' , ';
             }
-            pageContent += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            
+            displayName += address.streetLine1;;
+            if (!isStringAndEmpty(address.streetLine2)) {
+                displayName += ' , ';
+                displayName += address.streetLine2;
+            }
+
+            if(address.city)
+            {
+                displayName += ' , ';
+                displayName += address.city;
+            }
+
+            if(address.state)
+            {
+                displayName += ' , ';
+                displayName += address.state;
+            }
+            pageContent += '<label>' + displayName+ '</label><br/>';
+ 
             pageContent += '<label>' + address.country + '</label><br/>';
             pageContent += '<label>GPS: ' + address.gpsLocation + '</label><br/>'; 
             pageContent += '<button  onclick="onUpdateAddress(\'' + address.addressId + '\')">Update Address ... </button><br/><br/><br/>'; 

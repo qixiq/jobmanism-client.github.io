@@ -31,7 +31,10 @@
 <body> 
     <form id="theForm">
         <p id="heading"></p><br />   
-        <label>&nbsp;&nbsp;&nbsp;Choose File That ontains Businesses to Upload :&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
+        <label>City :</label><input id="city"></input><br/><br/>
+        <label>State :</label><input id="state"></input><br/><br/>
+        <label>Country :</label><input id="country"></input><br/><br/>
+        <label>&nbsp;&nbsp;&nbsp;Choose File That contains Businesses to Upload :&nbsp;</label><input id="picture-file" type="file" /><br /><br /> 
         <button type="submit">Upload</button><br />
     </form>
     <br /><br />
@@ -45,6 +48,9 @@
                 data.append('businesses', uploadFiles[0]);
             } 
             data.append('sessionId', sessionId);  
+            data.append('city', document.getElementById('city').value); 
+            data.append('state', document.getElementById('state').value); 
+            data.append('country', document.getElementById('country').value); 
             uploadBusinessesFromBulkFile( 
                 data,
                 onSuccess,
