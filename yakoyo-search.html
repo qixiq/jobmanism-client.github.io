@@ -83,12 +83,7 @@
             //phone
             searchResults += '<strong>Phone :&nbsp;</strong>' ;  
             searchResults += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
-            if (!isStringAndEmpty(phoneNumber.features)) {
-                searchResults += '<label>Features : ' + phoneNumber.features + '</label><br/>';
-            }
-            if (!isStringAndEmpty(phoneNumber.type)) {
-                searchResults += '<label>Type : ' + phoneNumber.type + '</label><br/><br/>';
-            } 
+
             searchResults += '<button  onclick="goToLocation(\'' + location.locationId + '\')">View Location ... </button>&nbsp;&nbsp;<br/>';
             menuItemCount = 0;
             if(item.fares && item.fares.length > 0){
