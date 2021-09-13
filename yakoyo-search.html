@@ -51,19 +51,37 @@
             var address = location.address;
             var phoneNumber = location.phoneNumber;
             searchResults += '<h2><strong> ' + location.businessName + '</strong ></h2>'; 
-
-            //address
-            searchResults += '<h4><strong>ADDRESS</strong></h4>' ;
-            searchResults += '<label>' + address.streetNumber + ', ' + address.streetLine1 + '</label><br/>';
-            if (!isStringAndEmpty(address.streetLine2)) {
-                searchResults += '<label>' + address.streetLine2 + '</label><br/>';
+ 
+            var displayName = '';
+            if(address.streetNumber)
+            {
+                displayName += address.streetNumber;
+                displayName += ' , ';
             }
-            searchResults += '<label>' + address.city + ', ' + address.state + ' ' + address.postalCode + '</label><br/>';
+            
+            displayName += address.streetLine1;;
+            if (!isStringAndEmpty(address.streetLine2)) {
+                displayName += ' , ';
+                displayName += address.streetLine2;
+            }
+
+            if(address.city)
+            {
+                displayName += ' , ';
+                displayName += address.city;
+            }
+
+            if(address.state)
+            {
+                displayName += ' , ';
+                displayName += address.state;
+            }
+            searchResults += '<label>' + displayName + '</label><br/>';
             searchResults += '<label>' + address.country + '</label><br/>';
             searchResults += '<label>GPS: ' + address.gpsLocation + '</label><br/>'; 
 
             //phone
-            searchResults += '<h4><strong>PHONE NUMBER</strong></h4>' ;  
+            searchResults += '<strong>Phone :&nbsp;</strong>' ;  
             searchResults += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
             if (!isStringAndEmpty(phoneNumber.features)) {
                 searchResults += '<label>Features : ' + phoneNumber.features + '</label><br/>';

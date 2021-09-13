@@ -1,0 +1,71 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Yakoyo Main Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = parseInt(getQueryParameter('privileges'));
+        var userId = getQueryParameter('userId');
+        var userName = getQueryParameter('userName');
+        var itemsCount = 0;
+
+
+        function onGotBusinesses(data) { 
+           
+            document.getElementById('businesses').innerHTML = '';  
+            data.items.forEach(appendBusiness);    
+            
+        }
+
+ 
+ 
+        function openSearchPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-search.html?sessionId=' + sessionId +   '&privileges=' + privileges;
+        }
+
+
+
+        function editBusiness() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&businessId=' + document.getElementById('businesses').value + '&privileges=' + privileges;
+        }
+
+        function onRemoveBusiness(id) {
+            removeBusiness(sessionId, id, init, onError);
+        }
+ 
+
+        function appendBusiness(item) {
+            select = document.getElementById('businesses'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+ 
+
+
+        function onError(details) {
+
+        }
+
+ 
+
+        function init() {
+            getBusinesses('', onGotBusinesses, onError);
+        }
+
+        function showUserPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-user-page.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+
+        window.addEventListener('load', init);</script>
+</head>
+<body>
+    <img width="200" height="200" src="YAKOYO-logo.jpg"></img> <br/><br/>
+    <button  onclick="showUserPage()">Go to User Page</button><br/><br/>
+    <button onclick="openSearchPage()">Search ... </button><br /><br /> 
+    <h2>Businesses</h2> <select id="businesses"></select><button onclick="editBusiness()">Manage ...</button><br/><br/>
+
+</body>
+</html>

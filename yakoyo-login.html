@@ -21,7 +21,14 @@
             login(userName, document.getElementById('password').value,
                 function (data) {
                     if (!data.isError) { 
-                        document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + data.sessionId + '&privileges=' + data.privileges + '&userId=' + data.userId + '&userName=' + data.userName;
+                        if((data.privileges == 1) > 0 || (data.privileges & 8) > 0)
+                        {
+                            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + data.sessionId + '&privileges=' + data.privileges + '&userId=' + data.userId + '&userName=' + data.userName;
+                        }
+                        else{
+                            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage-user.html?sessionId=' + data.sessionId + '&privileges=' + data.privileges + '&userId=' + data.userId + '&userName=' + data.userName;
+                        }
+                        
                     }
                     else {
                         document.getElementById('LoginError').innerHTML = 'Login Error Please Try Again';

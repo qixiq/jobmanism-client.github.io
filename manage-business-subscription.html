@@ -19,37 +19,17 @@
             document.getElementById('busName').innerHTML = data.subscription.businessName;
             document.getElementById('subName').innerHTML = data.subscription.name; 
             data.subscription.activeFeatures.forEach(appendActiveFeature);  
-            data.subscription.inActiveFeatures.forEach(appendInActiveFeature); 
-            //data.business.digitalAssets.forEach(appendDigitalAsset);  
-            //data.business.annotations.forEach(appendAnnotation);  
-            //data.business.paymentMethods.forEach(appendPaymentMethod); 
-            //data.business.subscriptions.forEach(appendSubscription);  
+            data.subscription.inActiveFeatures.forEach(appendInActiveFeature);  
         }
 
-        function editSubscription() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-business-subscription.html?sessionId=' + sessionId + '&businessId=' + businessId + '&subscriptionId=' + document.getElementById('subscriptions').value+ '&privileges=' + privileges;
+        function onRemoveActive() {
+            removeActiveSubscriptionFeature(sessionId, businessId, document.getElementById('subscriptions').value, init, onError);
         }
 
-        function onRemoveSubscription() {
-            removeBusinessSubscription(sessionId, businessId, document.getElementById('subscriptions').value, init, onError);
+        function onRemoveInactive() {
+            removeInActiveSubscriptionFeature(sessionId, businessId, document.getElementById('subscriptions').value, init, onError);
         }
-
-
-        function editBusinessLocation() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId + '&locationId=' + document.getElementById('locations').value+ '&privileges=' + privileges;
-        }
-
-        function onRemoveBusinessLocation() {
-            removeBusinessLocation(sessionId, businessId, document.getElementById('locations').value, init, onError);
-        }
-
-        function editMenuItem() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId + '&menuItemId=' + document.getElementById('menuItems').value+ '&privileges=' + privileges;
-        }
-
-        function onRemoveMenuItem() {
-            removeMenuItem(sessionId, businessId, document.getElementById('menuItems').value, init, onError);
-        }
+ 
 
         function appendInActiveFeature(item){ 
             select = document.getElementById('inactives'); 
@@ -68,130 +48,8 @@
             select.appendChild(opt);
 
         }
-
-        function appendLocation(item) { 
-            var address = item.address;
-            var displayName = '';
-            if(address.streetNumber)
-            {
-                displayName += address.streetNumber;
-                displayName += ' , ';
-            }
-            
-            displayName += address.streetLine1;;
-            if (!isStringAndEmpty(address.streetLine2)) {
-                displayName += ' , ';
-                displayName += address.streetLine2;
-            }
-
-            if(address.city)
-            {
-                displayName += ' , ';
-                displayName += address.city;
-            }
-
-            if(address.state)
-            {
-                displayName += ' , ';
-                displayName += address.state;
-            }
-
-            select = document.getElementById('locations'); 
-            var opt = document.createElement('option');
-            opt.value = item.id;
-            opt.innerHTML = displayName;
-            select.appendChild(opt);
-        }
-
-        function editDigitalAsset() {
-            document.location.href = getPathPrefix(document.location.href) + '/manage-business-digital-asset.html?sessionId=' + sessionId + '&businessId=' + businessId + '&assetId=' + document.getElementById('digitalAssets').value+ '&privileges=' + privileges;
-        }
-
-        function onRemoveDigitalAsset() {
-            removeBusinessDigitalAsset(sessionId, businessId, document.getElementById('digitalAssets').value, init, onError);
-        }
-
-   
-        function appendDigitalAsset(item) {
-            select = document.getElementById('digitalAssets'); 
-            var opt = document.createElement('option');
-            opt.value = item.id;
-            opt.innerHTML = item.name;
-            select.appendChild(opt);
-        }
-
-        function appendSubscription(item) {
-            select = document.getElementById('subscriptions'); 
-            var opt = document.createElement('option');
-            opt.value = item.subscriptionId;
-            opt.innerHTML = item.name;
-            select.appendChild(opt);
-        }
- 
-
-        function editBusinessAnnotation() {
-            document.location.href = getPathPrefix(document.location.href) + '/update-business-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId + '&annotationId=' + document.getElementById('annotations').value+ '&privileges=' + privileges ;
-        }
-
-        function onRemoveBusinessAnnotation() {
-            removeBusinessAnnotation(sessionId, businessId, document.getElementById('annotations').value, init, onError);
-        }
-
-        function onAnnotationChanged()
-        {
-            var id = document.getElementById('annotations').value;
-            if(id){
-                var currentAnnotation = annotations[id];
-                document.getElementById('currentAnnotationText').innerHTML = currentAnnotation.comments;
-                document.getElementById('currentAnnotationImage').src = getResourceUrl(currentAnnotation.resourceId);    
-            }
-
-        }
-   
-        function appendAnnotation(item) {
-            itemsCount++;
-            annotations[item.id] = item;
-            select = document.getElementById('annotations'); 
-            var opt = document.createElement('option');
-            opt.value = item.id;
-            opt.innerHTML = "Annotation " + itemsCount;
-            select.appendChild(opt);
-        }
  
  
-        function addSubscription() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-subscription.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
-        }
-
-        function addAnnotation() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-annotation.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
-        }
-
-        //payment methods
-        function editPaymentMethod() {
-            document.location.href = getPathPrefix(document.location.href) + '/update-business-payment-method.html?sessionId=' + sessionId + '&businessId=' + businessId + '&paymentMethodId=' + document.getElementById('paymentMethods').value+ '&privileges=' + privileges ;
-        }
-
-        function onRemovePaymentMethod(id) {
-            removeBusinessPaymentMethod(sessionId, businessId, document.getElementById('paymentMethods').value, init, onError);
-        }
-
-   
-        function appendPaymentMethod(item) {
-
-            select = document.getElementById('paymentMethods'); 
-            var opt = document.createElement('option');
-            opt.value = item.id;
-            opt.innerHTML = item.name + ', (' + item.type + ')';
-            select.appendChild(opt);
-        }
- 
- 
- 
-
-        function addPaymentMethod() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-payment-method.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges ;
-        }
         //
 
         function onError(details) {
@@ -201,18 +59,14 @@
         function goBack() {
             document.location.href = getPathPrefix(document.location.href) + '/manage-vendor-business.html?sessionId=' + sessionId + '&privileges=' + privileges+ '&businessId=' + businessId;
         }
+ 
 
-
-        function addBusinessLocation() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-location.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
+        function activate() {
+            document.location.href = getPathPrefix(document.location.href) + '/activate-business-subscription.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges+ '&subscriptionId=' + subscriptionId;
         }
 
-        function addDigitalAsset() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-business-digital-asset.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
-        }
-
-        function addMenuItem() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-menu-item.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges;
+        function addFeatures() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-business-subscription-features.html?sessionId=' + sessionId + '&businessId=' + businessId+ '&privileges=' + privileges+ '&subscriptionId=' + subscriptionId;
         }
 
         function init() {
@@ -226,8 +80,10 @@
     <button onclick="goBack()">Go Back To Business Page</button><br/><br/>
     <h4>Manage Subcription <span id="subName"></span> for <span id="busName" ></span></h4>
     <h2>Activated Features</h2> <select id="actives"></select><button onclick="onRemoveActive()">Remove </button><br/><br/> 
-    <h2>Unactivated Features</h2> <select id="inactives"></select><button onclick="activate()">Activate ...</button>&nbsp;&nbsp;<button onclick="onRemoveInactive()">Remove </button><br/><br/>
-    <button onclick="updateFeatures()">Update ... </button><br /><br /> 
+    <h2>Unactivated Features</h2> <select id="inactives"></select>&nbsp;&nbsp;<button onclick="onRemoveInactive()">Remove </button><br/><br/>
+    <button onclick="activate()">Activate ...</button><br /><br /> 
+    <h2>Add New Features</h2>
+    <button onclick="addFeatures()">Add New Features ... </button><br /><br /> 
     
 </body>
 </html>
