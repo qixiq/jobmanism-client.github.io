@@ -8,6 +8,7 @@
         var userId = getQueryParameter('userId');
         var userName = getQueryParameter('userName');
         var itemsCount = 0;
+        var csv = '';
 
         function onGotSubscriptionFeatures(data){  
             
@@ -56,7 +57,9 @@
             document.getElementById('digitalAssetTypes').innerHTML = '';
             document.getElementById('businesses').innerHTML = ''; 
             document.getElementById('subscriptionFeatures').innerHTML = ''; 
+            csv = '';
             data.items.forEach(appendBusiness);   
+            console.log(csv);
             getFoodAndDrinkVendorTypes(onGotFoodAndDrinkVendorTypes, onError); 
             
         }
@@ -155,6 +158,7 @@
         }
 
         function appendBusiness(item) {
+            csv += (''+ item.id + ' , ' + item.name + '\r\n');
             select = document.getElementById('businesses'); 
             var opt = document.createElement('option');
             opt.value = item.id;

@@ -1658,3 +1658,30 @@ function addBusinessSubscription(
     {
         sendJsonPostRequest(data, '/addBusinessSubscription', onSuccess, onError);  
     }
+
+function getArmClassSchedules(armId, onSuccess, onError){
+    sendGetRequest('/getClassSchedules?sessionId=' + getQueryParameter('sessionId') + '&selector=armId-' + armId  , onSuccess, onError);
+    }
+
+    function getStudentClassSchedules(userId, onSuccess, onError){
+        sendGetRequest('/getClassSchedules?sessionId=' + getQueryParameter('sessionId') + '&selector=studentId-' + userId  , onSuccess, onError);
+    }
+
+    function getAddClassScheduleInfo(armId, onSuccess, onError){
+        sendGetRequest('/getAddClassScheduleInfo?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId  , onSuccess, onError);
+    }
+function             addClassSchedule( 
+    data,
+    onSuccess,
+    onError){
+        sendJsonPostRequest(data, '/addClassSchedule', onSuccess, onError);
+    }
+
+    function removeClassSchedule(scheduleId, onSuccess, onError){
+        var data =
+        {
+            sessionId: sessionId, 
+            itemIds: [parseInt(scheduleId)]
+        };
+        sendJsonPostRequest(data, '/deleteClassSchedules', onSuccess, onError);
+    }

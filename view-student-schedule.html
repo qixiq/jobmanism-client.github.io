@@ -1,0 +1,74 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title>Teleschools Student Schedule</title>
+    <script>
+        var schoolId = getQueryParameter('schoolId'); 
+        var sessionId = getQueryParameter('sessionId'); 
+        var armId = getQueryParameter('armId'); 
+        var levelId = getQueryParameter('levelId'); 
+        var userId  = getQueryParameter('userId');
+        var itemsCount = 0;
+
+   
+   
+        function onGotClassSchedules(data){
+
+            itemsCount = 0;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += "<h2><strong>LESSON SCHEDULE</strong></h2>"; 
+            if(data.schedules.length == 0)
+            {
+                listDiv.innerHTML += '<p><strong>Could Not Find Any Scheduled Lessons</strong ></p>';
+            }
+            else
+            {
+                data.schedules.forEach(appendArmClassSchedule); 
+            }
+        }
+
+
+ 
+
+
+        function onError(details) {
+
+        }
+
+    
+
+        function appendArmClassSchedule(item) {
+            itemsCount++;
+            var listDiv = document.getElementById('itemsList');
+            listDiv.innerHTML += '<p><strong>LESSON SCHEDULE ' + itemsCount;
+            listDiv.innerHTML += '</strong ></p>';
+            listDiv.innerHTML += '<label>'+ item.subject + ' - ' + getDayOfWeekName(item.dayOfWeek) + ' (' +  getTwoDigitPaddedNumber(item.startTime.hour) + ':' + getTwoDigitPaddedNumber(item.startTime.minute) + 'HRS - ' + getTwoDigitPaddedNumber(item.endTime.hour) + ':' + getTwoDigitPaddedNumber(item.endTime.minute) +'HRS)</label><br/>'; 
+            
+        }
+ 
+
+        //
+
+ 
+
+
+        function goBackToSchoolLevelArmsPage() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-school-level-arm.html?sessionId=' + sessionId + '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        }
+
+        function init() {
+            getStudentClassSchedules(userId, onGotClassSchedules, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body> 
+  
+    <button onclick="goBackToSchoolLevelArmsPage()">Go back To School Arm Page</button><br/><br/>
+    <div id="itemsList">
+
+    </div> 
+
+</body>
+</html>

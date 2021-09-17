@@ -280,3 +280,17 @@ ON [dbo].[UnActivatedBusinessSubscriptionFeatureLevels](LevelId, BusinessSubscri
 
  
 
+CREATE TABLE FlattenedLocationDetails
+{
+  LocationId BIGINT NOT NULL,
+  BusinessName VARCHAR(128),
+  Longitude Decimal NULL,
+  Latitude Decimal NULL,
+  Address VARCHAR(1024),
+  VendorTypes VARCHAR(1024),
+  Specialties VARCHAR(1024),
+  MenuItemCategories VARCHAR(1024),
+  PlusCode VARCHAR(32),
+  City VARCHAR(128),
+  State VARCHAR(128)
+}

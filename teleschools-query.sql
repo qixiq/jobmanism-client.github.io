@@ -118,8 +118,38 @@ create TABLE TeacherSubjects
     ON UPDATE CASCADE
 );
 
-CREATE UNIQUE INDEX uq_TeacherSubjects
-  ON [dbo].[TeacherSubjects](SubjectId, UserId, ArmId);
+CREATE TABLE TeacherSubjectAssignments
+(
+    UserId BIGINT NOT NULL,
+    ClassScheduleId BIGINT NOT NULL,
+    CONSTRAINT FK_TeacherAssignments_ClassScheduleId FOREIGN KEY (ClassScheduleId)
+    REFERENCES [dbo].[ClassSchedules] (ClassScheduleId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_TeacherAssignments_UserId FOREIGN KEY (UserId)
+    REFERENCES [dbo].[UserProfiles] (UserId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE 
+);
+
+CREATE TABLE ClassSchedules
+{
+    ClassScheduleId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    ArmId BIGINT NOT NULL,
+    SubjectId BIGINT NOT NULL,
+    DayOfWeek INT NOT NULL,
+    StartTime INT NOT NULL,
+    EndTime INT NOT NULL,
+    CONSTRAINT FK_ClassSchedules_SubjectId FOREIGN KEY (SubjectId)
+    REFERENCES [dbo].[Subjects] (SubjectId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_Teacher 
+    CONSTRAINT FK_ClassSchedules_ArmId FOREIGN KEY (ArmId)
+    REFERENCES [dbo].[LevelArms] (ArmId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+}
 
 CREATE TABLE StudentSubjects
 (
@@ -257,6 +287,8 @@ CREATE TABLE SchoolGroupMembers
 
 CREATE UNIQUE INDEX uq_SchoolGroupMembers
   ON [dbo].[SchoolGroupMembers](SchoolGroupId, UserId);
+
+
 
 
 

@@ -12,6 +12,8 @@
         var locationsForMenu = {};
         var businessesForLocations = {};
 
+        var csv = '';
+
         function onGotMenuItemCategories(data){
             data.items.forEach(appendMenuItemCategory);
             getFoodAndDrinkVendorTypes(onGotVendorTypes, onError);
@@ -23,6 +25,7 @@
 
         function onGotSearchResults(data)
         {
+            csv = '';
             locationsForMenu = {};
             businessesForLocations = {};
             locationsCount = 0;
@@ -38,7 +41,7 @@
                 data.hits.forEach(appendLocationAndMenuItemsItem);
             }
             
-            
+            //console.log(csv);
             document.getElementById('resultDiv').innerHTML = searchResults;
 
         }
@@ -89,6 +92,8 @@
             if(item.fares && item.fares.length > 0){
                 item.fares.forEach(appendLocationMenuItemItem);
             }
+
+            //csv += ('' + location.businessId + ' , ' + location.businessName + ' , ' + address.city + ' , ' + address.state + '\r\n');
             
         }
   

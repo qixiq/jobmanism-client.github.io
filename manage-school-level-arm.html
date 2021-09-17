@@ -35,21 +35,21 @@
         }
 
    
-        function onGotSubjectTeachers(data){
+        function onGotArmClassSchedules(data){
 
             itemsCount = 0;
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += "<h2><strong>SUBJECT TEACHERS</strong></h2>"; 
-            if(data.subjects.length == 0)
+            listDiv.innerHTML += "<h2><strong>LESSON SCHEDULE</strong></h2>"; 
+            if(data.schedules.length == 0)
             {
-                listDiv.innerHTML += '<p><strong>Could Not Find Any SubjectTeachers</strong ></p>';
+                listDiv.innerHTML += '<p><strong>Could Not Find Any Scheduled Lessons</strong ></p>';
             }
             else
             {
-                data.subjects.forEach(appendSubjectTeacher); 
+                data.schedules.forEach(appendArmClassSchedule); 
             }
              
-            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewTeacherSubject()">Add New Teacher Subject ... </button><br /> '; 
+            listDiv.innerHTML += '<br /> <br /> <button onclick="addNewArmClassSchedule()">Add New Arm Lesson Schedule ... </button><br /> '; 
         }
 
 
@@ -71,7 +71,7 @@
                 }
             
              
-            getTeachersAssignedSubjectsForLevelArms(armId, onGotSubjectTeachers, onError);
+           getArmClassSchedules(armId, onGotArmClassSchedules, onError);
 
         }
 
@@ -80,13 +80,13 @@
 
         }
 
-        function onRemoveTeacherSubject(userId, subjectId){ 
-            removeTeacherSubject(userId, armId, subjectId, init, onError);
+        function onRemoveClassSchedule(scheduleId){ 
+            removeClassSchedule(scheduleId, init, onError);
         }
 
 
-        function onEditTeacherSubject(userId, subjectId){ 
-            document.location.href = getPathPrefix(document.location.href) + '/change-teacher-subject.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&teacherId=' + userId + '&subjectId=' + subjectId;
+        function onEditClassSchedule(scheduleId){ 
+            document.location.href = getPathPrefix(document.location.href) + '/change-teacher-subject.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&scheduleId=' + scheduleId ;
         }
 
         function onRemoveClassTeacher(){
@@ -109,18 +109,22 @@
             document.location.href = getPathPrefix(document.location.href) + '/manage-user-devices.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&userId=' + id;
         }
 
+        function onViewStudentSchedule(id){
+            document.location.href = getPathPrefix(document.location.href) + '/view-student-schedule.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId + '&userId=' + id;
+        }
+
         function onRemoveStudent(id) {
             removeStudentFromLevelArm(sessionId, id, armId, init, onError);
         }
 
-        function appendSubjectTeacher(item) {
+        function appendArmClassSchedule(item) {
             itemsCount++;
             var listDiv = document.getElementById('itemsList');
-            listDiv.innerHTML += '<p><strong>SUBJECT TEACHER ' + itemsCount;
+            listDiv.innerHTML += '<p><strong>LESSON SCHEDULE ' + itemsCount;
             listDiv.innerHTML += '</strong ></p>';
-            listDiv.innerHTML += '<label>'+ item.subjectName + ' , ' +  item.teacherName + '</label><br/>'; 
-            listDiv.innerHTML += '<button  onclick="onRemoveTeacherSubject(\'' + item.userId + '\', \'' + item.subjectId + '\')">Remove </button>&nbsp;&nbsp;';
-            //listDiv.innerHTML += '<button  onclick="onEditTeacherSubject(\'' + item.userId + '\', \'' + item.subjectId + '\')">Change Teacher ...  </button><br/><br/>';
+            listDiv.innerHTML += '<label>'+ item.subject + ' - ' + getDayOfWeekName(item.dayOfWeek) + ' (' +  getTwoDigitPaddedNumber(item.startTime.hour) + ':' + getTwoDigitPaddedNumber(item.startTime.minute) + 'HRS - ' + getTwoDigitPaddedNumber(item.endTime.hour) + ':' + getTwoDigitPaddedNumber(item.endTime.minute) +'HRS)</label><br/>'; 
+            listDiv.innerHTML += '<button  onclick="onRemoveClassSchedule(\'' + item.scheduleId + '\')">Remove </button>&nbsp;&nbsp;';
+            listDiv.innerHTML += '<button  onclick="onEditClassSchedule(\'' + item.scheduleId + '\')">Change Lesson Schedule...  </button><br/><br/>';
             
         }
 
@@ -132,7 +136,8 @@
             listDiv.innerHTML += '<label>'+ item.name + '</label><br/>'; 
             listDiv.innerHTML += '<button  onclick="onRemoveStudent(\'' + item.userId + '\')">Remove</button>&nbsp;&nbsp'; 
             listDiv.innerHTML += '<button  onclick="onManageStudentSubjects(\'' + item.userId + '\')">Manage Subjects ...</button>&nbsp;&nbsp'; 
-            listDiv.innerHTML += '<button  onclick="onManageDevices(\'' + item.userId + '\')">Manage Devices ...</button><br/><br/>';
+            listDiv.innerHTML += '<button  onclick="onManageDevices(\'' + item.userId + '\')">Manage Devices ...</button>&nbsp;&nbsp';
+            listDiv.innerHTML += '<button  onclick="onViewStudentSchedule(\'' + item.userId + '\')">View Lesson Schedule ...</button><br/><br/>';
             
         }
 
@@ -142,8 +147,8 @@
             document.location.href = getPathPrefix(document.location.href) + '/add-arm-students.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
         }
 
-        function addNewTeacherSubject() {
-            document.location.href = getPathPrefix(document.location.href) + '/add-teacher-subjects.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
+        function addNewArmClassSchedule() {
+            document.location.href = getPathPrefix(document.location.href) + '/add-arm-class-schedule.html?sessionId=' + sessionId+ '&schoolId=' + schoolId + '&levelId=' + levelId + '&armId=' + armId;
         }
 
         //

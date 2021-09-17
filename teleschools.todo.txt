@@ -1,0 +1,9 @@
+AddClassSchedule
+DeleteClassSchedules
+GetClassSchedules
+GetClassSchedule
+UpdateClassSchedule
+
+AddTeachersToClassSchedule
+DeleteTeachersFromClassSchedule
+GetTeacherSchedules
