@@ -133,7 +133,7 @@ CREATE TABLE TeacherSubjectAssignments
 );
 
 CREATE TABLE ClassSchedules
-{
+(
     ClassScheduleId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
     ArmId BIGINT NOT NULL,
     SubjectId BIGINT NOT NULL,
@@ -149,7 +149,54 @@ CREATE TABLE ClassSchedules
     REFERENCES [dbo].[LevelArms] (ArmId)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-}
+);
+
+CREATE TABLE StudentSubjectAssignments
+( 
+    AssignmentId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    ArmId BIGINT NOT NULL,
+    SubjectId BIGINT NOT NULL,
+    ResourceId BIGINT NOT NULL,
+    PostDate DATETIME NOT NULL,
+    DueDate DATETIME NULL,
+    MaxNominalScore DECIMAL NOT NULL,
+    CONSTRAINT FK_StudentSubjectAssignments_SubjectId FOREIGN KEY (SubjectId)
+    REFERENCES [dbo].[Subjects] (SubjectId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    CONSTRAINT FK_StudentSubjectAssignments_ArmId FOREIGN KEY (ArmId)
+    REFERENCES [dbo].[LevelArms] (ArmId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    CONSTRAINT FK_StudentSubjectAssignments_ResourceId FOREIGN KEY (ResourceId)
+    REFERENCES [dbo].[Resources] (ResourceId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+
+CREATE TABLE StudentSubjectAssignmentSubmissions
+( 
+    AssignmentSubmissionId BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    UserId BIGINT NOT NULL,
+    AssignmentId BIGINT NOT NULL,
+    ResourceId BIGINT NOT NULL,
+    PostDate DATETIME NOT NULL,
+    Score DECIMAL,
+    CONSTRAINT FK_StudentSubjectAssignmentSubmissions_AssignmentId FOREIGN KEY (AssignmentId)
+    REFERENCES [dbo].[StudentSubjectAssignments] (AssignmentId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    CONSTRAINT FK_StudentSubjectAssignmentSubmissions_UserId FOREIGN KEY (UserId)
+    REFERENCES [dbo].[UserProfiles] (UserId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    CONSTRAINT FK_StudentSubjectAssignmentSubmissions_ResourceId FOREIGN KEY (ResourceId)
+    REFERENCES [dbo].[Resources] (ResourceId)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
 
 CREATE TABLE StudentSubjects
 (

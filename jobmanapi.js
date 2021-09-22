@@ -1685,3 +1685,11 @@ function             addClassSchedule(
         };
         sendJsonPostRequest(data, '/deleteClassSchedules', onSuccess, onError);
     }
+
+    function flattenBusinessDetails(){
+        var data =
+        {
+            sessionId: sessionId  
+        };
+        sendJsonPostRequest(data, '/updateFlattenedBusinessLocations',  function(){}, function(){});
+    }

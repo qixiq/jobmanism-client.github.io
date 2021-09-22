@@ -116,13 +116,7 @@ UpdateBusinessSubscription
 GetBusinessSubscription
 GetBusinessSubscriptions
 
-+
 
-AddBusinessApplication
-DeleteBusinessApplication
-UpdateBusinessApplication
-GetBusinessApplications
-GetBusinessApplication
 
 +
 
@@ -133,31 +127,43 @@ GetBusinessSubscriptionFeature
 GetBusinessSubscriptionFeatures
 
 +
-
-AddBusinessSubscriptionFeatureToBusinessSubscription
-DeleteBusinessSubscriptionFeaturesFromBusinessSubscription
-UpdateBusinessSubscriptionFeatureInBusinessSubscription
-GetBusinessSubscriptionFeaturesInBusinessSubscription 
-
-+
-
-RequestSubscriptionActivation
-CancelRequestedSubscriptionActivation
-ApproveSubscriptionActivationRequest
-DenySubscriptionActivationRequest
-GetPendingSubscriptionActivationRequests
-
-+
-AssociateBusinessApplicationWithBusinessSubscriptionFeature
-UnassociateBusinessApplicationWithBusinessSubscriptionFeature
-GetAssociatedBusinessSubscriptionFeaturesForBusinessApplication
-
-+
 AddBusinessSubscriptionFeatureLevel
 DeleteBusinessSubscriptionFeatureLevel
 UpdateBusinessSubscriptionFeatureLevel
 GetBusinessSubscriptionFeatureLevels
 GetBusinessSubscriptionFeatureLevel
+
++***
++
+
+AddBusinessMenuSpecialty
+DeleteBusinessMenuSpecialties
+GetBusinessMenuSpecialties
+
++
+
+UpdateFlattenedBusinessLocations
+
++
+RequestSubscriptionActivation
+CancelRequestedSubscriptionActivation
+ApproveSubscriptionActivationRequest
+DenySubscriptionActivationRequest
+GetPendingSubscriptionActivationRequests 
+
++
+
+AddBusinessApplication
+DeleteBusinessApplication
+UpdateBusinessApplication
+GetBusinessApplications
+GetBusinessApplication
++
+AssociateBusinessApplicationWithBusinessSubscriptionFeature
+UnassociateBusinessApplicationWithBusinessSubscriptionFeature
+GetAssociatedBusinessSubscriptionFeaturesForBusinessApplication
+
+
 
 
 

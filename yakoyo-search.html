@@ -46,52 +46,47 @@
 
         }
 
+        function appendResult(item){
+
+            searchResults += (item + ' , ');
+
+        }
+
         function appendLocationAndMenuItemsItem(item){
-            locationsCount++; 
-            var location = item.location;
-            currentLocationId = location.locationId;
-            businessesForLocations[currentLocationId] = location.businessId;
-            var address = location.address;
-            var phoneNumber = location.phoneNumber;
-            searchResults += '<h2><strong> ' + location.businessName + '</strong ></h2>'; 
+            locationsCount++;  
+            currentLocationId = item.locationId;
+            businessesForLocations[currentLocationId] = item.businessId;
+          
+            var phoneNumber = item.phoneNumber;
+            searchResults += '<h2><strong> ' + item.businessName + '</strong ></h2>'; 
  
-            var displayName = '';
-            if(address.streetNumber)
+   
+            if(item.plusCode && item.plusCode != '')
             {
-                displayName += address.streetNumber;
-                displayName += ' , ';
-            }
-            
-            displayName += address.streetLine1;;
-            if (!isStringAndEmpty(address.streetLine2)) {
-                displayName += ' , ';
-                displayName += address.streetLine2;
+                searchResults += '<label>GPS: ' + item.plusCode + '</label><br/>'; 
             }
 
-            if(address.city)
-            {
-                displayName += ' , ';
-                displayName += address.city;
-            }
-
-            if(address.state)
-            {
-                displayName += ' , ';
-                displayName += address.state;
-            }
-            searchResults += '<label>' + displayName + '</label><br/>';
-            searchResults += '<label>' + address.country + '</label><br/>';
-            searchResults += '<label>GPS: ' + address.gpsLocation + '</label><br/>'; 
+            searchResults += '<label>'  + item.city + ' , ' + item.state + '</label><br/>'; 
 
             //phone
             searchResults += '<strong>Phone :&nbsp;</strong>' ;  
-            searchResults += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>';
+            searchResults += '<label>' + item.phoneNumber + '</label><br/>';
 
-            searchResults += '<button  onclick="goToLocation(\'' + location.locationId + '\')">View Location ... </button>&nbsp;&nbsp;<br/>';
-            menuItemCount = 0;
-            if(item.fares && item.fares.length > 0){
-                item.fares.forEach(appendLocationMenuItemItem);
+            if(item.menuItemCategories && item.menuItemCategories.length > 0)
+            {
+                searchResults += '<label>Menu Item Categories : ' ;
+                item.menuItemCategories.forEach(appendResult);
+                searchResults += '</label><br/><br/>';
             }
+
+            if(item.vendorTypes && item.vendorTypes.length > 0)
+            {
+                searchResults += '<label>Vendor Types : ' ;
+                item.vendorTypes.forEach(appendResult);
+                searchResults += '</label><br/><br/>';
+            }
+
+            searchResults += '<button  onclick="goToLocation(\'' + item.locationId + '\')">View Location ... </button>&nbsp;&nbsp;<br/>';
 
             //csv += ('' + location.businessId + ' , ' + location.businessName + ' , ' + address.city + ' , ' + address.state + '\r\n');
             

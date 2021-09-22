@@ -281,8 +281,9 @@ ON [dbo].[UnActivatedBusinessSubscriptionFeatureLevels](LevelId, BusinessSubscri
  
 
 CREATE TABLE FlattenedLocationDetails
-{
+(
   LocationId BIGINT NOT NULL,
+  BusinessId BIGINT NOT NULL,
   BusinessName VARCHAR(128),
   Longitude Decimal NULL,
   Latitude Decimal NULL,
@@ -292,5 +293,38 @@ CREATE TABLE FlattenedLocationDetails
   MenuItemCategories VARCHAR(1024),
   PlusCode VARCHAR(32),
   City VARCHAR(128),
-  State VARCHAR(128)
-}
+  State VARCHAR(128),
+  CONSTRAINT FK_FlattenedLocationDetails_BusinessId FOREIGN KEY (BusinessId)
+  REFERENCES [dbo].[Businesses] (BusinessId)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT FK_FlattenedLocationDetails_LocationId FOREIGN KEY (LocationId)
+  REFERENCES [dbo].[BusinessLocations] (LocationId)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+);
+
+CREATE INDEX ix_FlattenedLocationDetails_Longitude ON FlattenedLocationDetails (Longitude);
+CREATE INDEX ix_FlattenedLocationDetails_Latitude ON FlattenedLocationDetails (Latitude);
+CREATE INDEX ix_FlattenedLocationDetails_Address ON FlattenedLocationDetails (Address);
+CREATE INDEX ix_FlattenedLocationDetails_VendorTypes ON FlattenedLocationDetails (VendorTypes);
+CREATE INDEX ix_FlattenedLocationDetails_Specialties ON FlattenedLocationDetails (Specialties);
+CREATE INDEX ix_FlattenedLocationDetails_MenuItemCategories ON FlattenedLocationDetails (MenuItemCategories);
+CREATE INDEX ix_FlattenedLocationDetails_PlusCode ON FlattenedLocationDetails (PlusCode);
+CREATE INDEX ix_FlattenedLocationDetails_City ON FlattenedLocationDetails (City);
+CREATE INDEX ix_FlattenedLocationDetails_State ON FlattenedLocationDetails (State);
+CREATE INDEX ix_FlattenedLocationDetails_BusinessName ON FlattenedLocationDetails (BusinessName);
+
+CREATE TABLE FoodAndDrinkBusinessMenuSpecialties
+(
+    BusinessId BIGINT NOT NULL,
+    MenuItemCategoryId BIGINT NOT NULL,
+    CONSTRAINT FK_FoodAndDrinkBusinessMenuSpecialties_BusinessId FOREIGN KEY (BusinessId)
+    REFERENCES [dbo].[Businesses] (BusinessId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    CONSTRAINT FK_FoodAndDrinkBusinessMenuSpecialties_MenuItemCategoryId FOREIGN KEY (MenuItemCategoryId)
+    REFERENCES [dbo].[MenuItemCategories] (MenuItemCategoryId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
