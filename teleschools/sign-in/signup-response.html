@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Jumbotron example · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/jumbotron/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <script type="text/javascript" src="../../jobmanapi.js"></script>
+
+<script> 
+function init(){
+  var email = getQueryParameter('email');
+  document.getElementById('notification').innerHTML = 'Thank you for signing up for Teleschools Portal. An email has been sent to ' + email +  ', please follow instructions, contained therein, to complete signup';
+}
+
+window.addEventListener('load', init);
+</script>
+
+
+  </head>
+  <body>
+    
+<main>
+  <div class="container py-4">
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5"> 
+        <img class="mb-4" src="../assets/brand/teleschools.jpg" alt="" width="302" height="301">
+        <p id="notification" class="col-md-8 fs-4"></p>
+      </div>
+    </div>
+
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+      &copy; 2020-2021
+    </footer>
+  </div>
+</main>
+
+
+    
+  </body>
+</html>
