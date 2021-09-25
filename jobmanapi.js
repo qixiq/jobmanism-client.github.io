@@ -1670,6 +1670,10 @@ function getArmClassSchedules(armId, onSuccess, onError){
     function getAddClassScheduleInfo(armId, onSuccess, onError){
         sendGetRequest('/getAddClassScheduleInfo?sessionId=' + getQueryParameter('sessionId') + '&armId=' + armId  , onSuccess, onError);
     }
+
+    function getPortalSchoolSelection(onSuccess, onError){
+        sendGetRequest('/getPortalSchoolSelection?sessionId=' + getQueryParameter('sessionId')   , onSuccess, onError);
+    }
 function             addClassSchedule( 
     data,
     onSuccess,

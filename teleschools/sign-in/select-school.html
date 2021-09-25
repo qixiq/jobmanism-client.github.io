@@ -34,42 +34,142 @@
     
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../../jobmanapi.js"></script>
+
+    <script> 
+    var sessionId = getQueryParameter('sessionId'); 
+    var states;
+    var cities;
+    var initDone = false; 
+
+    function onSuccess(data)
+    {
+        states = data.info;
+        data.info.forEach(appendState);
+        initDone = true;
+        onStateChanged();
+    }
+
+    function onError(data)
+    {
+
+    }
+
+    function onStateChanged(){
+
+        if(!initDone){
+            return;
+        }
+
+        var selected = document.getElementById('state').value;
+        var cityElem = document.getElementById('city');
+        cityElem.length = 0; 
+        //appendCity({city: ''})
+        for(var i = 0; i < states.length; ++i)
+        {
+            if(states[i].state == selected)
+            {
+                cities = states[i].schoolCities;
+                cities.forEach(appendCity);
+                break;
+            }
+        }
+
+        onCityChanged();
+
+    }
+
+    function onCityChanged(){
+
+        if(!initDone){
+            return;
+        }
+
+        var selected = document.getElementById('city').value;
+        var school = document.getElementById('school');
+        school.length = 0;
+        //appendSchool({school : ''});
+        for(var i = 0; i < cities.length; ++i)
+        {
+            if(cities[i].city == selected)
+            {
+                cities[i].schools.forEach(appendSchool);
+                break;
+            }
+        } 
+
+    }
+
+    function appendState(item){
+        var state = item.state; 
+            select = document.getElementById('state'); 
+            var opt = document.createElement('option');
+            opt.value = state;
+            opt.innerHTML = state;
+            select.appendChild(opt);
+        }
+
+        function appendCity(item){
+        var city = item.city; 
+            select = document.getElementById('city'); 
+            var opt = document.createElement('option');
+            opt.value = city;
+            opt.innerHTML = city;
+            select.appendChild(opt);
+        }
+
+        function appendSchool(item){ 
+            select = document.getElementById('school'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+        function init()
+        {
+            getPortalSchoolSelection(onSuccess, onError);
+        }
+        
+        window.addEventListener('load', init);
+        </script>
+        
   </head>
   <body class="text-center">
 <main class="form-signin">
-  <form>
+  <form id="theForm">
     <img class="mb-4" src="../assets/brand/teleschools.jpg" alt="" width="302" height="301">
-    <h1 class="h3 mb-3 fw-normal">Choose school to administer</h1>
+    <h1 class="h3 mb-3 fw-normal">Choose School</h1>
 
     <div class="form-floating">
-        <select class="form-control" id="state" placeholder="State">
-            <option>Oyo</option>
+        <select class="form-control" id="state" onchange="onStateChanged()" placeholder="State">
         </select>
         <label for="state">State</label>
       </div><br/> 
     <div class="form-floating">
-      <select class="form-control" id="city" placeholder="City">
-        <option>Ibadan</option>
-        <option>Oyo</option>
-        <option>Ogbomosho</option>
+      <select class="form-control" id="city" onchange="onCityChanged()" placeholder="City">
       </select>
       <label for="city">City</label>
     </div><br/> 
     <div class="form-floating">
       <select class="form-control" id="school" placeholder="School">
-        <option>Primary</option>
-        <option>Secondary</option>
-        <option>Grammar</option>
         </select>
       <label for="school">School</label>
     </div><br/>
 
     <button class="w-100 btn btn-lg btn-primary" type="submit">Proceed</button> 
-    <p class="mt-5 mb-3 text-muted">&copy; 2019–2021</p>
+    <p class="mt-5 mb-3 text-muted">&copy; Teleschools 2019–2021</p>
   </form>
 </main>
 
 
+<script>
+    document.getElementById('theForm').onsubmit = function () {
+        document.location.href = getPathPrefix(document.location.href) + '/school.html?sessionId=' + sessionId + '&schoolId=' +document.getElementById('school').value; 
+        return false;
+    };
+  </script>
     
   </body>
 </html>
