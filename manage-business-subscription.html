@@ -8,18 +8,22 @@
         var subscriptionId = getQueryParameter('subscriptionId'); 
         var privileges = getQueryParameter('privileges'); 
         var businessName = '';
-        var itemsCount = 0;
+        var noPaymentEvidenceCount = 0;
         var annotations = {};
 
  
 
         function onGotBusinessSubscription(data) {
 
-            itemsCount = 0; 
+            noPaymentEvidenceCount = 0; 
             document.getElementById('busName').innerHTML = data.subscription.businessName;
             document.getElementById('subName').innerHTML = data.subscription.name; 
             data.subscription.activeFeatures.forEach(appendActiveFeature);  
-            data.subscription.inActiveFeatures.forEach(appendInActiveFeature);  
+            data.subscription.inActiveFeatures.forEach(appendInActiveFeature); 
+            if(noPaymentEvidenceCount == 0) 
+            {
+                select = document.getElementById('status').innerHTML = 'Approval Pending. You have submitted payment evidence for all subscriptions'; 
+            }
         }
 
         function onRemoveActive() {
@@ -27,7 +31,7 @@
         }
 
         function onRemoveInactive() {
-            removeInActiveSubscriptionFeature(sessionId, businessId, document.getElementById('subscriptions').value, init, onError);
+            removeInActiveSubscriptionFeature(sessionId, businessId, document.getElementById('inactives').value, init, onError);
         }
  
 
@@ -35,8 +39,12 @@
             select = document.getElementById('inactives'); 
             var opt = document.createElement('option');
             opt.value = item.featureLevelId;
-            opt.innerHTML = item.name;
+            opt.innerHTML = item.name + '( ' + item.monthlyCost + '/month)';
             select.appendChild(opt);
+            if(item.paymentEvidenceResourceId == 0)
+            {
+                noPaymentEvidenceCount++;
+            }
 
         }
 
@@ -79,9 +87,10 @@
 <body>
     <button onclick="goBack()">Go Back To Business Page</button><br/><br/>
     <h4>Manage Subcription <span id="subName"></span> for <span id="busName" ></span></h4>
-    <h2>Activated Features</h2> <select id="actives"></select><button onclick="onRemoveActive()">Remove </button><br/><br/> 
-    <h2>Unactivated Features</h2> <select id="inactives"></select>&nbsp;&nbsp;<button onclick="onRemoveInactive()">Remove </button><br/><br/>
-    <button onclick="activate()">Activate ...</button><br /><br /> 
+    <h2>Activated Features</h2> <select width="200" id="actives"></select><br/><br/> 
+    <h2>Unactivated Features</h2> <select width="200" id="inactives"></select>&nbsp;&nbsp;<button onclick="onRemoveInactive()">Remove </button><br/><br/>
+    <p id="status"></p>
+    <button onclick="activate()" id="activateButton">Submit Payment Evidence ...</button><br /><br /> 
     <h2>Add New Features</h2>
     <button onclick="addFeatures()">Add New Features ... </button><br /><br /> 
     

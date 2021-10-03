@@ -203,6 +203,10 @@
             document.location.href = getPathPrefix(document.location.href) + '/add-digital-asset-type.html?sessionId=' + sessionId + '&privileges=' + privileges;
         }
 
+        function reviewPendingSubscriptions() {
+            document.location.href = getPathPrefix(document.location.href) + '/review-pending-subscriptions.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+
         function init() {
             getBusinesses('', onGotBusinesses, onError);
         }
@@ -229,9 +233,11 @@
     <button onclick="addDigitalAssetType()">Add New Digital Asset Type ... </button><br /><br /> 
     <h2>Payment Method Types</h2> <select id="paymentMethodTypes"></select><button onclick="editPaymentMethodType()">Manage ...</button>&nbsp;&nbsp;<button onclick="onRemovePaymentMethodType()">Remove </button><br/><br/>
     <button onclick="addPaymentMethodType()">Add Payment Method Type ... </button><br /><br /> 
-    <h2>Upload Businesses</h2><br/> 
+    <h2>Upload Businesses</h2>
     <button onclick="uploadBusinesses()">Upload Businesses ... </button><br /><br /> 
-    <h2>Flatten Business Details</h2><br/> 
+    <h2>Flatten Business Details</h2>
     <button onclick="flattenBusinessDetails()">Flatten Business Details ... </button><br /><br /> 
+    <h2>Review Pending Subscription Requests</h2>
+    <button onclick="reviewPendingSubscriptions()">Review ... </button><br /><br /> 
 </body>
 </html>

@@ -1697,3 +1697,33 @@ function             addClassSchedule(
         };
         sendJsonPostRequest(data, '/updateFlattenedBusinessLocations',  function(){}, function(){});
     }
+
+    function requestSubscriptionActivation( 
+        data,
+        onSuccess,
+        onError){
+            sendFormDataPostRequest(data, '/requestSubscriptionActivation',  onSuccess, onError);
+        }
+
+
+        function removeInActiveSubscriptionFeature(sessionId, businessId, id, onSuccess, onError){
+            var data =
+            {
+                sessionId: sessionId, 
+                itemIds: [parseInt(id)],
+                targetId: parseInt(businessId),
+            };
+            sendJsonPostRequest(data, '/deleteRequestedSubscriptionActivations', onSuccess, onError);
+        }
+
+        function approveSubscriptionActivationRequest( 
+            data,
+            onSuccess,
+            onError)
+            {
+                sendJsonPostRequest(data, '/approveSubscriptionActivationRequest', onSuccess, onError);
+            }
+
+function getPendingSubscriptionActivationRequests(onSuccess, onError){
+    sendGetRequest('/getPendingSubscriptionActivationRequests?sessionId=' + getQueryParameter('sessionId')   , onSuccess, onError);
+        }

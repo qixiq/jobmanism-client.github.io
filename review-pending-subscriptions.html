@@ -1,0 +1,136 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title> Yakoyo Subscriptions Approval Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');  
+        var privileges = getQueryParameter('privileges');  
+        var subscriptionBuckets = {}; 
+ 
+
+        function onGotPendingSubscriptions(data) { 
+            subscriptionBuckets = {};
+            document.getElementById('pendings').length = 0;
+            data.subscriptions.forEach(appendPendingSubscription);
+            onPendingSubcscriptionChanged();
+        }
+ 
+        function appendPendingSubscription(item){   
+            var key = '' + item.subscriptionId + ':' + item.paymentEvidenceResourceId;
+            var bucketContents = subscriptionBuckets[key];
+            if(!bucketContents)
+            {
+                bucketContents = {subscriptionId : item.subscriptionId, paymentEvidenceResourceId : item.paymentEvidenceResourceId};
+                bucketContents.items = [];
+                subscriptionBuckets[key] = bucketContents;
+
+                select = document.getElementById('pendings');
+                var opt = document.createElement('option');
+                opt.value = key;
+                opt.innerHTML = item.businessName  +  ' ( ' + key + ' )';
+                select.appendChild(opt);
+            }
+
+            bucketContents.items.push(item);
+            
+        }
+
+        function getNumbeOfMothsInSubscriptionTerm(term){
+            if(term == 2) return 12.0;
+            if(term == 1) return 6.0;
+            return 1.0;
+        }
+
+        function onPendingSubcscriptionChanged(){ 
+            var bucketContents = subscriptionBuckets[document.getElementById('pendings').value];
+            if(!bucketContents) return;
+             
+            var details = '';
+            var totalCost = 0.0;
+
+            for(var i = 0; i < bucketContents.items.length; ++i){
+                var item = bucketContents.items[i];
+                var months = getNumbeOfMothsInSubscriptionTerm(item.term);
+                var cost = item.monthlyCost * months;
+                details += '<p>' + item.subscriptionName + ' , ' + item.description + ', Cost : ' +  item.monthlyCost + '/month for ' + months +' months ( ' + cost + ' )</p>';
+                totalCost += cost;
+
+            }
+
+            details += '<p><strong> Total Cost : ' +  totalCost + '</strong></p>';
+
+            document.getElementById('details').innerHTML = details;
+
+            console.log(bucketContents);
+
+            if(bucketContents.paymentEvidenceResourceId != 0){
+                document.getElementById('paymentEvidence').src =  getResourceUrl(bucketContents.paymentEvidenceResourceId) ;
+                document.getElementById('paymentHeader').innerHTML =  'Payment Evidence' ;
+                document.getElementById('approveButton').disabled =  false;
+            }
+            else{
+                document.getElementById('approveButton').disabled =  true;
+                document.getElementById('paymentEvidence').src =  '' ;
+                document.getElementById('paymentHeader').innerHTML =  'No Payment Evidence Found' ;
+            }
+
+        } 
+ 
+        //
+
+        function onError(details) {
+
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/yakoyo-landingpage.html?sessionId=' + sessionId + '&privileges=' + privileges;
+        }
+ 
+ 
+
+        function init() {
+            getPendingSubscriptionActivationRequests(onGotPendingSubscriptions, onError);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <h4>Review Pending Subcriptions </h4> 
+    <form id="theForm">
+        <select width="200" id="pendings" onchange="onPendingSubcscriptionChanged()"></select>&nbsp;&nbsp;<button id="approveButton" type="submit">Approve </button><br/><br/>
+    </form>
+    <p><strong>Subscription Details</strong></p>
+    <p id="details"></p>
+    <p id="paymentHeader"></p>
+    <img id="paymentEvidence" src="" alt="">
+    <script> 
+      document.getElementById('theForm').onsubmit = function () {
+
+
+        var bucketContents = subscriptionBuckets[document.getElementById('pendings').value];
+            
+        var itemIds = [];
+
+        for(var i = 0; i < bucketContents.items.length; ++i){
+            var item = bucketContents.items[i];
+            itemIds.push(item.featureLevelId);
+
+        }
+
+        var data = {
+            sessionId : sessionId,
+            targetId : bucketContents.subscriptionId,
+            itemIds : itemIds
+        };
+           
+        approveSubscriptionActivationRequest( 
+                data,
+                init,
+                onError); 
+        
+        return false;
+          };</script>
+</body>
+</html>

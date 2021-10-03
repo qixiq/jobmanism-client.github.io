@@ -246,6 +246,8 @@ CREATE TABLE ActivatedBusinessSubscriptionFeatureLevels
 (
     LevelId BIGINT NOT NULL,
     BusinessSubscriptionId BIGINT NOT NULL,
+    EffectiveDate DATETIME NOT NULL,
+    ExpirationDate DATETIME NOT NULL,
     CONSTRAINT FK_ActivatedBusinessSubscriptionFeatureLevels_LevelId FOREIGN KEY (LevelId)
     REFERENCES [dbo].[SubscriptionFeatureLevels] (LevelId)
     ON DELETE CASCADE
@@ -264,6 +266,9 @@ CREATE TABLE UnActivatedBusinessSubscriptionFeatureLevels
 (
     LevelId BIGINT NOT NULL,
     BusinessSubscriptionId BIGINT NOT NULL,
+    RenewalTerm INT NOT NULL,
+    PaymentEvidenceResourceId BIGINT NULL,
+    MessageThreadId BIGINT NULL,
     CONSTRAINT FK_UnActivatedBusinessSubscriptionFeatureLevels_LevelId FOREIGN KEY (LevelId)
     REFERENCES [dbo].[SubscriptionFeatureLevels] (LevelId)
     ON DELETE CASCADE

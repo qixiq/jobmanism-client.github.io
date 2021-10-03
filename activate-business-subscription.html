@@ -1,0 +1,99 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <title> Yakoyo Business Vendor Management Page</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId'); 
+        var businessId = getQueryParameter('businessId'); 
+        var subscriptionId = getQueryParameter('subscriptionId'); 
+        var privileges = getQueryParameter('privileges'); 
+        var businessName = ''; 
+        var uploadFiles = [];
+
+ 
+
+        function onGotBusinessSubscription(data) {
+
+            noPaymentEvidenceCount = 0; 
+            document.getElementById('busName').innerHTML = data.subscription.businessName;
+            document.getElementById('subName').innerHTML = data.subscription.name; 
+            data.subscription.inActiveFeatures.forEach(appendInActiveFeature); 
+        }
+ 
+
+        function appendInActiveFeature(item){ 
+            select = document.getElementById('features'); 
+            var opt = document.createElement('option');
+            opt.value = item.featureLevelId;
+            opt.innerHTML = item.name + '( ' + item.monthlyCost + '/month)';
+            select.appendChild(opt);  
+        } 
+ 
+        //
+
+        function onError(details) {
+
+        }
+
+        function goBack() {
+            document.location.href = getPathPrefix(document.location.href) + '/manage-business-subscription.html?sessionId=' + sessionId + '&privileges=' + privileges+ '&businessId=' + businessId + '&subscriptionId=' + subscriptionId;
+        }
+  
+
+        function init() { 
+            document.getElementById('paymentFile').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+            getBusinessSubscription(businessId, subscriptionId, onGotBusinessSubscription, onError);
+        }
+
+        window.addEventListener('load', init); 
+    </script>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button><br/><br/>
+    <h4>Upload Payment Evidence for Subcription <span id="subName"></span> for <span id="busName" ></span></h4>  
+
+    <form id="theForm">
+        <select id="features" multiple width="200"></select><br/><br/> 
+        <label>&nbsp;&nbsp;&nbsp;Choose File That contains Payment Evidence :&nbsp;</label><input id="paymentFile" type="file" /><br /><br /> 
+        <button type="submit">Upload</button><br />
+    </form>
+    
+
+    <script>
+        function getSelectValues(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+    
+            for (var i=0, iLen=options.length; i<iLen; i++) {
+                opt = options[i]; 
+                if (opt.selected) {
+                    result.push(parseInt(opt.value));
+                }
+            }
+            return result;
+          }
+      document.getElementById('theForm').onsubmit = function () {
+        var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resource', uploadFiles[0]);
+            } 
+            data.append('sessionId', sessionId);  
+            var featureElt = document.getElementById('features');
+            var levelIds = getSelectValues(featureElt);
+            for(var i = 0; i < levelIds.length; ++i){
+                data.append('levelIds[' + i + ']', levelIds[i]); 
+            }
+            
+            data.append('businessSubscriptionId', parseInt(subscriptionId));   
+            requestSubscriptionActivation( 
+                data,
+                goBack,
+                onError); 
+        
+        return false;
+          };</script>
+</body>
+</html>
