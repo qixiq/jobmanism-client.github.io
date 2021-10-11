@@ -3,6 +3,7 @@
     width: 980px;
     padding: 0 87px;
     position: relative;
+    font-family: 'Arial Narrow'; 
 }
 
 .header-carousel{
@@ -51,7 +52,7 @@
 
 .content {
     display: grid;
-    grid-template-rows: 250px 250px 250px;
+    grid-template-rows: 240px 240px 240px;
     grid-template-columns: 300px 660px;
     row-gap: 1px;
     column-gap: 20px;
@@ -59,7 +60,7 @@
 
 .content-video{
     width: 300px;
-    height: 180px;
+    height: 170px;
 }
 
 .content-video-1{
@@ -77,14 +78,20 @@
     grid-row: 3;
 }
 
+.no-margin-header{
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+}
+
 .content-text-banner{
-    background-color: #000;
-    color: antiquewhite;
-    padding: 20px;
+    background-color : darkgray;
+    color: white;
+    padding: 10px ;
+       margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
 }
 
 .content-text{
-    font-family: Tahoma, sans-serif; 
     grid-column: 2;
     grid-row-start: 1;
     grid-row-end: 4;
