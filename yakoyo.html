@@ -10,7 +10,13 @@
         var userName = getQueryParameter('userName');
  
         function init() { 
+            onContentChanged("yakoyo-content.html");
         } 
+ 
+
+        function onContentChanged(path){
+            document.getElementById("contentFrame").src = path;
+        }
 
         window.addEventListener('load', init);
         </script>
@@ -19,19 +25,25 @@
     <div  class="wrapper" >
         <div class="header"  > 
             <div style=" float:left; display: block;  ">
-                <a><img class="logo-image" width="90" height="90" src="YAKOYO-logo.jpg"></a> 
+                <a href="yakoyo.html"><img class="logo-image" width="90" height="90" src="YAKOYO-logo.jpg"></a> 
             </div>
             <div class="nav">
+                <ul class="header-items" style="float: right; display: block;"> 
+                    <li class="header-image-item"><a target="_blank" href="yakoyo-fb.html"><img class="header-image" src="fb.jpeg"></a></li>
+                    <li class="header-image-item"><a target="_blank" href="yakoyo-twt.html"><img class="header-image" src="twt.png"></a></li>
+                    <li class="header-image-item"><a target="_blank" href="yakoyo-inst.html"><img  class="header-image" src="inst.jpeg"></a></li>
+                    <li class="header-image-item"><a target="_blank" href="yakoyo-youtube.html"><img  class="header-image" src="youtube.png"></a></li>
+                </ul>
+
                 <ul class="header-items" style="float: right; display: block;">
-                    <li class="header-text-item" ><a class="header-text-anchor" href="vendor.html">Vendors</a></li>
+                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('find-food.html');">Find-Food</a></li>
+                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('vendors.html');">Vendors</a></li>
                     <li class="header-text-item" ><a class="header-text-anchor" href="help.html">Help</a></li>
                     <li class="header-text-item" ><a class="header-text-anchor" href="signup.html">Sign-Up</a></li>
                     <li class="header-text-item" ><a class="header-text-anchor" href="login.html">Login</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="contact.html">CONTACT-US</a></li>
-                    <li class="header-image-item"><a  href="yakoyo-fb.html"><img class="header-image" src="fb.jpeg"></a></li>
-                    <li class="header-image-item"><a  href="yakoyo-twt.html"><img class="header-image" src="twt.png"></a></li>
-                    <li class="header-image-item"><a  href="yakoyo-inst.html"><img  class="header-image" src="inst.jpeg"></a></li>
+                    <li class="header-text-item" ><a class="header-text-anchor" href="contact.html">CONTACT-US</a></li> 
                 </ul>
+
             </div>
         </div>
         <div style=" margin: auto; display: block;" class="banner-carousel">
@@ -59,16 +71,11 @@
                     </video>  
                 </div> 
             <div  class="content-text">
+                <iframe id="contentFrame">
+
+                </iframe>
                
-                    <h2 class="content-text-banner" >New Amala Joint Opened in Agege</h2>
-                    A new amala joint , Mali-Pedro was opended at Agege. We expect this amala joint to be the very best in the entire country
-              
-                    <h2 class="content-text-banner" >Where can I find the best Ogbono ?</h2>
-                    Here are our top ten joints for Ogbono
-                    <ul>
-                        <li>The Cool Spot</li>
-                        <li>Mama Put</li>
-                    </ul>
+
 
             </div>
         </div>
@@ -79,10 +86,8 @@
         </div>
         <div class="footer"  > 
             <div>
-                <ul class="header-items" style="float: right; display: block;">
-                    <li class="header-text-item" ><a class="header-text-anchor" href="find-food.html">FIND-FOOD</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="blog.html">BLOG</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="signup.html">Sign-Up</a></li>
+                <ul class="header-items" style="float: right; display: block;"> 
+                    <li class="header-text-item" ><a class="header-text-anchor" href="blog.html">BLOG</a></li> 
                     <li class="header-text-item" ><a class="header-text-anchor" href="place-advert.html">PLACE-ADVERT</a></li>
                     <li class="header-text-item" ><a class="header-text-anchor" href="about-us.html">ABOUT-US</a></li>
                 </ul>

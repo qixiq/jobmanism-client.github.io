@@ -1727,3 +1727,7 @@ function             addClassSchedule(
 function getPendingSubscriptionActivationRequests(onSuccess, onError){
     sendGetRequest('/getPendingSubscriptionActivationRequests?sessionId=' + getQueryParameter('sessionId')   , onSuccess, onError);
         }
+
+        function getFindFoodInitData(onSuccess, onError){
+            sendGetRequest('/getFindFoodInitData'  , onSuccess, onError);
+        }

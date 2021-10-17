@@ -1,0 +1,118 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <link href="yakoyo.css" rel="stylesheet">
+    <title>Welcome to Yakoyo</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = parseInt(getQueryParameter('privileges'));
+        var userId = getQueryParameter('userId');
+        var userName = getQueryParameter('userName');
+        var pageContent = '';
+
+        function onSuccess(data){
+            data.items.forEach(appendBusiness);  
+            onVendorChanged();
+        }
+
+        function exploreLocation(id){
+
+        }
+
+        function appendLocation(data){
+            var address = data.address;
+            var phoneNumber = data.phoneNumber; 
+
+            //address
+            pageContent += '<div class="business-location-panel"><h4><strong>Address</strong></h4>' ;
+            // 
+            if(address.gpsLocation)
+            {
+                pageContent += ' <label> GPS : ' + address.gpsLocation  + '</label><br/>'; 
+            } 
+
+            if(address.city || address.state){
+                pageContent += '<label>';
+                if(address.city)
+                { 
+                    pageContent += address.city;
+                }
+
+                if(address.state)
+                {
+                    if(address.city){
+
+                        pageContent += ' , ';
+                    }
+
+                    pageContent += address.state;
+                }
+                pageContent += '</label><br/>';
+
+            }
+
+
+            if(address.country){ 
+                pageContent += '<label>' + address.country + '</label><br/><br/>';
+            }
+ 
+
+
+            if(phoneNumber){
+                //phone
+                pageContent += '<h4><strong>Phone</strong></h4>' ;  
+                pageContent += '<label> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</label><br/>'; 
+            }
+
+
+
+            pageContent += '<button class="explore-button"  onclick = "exploreLocation(\'' + data.locationId + '\')" >Explore ... </button ></div>';
+        }
+
+        function onGotBusiness(data){
+            pageContent = '';
+            if(data.business.annotations && data.business.annotations.length > 0){
+                var item = data.business.annotations[0];
+                if(item.resourceId > 0){
+                    pageContent += '<p class="business-annotation-caption"> ' + item.comments + '</p><br/>'; 
+                    pageContent += '<img class="business-annotation-image"  src="'+ getResourceUrl(item.resourceId) +'"></img><br/>'; 
+                }
+
+            }
+            if(data.business.locations && data.business.locations.length > 0){
+                data.business.locations.forEach(appendLocation); 
+            }
+            
+            document.getElementById('details').innerHTML = pageContent; 
+        }
+
+        function onVendorChanged()
+        {  
+            getBusiness(document.getElementById('vendors').value, onGotBusiness, onError) ;  
+        }
+
+        function onError(){
+
+        }
+
+        function appendBusiness(item) {
+            select = document.getElementById('vendors'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+ 
+        function init() { 
+            getBusinesses ('', onSuccess, onError)
+        } 
+
+        window.addEventListener('load', init);
+        </script>
+</head>
+<body class="embedded-frame">
+<h4>Vendor List</h4>
+<label>Choose Vendor</label><select id="vendors" onchange="onVendorChanged()"></select>
+<div id="details"></div>
+</body>
+</html>

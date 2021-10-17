@@ -1,0 +1,266 @@
+<html>
+<head>
+    <script type="text/javascript" src="jobmanapi.js"></script>
+    <link href="yakoyo.css" rel="stylesheet">
+    <title>Welcome to Yakoyo</title>
+    <script>
+        var sessionId = getQueryParameter('sessionId');
+        var privileges = parseInt(getQueryParameter('privileges'));
+        var userId = getQueryParameter('userId');
+        var userName = getQueryParameter('userName');
+        var locationsForMenu = {};
+        var businessesForLocations = {};
+        var searchResults = '';
+
+        function appendVendorType(item){
+            select = document.getElementById('types'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+        function appendMenuCategory(item){
+            select = document.getElementById('menus'); 
+            var opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            select.appendChild(opt);
+        }
+
+        function appendCity(city){
+            select = document.getElementById('cities'); 
+            var opt = document.createElement('option');
+            opt.value = city;
+            opt.innerHTML = city;
+            select.appendChild(opt);
+        }
+ 
+        function onSuccess(data){
+
+            appendVendorType({id: 0, name : ''});
+            appendMenuCategory({id: 0, name : ''});
+            appendCity('');
+            data.initData.jointTypes.forEach(appendVendorType);
+            data.initData.menus.forEach(appendMenuCategory);
+            data.initData.cities.forEach(appendCity);
+
+        }
+
+        function onGotSearchResults(data)
+        { 
+            locationsForMenu = {};
+            businessesForLocations = {};
+            locationsCount = 0;
+            searchResults = '';
+
+            if(data.hits.length == 0)
+            {
+                document.getElementById('resultsHeader').innerHTML =   '<strong>Search Results</strong>';
+               searchResults += '<p>No Matching Menu Items Found For your Search</p>';
+            }
+            else
+            {
+                document.getElementById('resultsHeader').innerHTML =   '<strong>Search Results (Found ' + data.hits.length + ' Matches )</strong>';
+                data.hits.forEach(appendLocationAndMenuItemsItem);
+            }
+            
+            //console.log(csv);
+            document.getElementById('resultsDiv').innerHTML = searchResults;
+
+        }
+
+        function appendResult(item){
+
+            searchResults += (item + ' , ');
+
+        }
+
+        function appendLocationAndMenuItemsItem(item){
+            locationsCount++;  
+            currentLocationId = item.locationId;
+            businessesForLocations[currentLocationId] = item.businessId;
+          
+            var phoneNumber = item.phoneNumber;
+            searchResults += '<h2><strong> ' + item.businessName + '</strong ></h2>'; 
+ 
+   
+            if(item.plusCode && item.plusCode != '')
+            {
+                searchResults += '<strong>GPS :&nbsp;</strong><label>' + item.plusCode + '</label><br/>'; 
+            }
+
+            searchResults += '<label>'  + item.city + ' , ' + item.state + '</label><br/>'; 
+
+            //phone
+            searchResults += '<strong>Phone :&nbsp;</strong>' ;  
+            searchResults += '<label>' + item.phoneNumber + '</label><br/>';
+
+            if(item.menuItemCategories && item.menuItemCategories.length > 0)
+            {
+                searchResults += '<label>Menu Item Categories : ' ;
+                item.menuItemCategories.forEach(appendResult);
+                searchResults += '</label><br/><br/>';
+            }
+
+            if(item.vendorTypes && item.vendorTypes.length > 0)
+            {
+                searchResults += '<label>Vendor Types : ' ;
+                item.vendorTypes.forEach(appendResult);
+                searchResults += '</label><br/><br/>';
+            }
+
+            searchResults += '<button  onclick="goToLocation(\'' + item.locationId + '\')">Explore ... </button>&nbsp;&nbsp;<br/>';
+
+            //csv += ('' + location.businessId + ' , ' + location.businessName + ' , ' + address.city + ' , ' + address.state + '\r\n');
+            
+        }
+
+        function onError(){
+
+        }
+
+        function init() {
+            getFindFoodInitData(onSuccess, onError);
+        } 
+
+        window.addEventListener('load', init);
+        </script>
+</head>
+<body class="embedded-frame">
+    <table style="width:100%; table-layout: fixed; font-family: 'Arial Narrow' ;">
+        <caption style="font-size: large;" class="content-text-banner" >Find Food</caption>
+        <colgroup>
+            <col class="search-panel" />
+            <col class="result-panel" /> 
+          </colgroup>
+        <tr>
+          <th class="filter-banner" style="text-align:left">Filter</th>
+          <th class="results-banner" id="resultsHeader" style="text-align:left">Results</th>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">
+            <form id="theForm"> 
+                <p>
+           
+                    <label class="form-label form-col-1-label">Menus</label><select id="menus" class="form-col-2-item"></select>
+                 
+           
+            
+                </p>
+                <p>
+            
+                
+                    <label class="form-label form-col-1-label">Types</label><select id="types" class="form-col-2-item"></select>
+           
+            
+                </p>
+                <p>
+                    <label class="form-label form-col-1-label">Name Like</label><input id="nameFragment" class="form-col-2-item">
+                </p>
+                <p>
+                    <label class="form-label form-col-1-label">Location</label><select id="cities" class="form-col-2-item"></select>
+                </p>
+                <p>
+                    <label class="form-label form-col-1-label">Current GPS</label><input id="currentLocation" class="form-col-2-item">
+                </p>
+                <p>
+                    <label class="form-label form-col-1-label">Proximity</label>
+                    <select id="proximities" class="form-col-2-item">
+                        <option value="0"></option>
+                        <option value="1">0.5 km</option>
+                        <option value="2">1 km</option>
+                        <option value="3">2 km</option>
+                        <option value="4">5 km</option>
+                        <option value="5">10 km</option>
+                        <option value="6">15 km</option>
+                        <option value="7">20 km</option>
+                        <option value="8">25 km</option>
+                        <option value="9">50 km</option>
+                        <option value="10">100 km</option>
+                    </select>
+                </p>
+
+ 
+                <div id="searchTerms"></div>
+
+                <button type="submit">Find Food ...</button><br />
+            </form>
+          </td>
+          <td>
+              <div id="resultsDiv"></div>
+          </td>
+        </tr> 
+      </table> 
+      <script>
+        function getSelectValues(select) {
+          var result = [];
+          var options = select && select.options;
+          var opt;
+  
+          for (var i=0, iLen=options.length; i<iLen; i++) {
+              opt = options[i];
+  
+              if (opt.selected) {
+              result.push(parseInt(opt.value));
+              }
+          }
+          return result;
+          }
+      document.getElementById('theForm').onsubmit = function () {
+          var data = {
+              sessionId : sessionId,
+              useVendorTypes : document.getElementById('types').value != 0,
+              useProximity : document.getElementById('proximities').value != 0,
+              useMenuItemCategories : document.getElementById('menus').value != 0,
+              useCityNameFragment : document.getElementById('cities').value != '',
+              cityNameFragment : document.getElementById('cities').value,
+              menuItemCategories : getSelectValues(document.getElementById('menus')),
+              vendorTypes : getSelectValues(document.getElementById('types')),
+              startingLocationGPS : document.getElementById('currentLocation').value,
+              useVendorNameFragment : (document.getElementById('nameFragment').value != null && document.getElementById('nameFragment').value.length > 0),
+              vendorNameFragment : '%' + document.getElementById('nameFragment').value + '%'
+          };
+  
+          if(data.useProximity){
+              var md = 100.0;
+              switch( document.getElementById('proximities').value)
+              {
+                case 1:
+                    md = 0.5;
+                    break;
+                case 2:
+                    md = 1.0;
+                    break;
+                case 3:
+                    md = 2.0
+                    break;
+                case 4:
+                    md =5.0;
+                    break;
+                case 5: 
+                    md = 10.0;
+                    break;
+                case 6:
+                    md = 15.0;
+                    break;
+                case 7:
+                    md = 20.0;
+                    break;
+                case 8: 
+                    md = 25.0;
+                    break;
+                case 9:
+                    md = 50.0;
+                    break;
+              }
+              if( md > 0) {data.maxDistanceKm = md}else { data.maxDistanceKm = 1000000;} 
+          }
+      searchForFoodAndDrinkVendorLocations( 
+          data,
+          onGotSearchResults,
+          onError);
+              return false;
+          };</script>
+</body>
+</html>
