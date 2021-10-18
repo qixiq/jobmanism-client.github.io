@@ -8,20 +8,15 @@
 </head>
 <body class="embedded-frame">
     <div id="displayPanel">
-    <h2 class="content-text-banner no-margin-header">Sign Up</h2>
+    <h2 class="content-text-banner no-margin-header">Login</h2>
 
     <form id="theForm"> 
         <p>
             <label>UserName</label><input id="user" class="signup-input-item">
         </p> 
         <p>
-            <label>Password</label><input type="password"  id="password" class="signup-input-item">
-        </p>
-        <p>
-            <label>Email Address</label><input id="email" class="signup-input-item">
-        </p>
-
-        <p class ="sign-up-instruction" >An email will be sent to the address you provided. The email will contain a link for you to click to compelet signup. Please remember your user name and password, you will need it to complete signup.</p>
+            <label>Password</label><input type="password" id="password" class="signup-input-item">
+        </p>  
         <button type="submit">Sign Up</button><br />
     </form> 
 </div>
@@ -34,21 +29,21 @@
 
 
         document.getElementById('theForm').onsubmit = function () {
-            var email = document.getElementById('email').value;
-            yakoyoBeginSignupWithEmail(document.getElementById('user').value,
+            
+            login(document.getElementById('user').value,
                 document.getElementById('password').value,
-                email, 
                 function (data ) { 
                     if(data && !data.isError){
-                        message("Email with instructions to complete signup has been sent to " + email);
+                        
+                        window.parent.postMessage({login : data}, '*');
                     }
                     else{
-                        message("Sign up Failed, Please contact customer Service");
+                        message("Login Failed, Please contact customer Service");
                     }
                     
                 },
                 function (error) { 
-                    message("Sign up Failed, Please contact customer Service");
+                    message("Login Failed, Please contact customer Service");
                 }
             );
             return false;

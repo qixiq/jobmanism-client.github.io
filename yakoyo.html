@@ -10,15 +10,58 @@
         var userName = getQueryParameter('userName');
  
         function init() { 
+            var navContent = '';
+            navContent += '<ul class="header-items" style="float: right; display: block;"> ';
+            navContent += '<li class="header-image-item"><a target="_blank" href="yakoyo-fb.html"><img class="header-image" src="fb.jpeg"></a></li>';
+            navContent += '<li class="header-image-item"><a target="_blank" href="yakoyo-twt.html"><img class="header-image" src="twt.png"></a></li>';
+            navContent += '<li class="header-image-item"><a target="_blank" href="yakoyo-inst.html"><img  class="header-image" src="inst.jpeg"></a></li>';
+            navContent += '<li class="header-image-item"><a target="_blank" href="yakoyo-youtube.html"><img  class="header-image" src="youtube.png"></a></li>';
+            navContent += '</ul>';
+
+            navContent += '<ul class="header-items" style="float: right; display: block;">';
+            navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged(\'find-food.html\');">Find-Food</a></li>';
+            navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged(\'vendors.html\');">Vendors</a></li>';
+            navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged(\'help.html\');">Help</a></li>';
+            if(!sessionId){
+                navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged(\'sign-up.html\');">Sign-Up</a></li>';
+                navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged(\'fudtraka-login.html\');">Login</a></li>';
+            }
+
+            navContent += '<li class="header-text-item" ><a class="header-text-anchor" href="contact.html">CONTACT-US</a></li> ';
+            navContent += '</ul>';
+            document.getElementById('navbar').innerHTML = navContent;
             onContentChanged("yakoyo-content.html");
         } 
  
 
         function onContentChanged(path){
-            document.getElementById("contentFrame").src = path;
+            var url = path;
+            if(sessionId){
+                url += "?sessionId=" + sessionId;
+                url += "&privileges=" + privileges;
+            }
+            document.getElementById("contentFrame").src = url;
+        }
+
+        function logoff(){
+
+        }
+
+        function onMessage(event){
+            console.log('origin ' + event.origin); 
+            //console.log('source ' + event.source); 
+            
+            if(event.data.login){
+                var loginResult = event.data.login;
+                sessionId = loginResult.sessionId;
+                privileges = loginResult.privileges;
+                userName = loginResult.userName;
+                init();
+            }
         }
 
         window.addEventListener('load', init);
+        window.addEventListener('message', onMessage);
         </script>
 </head>
 <body>
@@ -27,22 +70,8 @@
             <div style=" float:left; display: block;  ">
                 <a href="yakoyo.html"><img class="logo-image" width="90" height="90" src="YAKOYO-logo.jpg"></a> 
             </div>
-            <div class="nav">
-                <ul class="header-items" style="float: right; display: block;"> 
-                    <li class="header-image-item"><a target="_blank" href="yakoyo-fb.html"><img class="header-image" src="fb.jpeg"></a></li>
-                    <li class="header-image-item"><a target="_blank" href="yakoyo-twt.html"><img class="header-image" src="twt.png"></a></li>
-                    <li class="header-image-item"><a target="_blank" href="yakoyo-inst.html"><img  class="header-image" src="inst.jpeg"></a></li>
-                    <li class="header-image-item"><a target="_blank" href="yakoyo-youtube.html"><img  class="header-image" src="youtube.png"></a></li>
-                </ul>
+            <div id="navbar" class="nav">
 
-                <ul class="header-items" style="float: right; display: block;">
-                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('find-food.html');">Find-Food</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('vendors.html');">Vendors</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('help.html');">Help</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="javascript:onContentChanged('sign-up.html');">Sign-Up</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="login.html">Login</a></li>
-                    <li class="header-text-item" ><a class="header-text-anchor" href="contact.html">CONTACT-US</a></li> 
-                </ul>
 
             </div>
         </div>

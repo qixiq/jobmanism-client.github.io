@@ -66,7 +66,17 @@
 
 
 
-            pageContent += '<button class="explore-button"  onclick = "exploreLocation(\'' + data.locationId + '\')" >Explore ... </button ></div>';
+            
+
+            if(privileges == 1 || (privileges & 8) > 0){
+                pageContent += '<button class="explore-button"  onclick = "manageLocation(\'' + data.locationId + '\')" >Manage ... </button >';
+            }
+            else
+            {
+                pageContent += '<button class="explore-button"  onclick = "exploreLocation(\'' + data.locationId + '\')" >Explore ... </button >';
+            }
+
+            pageContent += '</div>';
         }
 
         function onGotBusiness(data){
