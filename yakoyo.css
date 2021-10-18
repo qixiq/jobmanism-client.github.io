@@ -13,6 +13,16 @@
 
 }
 
+.sign-up-instruction{
+    width: 400px; 
+}
+
+.signup-input-item{
+    position: absolute;
+    left: 100px;
+    width: 300px; 
+}
+
 .form-col-2-item{
     position: absolute;
     left: 90px;
@@ -86,6 +96,7 @@
 
 .embedded-frame
 {
+    font-family: 'Arial Narrow'; 
     margin: 0px;
 }
 

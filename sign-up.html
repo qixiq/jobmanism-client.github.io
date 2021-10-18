@@ -3,71 +3,56 @@
     <script type="text/javascript" src="jobmanapi.js"></script>
     <link href="yakoyo.css" rel="stylesheet">
     <title>Welcome to Yakoyo</title>
-    <script>
-        var sessionId = getQueryParameter('sessionId');
-        var privileges = parseInt(getQueryParameter('privileges'));
-        var userId = getQueryParameter('userId');
-        var userName = getQueryParameter('userName');
- 
-        function init() { 
-        } 
-
-        window.addEventListener('load', init);
+    <script>  
         </script>
 </head>
 <body class="embedded-frame">
-    <table style="width:100%; table-layout: fixed; font-family: 'Arial Narrow' ;">
-        <caption  class="content-text-banner" >Find Food</caption>
-        <colgroup>
-            <col class="search-panel" />
-            <col class="result-panel" /> 
-          </colgroup>
-        <tr>
-          <th class="content-text-banner" style="text-align:left">Filter</th>
-          <th class="content-text-banner"  style="text-align:left">Results</th>
-        </tr>
-        <tr>
-          <td>
-            <form> 
-                <p>
-           
-                    <label class="form-label form-col-1-label">Menus</label><select class="form-col-1-select"></select>
-                 
-           
-            
-                </p>
-                <p>
-            
-                
-                    <label class="form-label form-col-2-label">Types</label><select class="form-col-1-select"></select>
-           
-            
-                </p>
-                <p>
-                    <label>Name</label><input id="">
-                </p>
-                <p>
-                    <label>City</label><select></select>
-                </p>
-                <p>
-                    <label>GPS</label><input id="">
-                </p>
-                <p>
-                    <label>Proximity</label><select></select>
-                </p>
+    <div id="displayPanel">
+    <h2 class="content-text-banner no-margin-header">Sign Up</h2>
 
-                <p>
-                    <label>Sorting</label><select></select>
-                </p>
-                <div id="searchTerms"></div>
+    <form id="theForm"> 
+        <p>
+            <label>UserName</label><input id="user" class="signup-input-item">
+        </p> 
+        <p>
+            <label>Password</label><input id="password" class="signup-input-item">
+        </p>
+        <p>
+            <label>Email Address</label><input id="email" class="signup-input-item">
+        </p>
 
-                <button type="submit">Find Food ...</button><br />
-            </form>
-          </td>
-          <td>
-              
-          </td>
-        </tr> 
-      </table> 
+        <p class ="sign-up-instruction" >An email will be sent to the address you provided. The email will contain a link for you to click to compelet signup. Please remember your user name and password, you will need it to complete signup.</p>
+        <button type="submit">Sign Up</button><br />
+    </form> 
+</div>
+
+    <script>
+
+        function message(text){
+            document.getElementById('displayPanel').innerHTML = '<h2 class="content-text-banner no-margin-header">' + text + '</h2>';
+        }
+
+
+        document.getElementById('theForm').onsubmit = function () {
+            var email = document.getElementById('email').value;
+            yakoyoBeginSignupWithEmail(document.getElementById('user').value,
+                document.getElementById('password').value,
+                email, 
+                function (data ) { 
+                    if(data && !data.isError){
+                        message("Email with instructions to complete signup has been sent to " + email);
+                    }
+                    else{
+                        message("Sign up Failed, Please contact customer Service");
+                    }
+                    
+                },
+                function (error) { 
+                    message("Sign up Failed, Please contact customer Service");
+                }
+            );
+            return false;
+        };
+    </script>
 </body>
 </html>
