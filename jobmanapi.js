@@ -1731,3 +1731,7 @@ function getPendingSubscriptionActivationRequests(onSuccess, onError){
         function getFindFoodInitData(onSuccess, onError){
             sendGetRequest('/getFindFoodInitData'  , onSuccess, onError);
         }
+
+        function getSchoolAdminLandingPageInfo(schoolId, onSuccess, onError){
+            sendGetRequest('/getSchoolAdminLandingPageInfo?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId  , onSuccess, onError);
+        }

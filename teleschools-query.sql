@@ -174,6 +174,23 @@ CREATE TABLE StudentSubjectAssignments
     ON UPDATE CASCADE
 );
 
+CREATE TABLE SchoolRoles
+( 
+    UserId BIGINT NOT NULL,
+    SchoolId BIGINT NOT NULL,
+    Role INT NOT NULL,
+    CONSTRAINT FK_SchoolRoles_SchoolId FOREIGN KEY (SchoolId)
+    REFERENCES [dbo].[Schools] (SchoolId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE, 
+    CONSTRAINT FK_SchoolRoles_UserId FOREIGN KEY (UserId)
+    REFERENCES [dbo].[UserProfiles] (UserId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE UNIQUE INDEX uq_SchoolRoles
+  ON [dbo].[SchoolRoles](SchoolId, UserId, Role);
 
 
 CREATE TABLE StudentSubjectAssignmentSubmissions
