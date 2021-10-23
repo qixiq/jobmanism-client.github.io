@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+ 
+
+    <script type="text/javascript" src="../../jobmanapi.js"></script>
+
+    <style>
+        a:link {
+            text-decoration: none; 
+            color: black;
+        }
+
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .table-header{
+            background-color: lightgray;
+            padding: 10px;
+            color: azure;
+        }
+
+        .banner{
+            width: 100%; 
+            padding: 40px;
+            background-color: darkblue;
+            color: whitesmoke;
+        }
+        .landingTable{
+            margin: 0 auto;
+            width: 980px;
+            padding: 0 87px;
+            position: relative;
+        }
+      </style>
+
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+
+        function onError(info){
+
+        }
+
+        function goToLevel(id){
+
+        }
+
+        function goToStaff(id){
+
+        }
+
+        function goToYears(){
+
+        }
+
+        function goToArms(){
+
+        }
+
+        function goToAdmininstrativeStaff(){
+
+        }
+
+        function goToAcademicStaff(){
+            
+        }
+
+
+        function goToLevelArm(id){
+
+        }
+
+        function addStaffRow(staff){
+            var markup = '<tr><td><table><colgroup><col style="width: 415px"></col><col style="width: 60px"></col><col style="width: 25px"></col><col></col></colgroup><tr><td><a href="javascript:goToStaff(\'' + staff.userId + '\')">' + staff.fullName + '</a></td><td>' ;
+                if(staff.levelArm){
+                    markup += '<a href="javascript:goToLevelArm(\'' + staff.armId + '\')">';
+                    markup +=  staff.levelArm ;
+                    markup += '</a>';
+                }
+                
+                markup +=  '</td><td><img style=" width:20px; height:15px" src="email.png"></td><td style=" background: green;">&nbsp;&nbsp;</td></tr></table></td></tr>';
+                return markup;
+        }
+
+        function onSuccess(info){
+            
+            document.getElementById("banner").innerHTML = info.school.name + ' ( School Adminstrator Dashboard )';
+
+            var years = '<tr><th class="table-header"><a href="javascript:goToYears()">Years</a></th></tr>';
+            var arms = '<tr><th class="table-header"><a href="javascript:goToArms()">Arms</a></th></tr>';
+            var academicStaff = '<tr><th class="table-header"><a href="javascript:goToAcademicStaff()">Academic Staff</a></th></tr>';
+            var adminStaff = '<tr><th class="table-header"><a href="javascript:goToAdmininstrativeStaff()">Administrative Staff</a></th></tr>';
+
+
+            for(var i = 0; i < info.school.levelArms.length; ++i)
+            {
+                var levelArm = info.school.levelArms[i];
+
+                years += '<tr><td><a href="javascript:goToLevel(\'' + levelArm.levelId + '\')">' + levelArm.level + '</a></td></tr>';
+
+                for(var j = 0; j < levelArm.arms.length; ++j)
+                {
+                    arms += '<tr><td><a href="javascript:goToLevelArm(\'' + levelArm.arms[j].arm.armId + '\')">' +  levelArm.level + ' ' + levelArm.arms[j].arm + '</a></td></tr>';
+                }
+            }
+
+
+            for(var i = 0; i < info.school.academicStaff.length; ++i){
+                var staff = info.school.academicStaff[i];
+                academicStaff  += addStaffRow(staff);
+            }
+
+            for(var i = 0; i < info.school.administrativeStaff.length; ++i){
+                var staff = info.school.administrativeStaff[i];
+                adminStaff += addStaffRow(staff);
+            }
+
+
+            document.getElementById('years').innerHTML = years;
+            document.getElementById('arms').innerHTML = arms;
+            document.getElementById('academicStaff').innerHTML = academicStaff;
+            document.getElementById('adminStaff').innerHTML = adminStaff;
+
+        }
+
+        function init()
+        {
+            getSchoolAdminLandingPageInfo(schoolId, onSuccess, onError);
+        }
+        
+        window.addEventListener('load', init);
+        </script>
+        
+  </head>
+  <body>
+      <h2 class="banner" id="banner"></h2>
+   <table class="landingTable" >
+       <tr  style="vertical-align: top;" >
+           <td>
+               <table style="vertical-align: top; width: 60px;" id="years"> 
+               </table>
+
+           </td>
+
+           <td>
+            <table  style="vertical-align: top; width: 80px;" id="arms"> 
+            </table>
+           </td>
+
+           <td>
+            <table style="vertical-align: top; width: 500px;"  id="academicStaff"> 
+            </table>
+           </td>
+
+           <td>
+            <table  style="vertical-align: top; width: 500px;" id="adminStaff"> 
+            </table>
+           </td>
+       </tr>
+
+   </table>
+
+
+    
+  </body>
+</html>

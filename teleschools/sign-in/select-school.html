@@ -42,10 +42,44 @@
     var states;
     var cities;
     var initDone = false; 
+    var schools = {};
+
+    function goToSchool(schoolId, role){
+      var landingPage = '';
+      switch(role){
+        case 1: //System Administrator
+        case 2: //School Administrator
+          landingPage = 'school-admin-landing-page.html';
+          break;
+        default:
+          landingPage = 'under-construction.html';
+          break;
+      }
+
+
+      document.location.href = getPathPrefix(document.location.href) + '/' + landingPage + '?sessionId=' + sessionId + '&schoolId=' + schoolId;
+ 
+    }
 
     function onSuccess(data)
     {
         states = data.info;
+        if(states.length == 0)
+        {
+
+        }
+        else if(states.length == 1)
+        {
+            cities = states[0].schoolCities;
+            if(cities.length == 1 )
+            {
+              var citySchools = cities[0].schools;
+
+              if(citySchools.length == 1){
+                goToSchool(id, citySchools[0].roles[0]) ;
+              }
+            }
+        }
         data.info.forEach(appendState);
         initDone = true;
         onStateChanged();
@@ -86,6 +120,7 @@
             return;
         }
 
+        schools = {};
         var selected = document.getElementById('city').value;
         var school = document.getElementById('school');
         school.length = 0;
@@ -120,6 +155,7 @@
         }
 
         function appendSchool(item){ 
+            schools[item.id] = item;
             select = document.getElementById('school'); 
             var opt = document.createElement('option');
             opt.value = item.id;
@@ -166,7 +202,8 @@
 
 <script>
     document.getElementById('theForm').onsubmit = function () {
-        document.location.href = getPathPrefix(document.location.href) + '/school.html?sessionId=' + sessionId + '&schoolId=' +document.getElementById('school').value; 
+        var id = parseInt(document.getElementById('school').value);
+        goToSchool(id, schools[id].roles[0]) ;
         return false;
     };
   </script>
