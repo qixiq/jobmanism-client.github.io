@@ -8,6 +8,25 @@
         var privileges = parseInt(getQueryParameter('privileges'));
         var userId = getQueryParameter('userId');
         var userName = getQueryParameter('userName');
+
+        var images = ['meat.jpeg', 'chicken.jpeg', '807696.jpg', '199238.jpg', '271678.jpg', '405364.jpg', '405969.jpg',
+        '406048.jpg', '405051.jpg', '416183.jpg', '767069.jpg', '767138.jpg', '767150.jpg', '1491979.jpg']; 
+
+        var current = getUnique(6); 
+
+        function getUnique(count) {
+            // Make a copy of the array
+            var tmp = images.slice(images);
+            var ret = [];
+            
+            for (var i = 0; i < count; i++) {
+                var index = Math.floor(Math.random() * tmp.length);
+                var removed = tmp.splice(index, 1);
+                // Since we are only removing one element
+                ret.push(removed[0]);
+            }
+            return ret;  
+        }
  
         function init() { 
             var navContent = '';
@@ -31,6 +50,20 @@
             navContent += '</ul>';
             document.getElementById('navbar').innerHTML = navContent;
             onContentChanged("yakoyo-content.html");
+
+            var nextIndex = 0;                
+            document.getElementById("upperImage").src = current[nextIndex];
+            document.getElementById("lowerImage").src = current[nextIndex+3];
+            nextIndex++;
+
+            setInterval(function(){
+                if(nextIndex > 2)nextIndex = 0;
+
+                document.getElementById("upperImage").src = current[nextIndex];
+                document.getElementById("lowerImage").src = current[nextIndex+3];
+                nextIndex++;
+
+            }, 10000);
         } 
  
 
@@ -60,6 +93,8 @@
             }
         }
 
+    
+
         window.addEventListener('load', init);
         window.addEventListener('message', onMessage);
         </script>
@@ -77,7 +112,7 @@
         </div>
         <div style=" margin: auto; display: block;" class="banner-carousel">
             <p>
-                <img style="width: 100%; height: 550px;" src="meat.jpeg">
+                <img id="upperImage" style="width: 100%; height: 550px;"  >
             </p>
         </div>
         <div class="content">
@@ -110,7 +145,7 @@
         </div>
         <div style=" margin: auto; display: block;" class="footer-carousel">
             <p>
-                <img style="width: 100%; height: 360;" src="african.jpeg">
+                <img id="lowerImage" style="width: 100%; height: 550px;"  >
             </p>
         </div>
         <div class="footer"  > 
