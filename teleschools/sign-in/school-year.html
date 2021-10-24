@@ -14,11 +14,10 @@
     <script type="text/javascript" src="teleschools.js"></script>
     <link rel="stylesheet" href="teleschools.css">
 
-  
-
     <script> 
         var sessionId = getQueryParameter('sessionId'); 
         var schoolId = getQueryParameter('schoolId'); 
+        var levelId = getQueryParameter('levelId')
 
         function onError(info){
 
@@ -27,49 +26,49 @@
 
         function onSuccess(info){
             
-            document.getElementById("banner").innerHTML = info.school.name + ' ( School Adminstrator Dashboard )';
+            document.getElementById("banner").innerHTML = info.year.schoolName + ' ( Year ' +  info.year.name + ' )';
 
             var years = '<tr><th class="table-header"><a href="javascript:goToYears()">Years</a></th></tr>';
             var arms = '<tr><th class="table-header"><a href="javascript:goToArms()">Arms</a></th></tr>';
             var academicStaff = '<tr><th class="table-header"><a href="javascript:goToAcademicStaff()">Academic Staff</a></th></tr>';
             var adminStaff = '<tr><th class="table-header"><a href="javascript:goToAdmininstrativeStaff()">Administrative Staff</a></th></tr>';
 
+            var content = '';
 
-            for(var i = 0; i < info.school.levelArms.length; ++i)
+            for(var i = 0; i < info.year.arms.length; ++i)
             {
-                var levelArm = info.school.levelArms[i];
+                var arm = info.year.arms[i];
 
-                years += '<tr><td><a href="javascript:goToLevel(\'' + levelArm.levelId + '\')">' + levelArm.level + '</a></td></tr>';
+                content += '<td><table style="vertical-align: top; width: 360px;"><tr><th class="table-header"><a href="javascript:goToLevelArm(\'' + arm.armId + '\')">' + info.year.name + ' ' + arm.arm + '</a></th></tr>';
 
-                for(var j = 0; j < levelArm.arms.length; ++j)
+                    if(arm.classTeachers.length > 0){ 
+                        for(var j = 0; j < arm.classTeachers.length; ++j)
+                        {
+                            content += addLandingPagePersonRow(arm.classTeachers[j], true, 360);
+                        } 
+                        content += '<td style="background-color: gray; height: 1px">&nbsp;</td>';
+                    }
+
+
+                for(var j = 0; j < arm.students.length; ++j)
                 {
-                    arms += '<tr><td><a href="javascript:goToLevelArm(\'' + levelArm.arms[j].arm.armId + '\')">' +  levelArm.level + ' ' + levelArm.arms[j].arm + '</a></td></tr>';
+                    content += addLandingPagePersonRow(arm.students[j], false, 360);
                 }
+
+                content += '</table></td>';
             }
 
 
-            for(var i = 0; i < info.school.academicStaff.length; ++i){
-                var staff = info.school.academicStaff[i];
-                academicStaff  += addLandingPagePersonRow(staff, true);
-            }
-
-            for(var i = 0; i < info.school.administrativeStaff.length; ++i){
-                var staff = info.school.administrativeStaff[i];
-                adminStaff += addLandingPagePersonRow(staff, true);
-            }
+            
 
 
-            document.getElementById('years').innerHTML = years;
-            document.getElementById('arms').innerHTML = arms;
-            document.getElementById('academicStaff').innerHTML = academicStaff;
-            document.getElementById('adminStaff').innerHTML = adminStaff;
+            document.getElementById('displayRow').innerHTML = content; 
 
         }
 
         function init()
         {
-            
-            getSchoolAdminLandingPageInfo(schoolId, onSuccess, onError);
+            getSchoolYearPageInfo(schoolId, levelId, onSuccess, onError);
         }
         
         window.addEventListener('load', init);
@@ -82,8 +81,8 @@
         <table id="bannerButtons"><tr><td><a  href="#"><button class="bannerButtons" >Home</button></a></td><td><a href="javascript:goToYears()"><button class="bannerButtons" >Years</button></a></td><td><a href="javascript:goToLevelArms()"><button class="bannerButtons" >Arms</button></a></td><td><a href="javascript:goToAcademicStaff()"><button  class="bannerButtons" >Academic Staff</button></a></td><td><a href="javascript:goToAdministrativeStaff()"><button  class="bannerButtons" >Administrative Staff</button></a></td></tr></table>
       </div>
 
-   <table class="schoolYearTable" >
-       <tr  style="vertical-align: top;" >
+   <table class="landingTable" >
+       <tr  id="displayRow" style="vertical-align: top;" >
            <td>
                <table style="vertical-align: top; width: 60px;" id="years"> 
                </table>
