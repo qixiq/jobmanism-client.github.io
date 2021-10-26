@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+ 
+
+    <script type="text/javascript" src="../../jobmanapi.js"></script>
+    <script type="text/javascript" src="teleschools.js"></script>
+    <link rel="stylesheet" href="teleschools.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId');  
+
+        function onError(info){
+
+        }
+
+        function openStaffRow(){
+            return '<tr><table><tr>';
+        }
+
+        function closeStaffRow(){
+
+            return '</tr></table></tr>';
+
+        }
+        function addStaffPoster(heading, staff){
+
+            var pictureId = staff.pictureId;
+            if(pictureId == 0){
+                pictureId = 1;
+            }
+            var markup = '<td style="width: 450px;  vertical-align: top; "><table>';
+            markup += ('<tr><th style="background-color: lightgray; color:white; padding:10px"><a href="javascript:goToEditTeacherFromClassTeachers(\'' +staff.userId + '\')">' + heading   + '</a></th></tr>');
+            markup += '<tr><td><table style="padding:3px; border: 1px solid black; border-collapse: collapse;"><tr>';
+            markup += '<td style=" vertical-align: top; "><img style="width: 100px; height: 100px" src="' +getResourceUrl(pictureId)  +'"></td>'; //image
+            markup += '<td style="padding-left: 10px; vertical-align: top; width: 345px" ><span>' + staff.nameAndTitle +'</span><br/><br/><br/>';
+            
+            for(var i = 0; i < staff.subjectsTaught.length; ++i)   {
+
+                markup += '<span>' + staff.subjectsTaught[i].name +'</span><br/>';
+
+            } 
+
+            for(var i = 0; i < staff.devices.length; ++i)   {
+
+                markup += '<span>' + staff.devices[i].code +'</span><br/>';
+
+            } 
+
+
+            markup += '<br/>';
+            markup += '<span>' + staff.email +'</span><br/><br/>';
+
+            var address = staff.address;
+            var phoneNumber = staff.phoneNumber;
+
+                        //phone
+            if(phoneNumber && phoneNumber.countryCode){
+                markup += '<span> + ' + phoneNumber.countryCode + ' ' + phoneNumber.numberText + '</span><br/><br/>';
+            }
+            
+           
+            //address 
+            //
+            var displayName = address.streetLine1;
+            displayName += '<br/>';
+            if (!isStringAndEmpty(address.streetLine2)) { 
+                displayName += address.streetLine2;
+                displayName += '<br/>';
+            }
+
+            if(address.city)
+            { 
+                displayName += address.city;
+                displayName += '<br/>';
+            }
+
+            if(address.state)
+            { 
+                displayName += address.state;
+                displayName += '<br/>';
+            }
+
+            markup += '<span>' + displayName +'</span><br/>'; 
+
+
+             
+                
+            markup += '</td>'; //texts
+            markup += '<td style=" vertical-align: top;" ><span style=" background-color: green; margin-right: 5px">&nbsp;&nbsp;</span></td>'; //texts
+            markup += '</tr></table></td></tr>'
+            markup += '</table></td>';
+
+            return markup;
+
+        }
+
+        function onSuccess(data){
+            
+            document.getElementById("banner").innerHTML = data.info.schoolName + ' ( Academic Staff )';
+ 
+
+            var content = ''; 
+
+            for(var i =0; i < data.info.years.length; ++i){
+
+                if(i != 0){
+                    content += '<tr><td><hr></td></tr>';
+                }
+                var year = data.info.years[i]; 
+                console.log('year is ' + year.year);
+                content += openStaffRow();
+                var rowElements = 0;
+                for(var j = 0; j < year.arms.length; ++j){
+                    var arm = year.arms[j];
+                    console.log('arm is ' + arm.arm);
+                    for(var k = 0; k < arm.classTeachers.length; ++k){
+
+                        var classTeacher = arm.classTeachers[k];
+                        content += addStaffPoster('Year ' + year.year + ' - ' + arm.arm, classTeacher);
+                        if(++rowElements > 4){
+                            rowElements = 0;
+                            content += closeStaffRow();
+                            content += openStaffRow();
+                        }
+                    }
+                }
+
+                content += closeStaffRow();
+
+            }
+
+            console.log(content);
+
+            document.getElementById('landingTable').innerHTML = content; 
+
+        }
+
+        function init()
+        {
+            getClassTeachersPageInfo(schoolId,  onSuccess, onError);
+        }
+        
+        window.addEventListener('load', init);
+        </script>
+        
+  </head>
+  <body>
+      <div class="banner" >
+        <h1 id="banner"></h1>
+    </div>
+      <div class="navbar">
+        <a href="javascript:goHome()">Home</a> 
+        <a href="javascript:goToAdministrativeStaff()">Administrative Staff</a>
+        <a href="javascript:goToAcademicStaff()">Academic Staff</a>
+        <div class="dropdown">
+        <button class="dropbtn" onclick="AddFunction()">Add
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="AddDropdown">
+          <a href="javascript:AddSubject()">Subject</a>
+          <a href="javascript:AddStaff()">Staff</a>
+          <a href="javascript:AddStudent()">Student</a>
+        </div>
+        </div> 
+        <div class="dropdown">
+            <button class="dropbtn" onclick="ManageFunction()">Manage
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="ManageDropdown">
+              <a href="javascript:manageTeacherSubjects()">Teacher Subjects</a>
+              <a href="javascript:manageClassTeachers()">Class Teachers</a>
+              <a href="javascript:manageAdminStaff()">Administrative Staff Roles</a>
+            </div>
+            </div> 
+      </div> 
+      <script>
+      /* When the user clicks on the button, 
+      toggle between hiding and showing the dropdown content */
+      function ManageFunction() {
+        document.getElementById("ManageDropdown").classList.toggle("show");
+      }
+
+      function AddFunction() {
+        document.getElementById("AddDropdown").classList.toggle("show");
+      }
+      
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(e) {
+        if (!e.target.matches('.dropbtn')) {
+            var dropDowns = ['AddDropdown', 'ManageDropdown'];
+            for (let index = 0; index < dropDowns.length; index++) {
+                const element = dropDowns[index];
+                var myDropdown = document.getElementById(element);
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+            } 
+        }
+      }
+      </script>
+
+   <table id="landingTable" style="vertical-align: top;" ></table>  
+
+
+    
+  </body>
+</html>

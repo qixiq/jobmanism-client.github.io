@@ -174,6 +174,8 @@ CREATE TABLE StudentSubjectAssignments
     ON UPDATE CASCADE
 );
 
+ 
+
 CREATE TABLE SchoolRoles
 ( 
     UserId BIGINT NOT NULL,

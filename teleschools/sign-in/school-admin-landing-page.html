@@ -13,7 +13,8 @@
     <script type="text/javascript" src="../../jobmanapi.js"></script>
     <script type="text/javascript" src="teleschools.js"></script>
     <link rel="stylesheet" href="teleschools.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   
 
     <script> 
@@ -43,7 +44,7 @@
 
                 for(var j = 0; j < levelArm.arms.length; ++j)
                 {
-                    arms += '<tr><td><a href="javascript:goToLevelArm(\'' + levelArm.arms[j].arm.armId + '\')">' +  levelArm.level + ' ' + levelArm.arms[j].arm + '</a></td></tr>';
+                    arms += '<tr><td><a href="javascript:goToLevelArm(\'' + levelArm.arms[j].armId + '\')">' +  levelArm.level + ' ' + levelArm.arms[j].arm + '</a></td></tr>';
                 }
             }
 
@@ -78,10 +79,40 @@
   </head>
   <body>
       <div class="banner" >
-        <h1 id="banner"></h1>
-        <table id="bannerButtons"><tr><td><a  href="#"><button class="bannerButtons" >Home</button></a></td><td><a href="javascript:goToYears()"><button class="bannerButtons" >Years</button></a></td><td><a href="javascript:goToLevelArms()"><button class="bannerButtons" >Arms</button></a></td><td><a href="javascript:goToAcademicStaff()"><button  class="bannerButtons" >Academic Staff</button></a></td><td><a href="javascript:goToAdministrativeStaff()"><button  class="bannerButtons" >Administrative Staff</button></a></td></tr></table>
+        <h1 id="banner"></h1> 
       </div>
-
+      <div class="navbar">
+        <a href="javascript:goHome()">Home</a> 
+        <a href="javascript:goToAdministrativeStaff()">Administrative Staff</a>
+        <a href="javascript:goToAcademicStaff()">Academic Staff</a>
+        <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">Add
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+          <a href="javascript:AddSubject()">Subject</a>
+          <a href="javascript:AddStaff()">Staff</a>
+          <a href="javascript:AddStudent()">Student</a>
+        </div>
+        </div> 
+      </div> 
+      <script>
+      /* When the user clicks on the button, 
+      toggle between hiding and showing the dropdown content */
+      function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      }
+      
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(e) {
+        if (!e.target.matches('.dropbtn')) {
+        var myDropdown = document.getElementById("myDropdown");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
+        }
+      }
+      </script>
    <table class="schoolYearTable" >
        <tr  style="vertical-align: top;" >
            <td>

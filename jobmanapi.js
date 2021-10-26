@@ -177,6 +177,10 @@ function updateUserNames(firstName, middleNames, lastName, onSuccess, onError) {
     sendJsonPostRequest(data, '/updateNamesForProfile', onSuccess, onError);
 }
 
+function getUserProfileForUser(userId, onSuccess, onError) { 
+    sendGetRequest('/getUserProfile?sessionId=' + getQueryParameter('sessionId') + '&userId='+userId, onSuccess, onError);
+}
+
 function getUserProfile(onSuccess, onError) { 
     sendGetRequest('/getUserProfile?sessionId=' + getQueryParameter('sessionId'), onSuccess, onError);
 }
@@ -1704,6 +1708,13 @@ function             addClassSchedule(
         onError){
             sendFormDataPostRequest(data, '/requestSubscriptionActivation',  onSuccess, onError);
         }
+
+        function updateSchoolUserProfile( 
+            data,
+            onSuccess,
+            onError){
+                sendFormDataPostRequest(data, '/updateSchoolUserProfile',  onSuccess, onError);
+            }
 
 
         function removeInActiveSubscriptionFeature(sessionId, businessId, id, onSuccess, onError){

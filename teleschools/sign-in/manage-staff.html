@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+<script type="text/javascript" src="../../jobmanapi.js"></script>
+<script type="text/javascript" src="teleschools.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId');  
+        var userId = getQueryParameter('userId') * 1;
+        var isAcademic = getQueryParameter('isAcademic') == 1;
+        var returnAction = getQueryParameter('returnAction');
+        var address = {country: 'Nigeria', addressId : 0};
+        var phone = { countryCode : 234, phoneNumberId: 0};
+        var uploadFiles = [];
+
+        function goBack(){
+
+            if(returnAction == 1){
+                goToAcademicStaff();
+            }
+        }
+
+        function onError(info){
+
+        }
+
+        function onSuccess(info){
+
+            if(info.userNames){
+                document.getElementById('title').value = info.userNames.title;
+                document.getElementById('firstName').value = info.userNames.firstName;
+                document.getElementById('middleNames').value = info.userNames.middleNames;
+                document.getElementById('lastName').value = info.userNames.lastName;
+            }
+
+            if(info.phoneNumber && info.phoneNumber.phoneNumberId > 0){
+                phone = info.phoneNumber;
+                document.getElementById('phone').value = info.phoneNumber.numberText;
+            }
+
+
+
+            document.getElementById('email').value = info.email;
+
+            if(info.currentPictureId > 0){
+                document.getElementById('pictureFrame').innerHTML = '<img style="width: 300px; height: 300px" src="' + getResourceUrl(info.currentPictureId) + '">';
+            }
+
+            if(info.address && info.address.addressId > 0)
+            {
+                address = info.address;
+                document.getElementById('address1').value = info.address.streetLine1;
+                document.getElementById('address2').value = info.address.streetLine2;
+                document.getElementById('city').value = info.address.city;
+                document.getElementById('state').value = info.address.state;
+            }
+
+        }
+
+        function init()
+        {
+            var mode = userId > 0 ? 'Edit ' : 'Add '; 
+            var banner = mode + ' Staff'; 
+            document.getElementById('banner').innerHTML = banner;
+            document.getElementById('picture').addEventListener('change', function () {
+                uploadFiles = this.files;
+            }, false);
+            if(userId > 0){
+                getUserProfileForUser(userId, onSuccess, onError);
+
+            } 
+            else{
+                
+                var roleText = '<select  class="form-control" id="role" placeholder="Role">'; 
+                roleText += '<option value="4">Academic Staff</option>';
+                roleText += '<option value="11">Director Of Academics</option>';
+                roleText += '<option value="12">Registrar</option>';
+                roleText += '<option value="13">Bursar</option>';
+                roleText += '<option value="14">Head Of Technical</option>';
+                roleText += '<option value="15">Athletics Director</option>';
+                roleText += '</select>';
+                roleText += '<label for="role">Role</label><br/>'; 
+                document.getElementById('roleHolder').innerHTML = roleText;
+            }
+
+            
+        }
+        
+        window.addEventListener('load', init);
+ </script>
+
+  </head>
+  <body class="text-center">
+    
+<main class="form-signin">
+  <form id="theForm"> 
+    <h1 id="banner" class="h3 mb-3 fw-normal"></h1>
+    <div id="pictureFrame"></div>
+    <div id="roleHolder" class="form-floating">
+
+      </div> 
+    <div class="form-floating">
+        <select class="form-control" id="title" placeholder="Title">
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+        </select>
+        <label for="title">Title</label>
+      </div> <br/>    
+      <div class="form-floating">
+        <input type="text" class="form-control" id="firstName" placeholder="First Name">
+        <label for="firstName">First Name</label>
+      </div><br/> 
+    <div class="form-floating">
+        <input type="text" class="form-control" id="middleNames" placeholder="Middle Names">
+        <label for="middleNames">Middle Names</label>
+      </div><br/> 
+    <div class="form-floating">
+      <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+      <label for="lastName">Last Name</label>
+    </div><br/> 
+    <div class="form-floating">
+      <input type="email" class="form-control" id="email" placeholder="Email">
+      <label for="email">Email</label>
+    </div><br/> 
+    <div class="form-floating">
+        <input type="text" class="form-control" id="phone" placeholder="Phone">
+        <label for="phone">Phone</label>
+      </div><br/> 
+    <div class="form-floating">
+        <input type="text" class="form-control" id="address1" placeholder="Address Line 1">
+        <label for="address1">Address Line 1</label>
+      </div><br/> 
+      <div class="form-floating">
+        <input type="text" class="form-control" id="address2" placeholder="Address Line 2">
+        <label for="address2">Address Line 2</label>
+      </div><br/> 
+      <div class="form-floating">
+        <input type="text" class="form-control" id="city" placeholder="City">
+        <label for="city">City</label>
+      </div><br/> 
+      <div class="form-floating">
+        <input type="text" class="form-control" id="state" placeholder="State">
+        <label for="state">State</label>
+      </div><br/> 
+      <div class="form-floating">
+        <input type="file" class="form-control" id="picture" placeholder="Picture">
+        <label for="picture">Picture</label>
+      </div><br/> 
+
+    <button id="formSubmitButton" class="w-100 btn btn-lg btn-primary" type="submit">Submit</button> 
+    <div style="color: #ff0000" id="LoginError"> 
+    </div>
+  </form><br/> 
+  <button onclick="goBack()" class="w-100 btn btn-lg btn-primary" type="submit">Go Back</button> 
+</main>
+
+<script>document.getElementById('theForm').onsubmit = function () {
+
+    var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('picture', uploadFiles[0]);
+            }
+            address.streetLine1 = document.getElementById('address1').value
+            address.streetLine2 = document.getElementById('address2').value
+            address.city = document.getElementById('city').value
+            address.state = document.getElementById('state').value
+
+            phone.numberText = document.getElementById('phone').value
+
+            data.append('title', document.getElementById('title').value);
+            data.append('updateId', parseInt(userId));
+            data.append('targetId', parseInt(schoolId))
+            data.append('sessionId', sessionId); 
+            data.append('firstName', document.getElementById('firstName').value);
+            data.append('middleNames', document.getElementById('middleNames').value);
+            data.append('lastName', document.getElementById('lastName').value);
+            data.append('email', document.getElementById('email').value);
+            
+            //phone
+
+            data.append('numberText', phone.numberText ? phone.numberText : ''); 
+            data.append('countryCode', phone.countryCode ? phone.countryCode : '');
+            data.append('features', phone.features ? phone.features : '');
+            data.append('type', phone.type ? phone.type : '');
+            data.append('phoneNumberId', phone.phoneNumberId);
+
+            //address
+            data.append('gpsLocation', address.gpsLocation ? address.gpsLocation : ''); 
+            data.append('streetLine1', address.streetLine1 ? address.streetLine1 : ''); 
+            data.append('streetLine2', address.streetLine2 ? address.streetLine2 : ''); 
+            data.append('streetNumber', address.streetNumber ? address.streetNumber : ''); 
+            data.append('city', address.city ? address.city : '');
+            data.append('state', address.state ? address.state : '');  
+            data.append('country', address.country ? address.country : ''); 
+            data.append('postalCode', address.postalCode ? address.postalCode : '');
+            data.append('addressId', address.addressId);  
+            data.append('county', address.county ? address.county : '' );
+    
+
+    updateSchoolUserProfile(
+        data,
+        init,
+        onError
+    );
+    
+    return false;
+};</script>
+    
+  </body>
+</html>
