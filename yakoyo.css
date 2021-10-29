@@ -6,6 +6,10 @@
     font-family: 'Arial Narrow'; 
 }
 
+.logo-image{
+    border: 1px solid #000;
+}
+
 .header-carousel{
 
 }
