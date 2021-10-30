@@ -174,6 +174,13 @@ CREATE TABLE StudentSubjectAssignments
     ON UPDATE CASCADE
 );
 
+CREATE TABLE SchoolRoleDefinititions
+( 
+    RoleId INT NOT NULL UNIQUE,
+    Name VARCHAR(128) NOT NULL UNIQUE,
+    Description VARCHAR(1024) NOT NULL,
+    IsOfficer INT 
+);
  
 
 CREATE TABLE SchoolRoles

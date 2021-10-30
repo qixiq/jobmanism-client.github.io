@@ -33,23 +33,19 @@
             return '</tr></table></tr>';
 
         }
-        function addStaffPoster(heading, staff, armId){
+        function addStaffPoster(heading, staff){
 
             var pictureId = staff.pictureId;
             if(pictureId == 0){
                 pictureId = 1;
             }
             var markup = '<td style="width: 450px;  vertical-align: top; "><table>';
-            markup += ('<tr><th style="background-color: lightgray; color:white; padding:10px"><a href="javascript:goToLevelArm(\'' +armId + '\')">' + heading   + '</a></th></tr>');
+            markup += ('<tr><th style="background-color: lightgray; color:white; padding:10px">' + heading   + '</th></tr>');
             markup += '<tr><td><table style="padding:3px; border: 1px solid black; border-collapse: collapse;"><tr>';
             markup += '<td style=" vertical-align: top; "><img style="width: 100px; height: 100px" src="' +getResourceUrl(pictureId)  +'"></td>'; //image
-            markup += '<td style="padding-left: 10px; vertical-align: top; width: 345px" ><a href="javascript:goToEditTeacherFromClassTeachers(\'' +staff.userId + '\')">' + staff.nameAndTitle +'</a><br/><br/><br/>';
+            markup += '<td style="padding-left: 10px; vertical-align: top; width: 345px" ><a href="javascript:goToEditStaffFromAdministrativeStaff(\'' +staff.userId + '\')">' + staff.nameAndTitle +'</a><br/><br/><br/>';
             
-            for(var i = 0; i < staff.subjectsTaught.length; ++i)   {
 
-                markup += '<span>' + staff.subjectsTaught[i].name +'</span><br/>';
-
-            } 
 
             for(var i = 0; i < staff.devices.length; ++i)   {
 
@@ -88,7 +84,7 @@
             if(address.state)
             { 
                 displayName += address.state;
-                displayName += ' State'
+                displayName += ' State';
                 displayName += '<br/>';
             }
 
@@ -108,38 +104,25 @@
 
         function onSuccess(data){
             
-            document.getElementById("banner").innerHTML = data.info.schoolName + ' ( Academic Staff )';
+            document.getElementById("banner").innerHTML = data.info.schoolName + ' ( Adminstrative Staff )';
  
 
             var content = ''; 
+            var rowElements = 0;
+            content += openStaffRow(); 
+            for(var i =0; i < data.info.staff.length; ++i){
 
-            for(var i =0; i < data.info.years.length; ++i){
-
-                if(i != 0){
-                    content += '<tr><td><hr></td></tr>';
-                }
-                var year = data.info.years[i]; 
-                console.log('year is ' + year.year);
-                content += openStaffRow();
-                var rowElements = 0;
-                for(var j = 0; j < year.arms.length; ++j){
-                    var arm = year.arms[j];
-                    console.log('arm is ' + arm.arm);
-                    for(var k = 0; k < arm.classTeachers.length; ++k){
-
-                        var classTeacher = arm.classTeachers[k];
-                        content += addStaffPoster('Year ' + year.year + ' - ' + arm.arm, classTeacher, arm.armId);
-                        if(++rowElements > 4){
-                            rowElements = 0;
-                            content += closeStaffRow();
-                            content += openStaffRow();
-                        }
-                    }
-                }
-
-                content += closeStaffRow();
+                var staff = data.info.staff[i];
+                content += addStaffPoster(staff.title, staff);
+                if(++rowElements > 4){
+                    rowElements = 0;
+                    content += closeStaffRow();
+                    content += openStaffRow();
+                }  
 
             }
+
+            content += closeStaffRow();
 
             console.log(content);
 
@@ -149,7 +132,7 @@
 
         function init()
         {
-            getClassTeachersPageInfo(schoolId,  onSuccess, onError);
+            getSchoolOfficersPageInfo(schoolId,  onSuccess, onError);
         }
         
         window.addEventListener('load', init);

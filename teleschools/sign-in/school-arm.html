@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Signin Template · Bootstrap v5.0</title>
+
+ 
+
+    <script type="text/javascript" src="../../jobmanapi.js"></script>
+    <script type="text/javascript" src="teleschools.js"></script>
+    <link rel="stylesheet" href="teleschools.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script> 
+        var sessionId = getQueryParameter('sessionId'); 
+        var schoolId = getQueryParameter('schoolId'); 
+        var levelId = getQueryParameter('levelId')
+
+        function onError(info){
+
+        }
+
+
+        function onSuccess(info){
+            
+            document.getElementById("banner").innerHTML = info.year.schoolName + ' ( Year ' +  info.year.name + ' )';
+
+            var content = '';
+
+            for(var i = 0; i < info.year.arms.length; ++i)
+            {
+                var arm = info.year.arms[i];
+
+                content += '<td><table style="vertical-align: top; width: 360px;"><tr><th class="table-header"><a href="javascript:goToLevelArm(\'' + arm.armId + '\')">' + info.year.name + ' ' + arm.arm + '</a></th></tr>';
+
+                    if(arm.classTeachers.length > 0){ 
+                        for(var j = 0; j < arm.classTeachers.length; ++j)
+                        {
+                            content += addLandingPagePersonRow(arm.classTeachers[j], true, 360);
+                        } 
+                        content += '<td><hr></td>';
+                    }
+
+
+                for(var j = 0; j < arm.students.length; ++j)
+                {
+                    content += addLandingPagePersonRow(arm.students[j], false, 360);
+                }
+
+                content += '</table></td>';
+            }
+
+
+            
+
+
+            document.getElementById('displayRow').innerHTML = content; 
+
+        }
+
+        function init()
+        {
+            getSchoolYearPageInfo(schoolId, levelId, onSuccess, onError);
+        }
+        
+        window.addEventListener('load', init);
+        </script>
+        
+  </head>
+  <body>
+      <div class="banner" >
+        <h1 id="banner"></h1>
+      </div>
+      <div class="navbar">
+        <a href="javascript:goHome()">Home</a> 
+        <a href="javascript:goToAdministrativeStaff()">Administrative Staff</a>
+        <a href="javascript:goToAcademicStaff()">Academic Staff</a>
+        <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">Add
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+          <a href="javascript:AddSubject()">Subject</a>
+          <a href="javascript:AddStaff()">Staff</a>
+          <a href="javascript:AddStudent()">Student</a>
+        </div>
+        </div> 
+      </div> 
+      <script>
+      /* When the user clicks on the button, 
+      toggle between hiding and showing the dropdown content */
+      function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      }
+      
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(e) {
+        if (!e.target.matches('.dropbtn')) {
+        var myDropdown = document.getElementById("myDropdown");
+          if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+          }
+        }
+      }
+      </script>
+
+   <table class="landingTable" >
+       <tr  id="displayRow" style="vertical-align: top;" >
+       </tr>
+
+   </table>
+
+
+    
+  </body>
+</html>

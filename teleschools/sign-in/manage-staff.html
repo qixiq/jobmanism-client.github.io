@@ -51,6 +51,10 @@
             if(returnAction == 1){
                 goToAcademicStaff();
             }
+
+            if(returnAction == 2){
+                goToAdministrativeStaff();
+            }
         }
 
         function onError(info){
@@ -105,12 +109,15 @@
             else{
                 
                 var roleText = '<select  class="form-control" id="role" placeholder="Role">'; 
-                roleText += '<option value="4">Academic Staff</option>';
-                roleText += '<option value="11">Director Of Academics</option>';
-                roleText += '<option value="12">Registrar</option>';
-                roleText += '<option value="13">Bursar</option>';
-                roleText += '<option value="14">Head Of Technical</option>';
-                roleText += '<option value="15">Athletics Director</option>';
+                roleText += '<option value="9">Academic Staff</option>';
+                roleText += '<option value="2">School Administrator</option>';
+                roleText += '<option value="1">System Administrator</option>';
+                roleText += '<option value="3">Director Of Academics</option>';
+                roleText += '<option value="4">Registrar</option>';
+                roleText += '<option value="5">Bursar</option>';
+                roleText += '<option value="6">Head Of Technical</option>';
+                roleText += '<option value="7">Athletics Director</option>';
+                roleText += '<option value="8">Administrative Staff</option>';
                 roleText += '</select>';
                 roleText += '<label for="role">Role</label><br/>'; 
                 document.getElementById('roleHolder').innerHTML = roleText;
@@ -202,12 +209,17 @@
 
             data.append('title', document.getElementById('title').value);
             data.append('updateId', parseInt(userId));
-            data.append('targetId', parseInt(schoolId))
+            data.append('schoolId', parseInt(schoolId))
             data.append('sessionId', sessionId); 
             data.append('firstName', document.getElementById('firstName').value);
             data.append('middleNames', document.getElementById('middleNames').value);
             data.append('lastName', document.getElementById('lastName').value);
             data.append('email', document.getElementById('email').value);
+
+            if(userId <= 0){
+              data.append('role', parseInt(document.getElementById('role').value))
+            }
+            
             
             //phone
 

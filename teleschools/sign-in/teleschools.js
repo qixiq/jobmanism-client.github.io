@@ -16,6 +16,10 @@ function goHome(){
             document.location.href = getPathPrefix(document.location.href) + '/manage-staff.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId') + '&userId=' + id + '&isAcademic=1&returnAction=1';
         }
 
+        function goToEditStaffFromAdministrativeStaff(id){
+            document.location.href = getPathPrefix(document.location.href) + '/manage-staff.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId') + '&userId=' + id + '&isAcademic=1&returnAction=2';
+        }
+
         function goToStudent(id){
 
         }
@@ -32,8 +36,8 @@ function goHome(){
 
         }
 
-        function goToAdmininstrativeStaff(){
-
+        function goToAdministrativeStaff(){
+            document.location.href = getPathPrefix(document.location.href) + '/school-officers.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId');
         }
 
         function goToAcademicStaff(){
@@ -43,9 +47,13 @@ function goHome(){
 
 
         function goToLevelArm(id){
-
+            document.location.href = getPathPrefix(document.location.href) + '/school-arm.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId') + '&armId=' +armId;
         }
         
+
+        function getSchoolOfficersPageInfo(schoolId,  onSuccess, onError){
+            sendGetRequest('/getSchoolOfficersPageInfo?sessionId=' + getQueryParameter('sessionId')+  '&schoolId='+ schoolId , onSuccess, onError);
+        }
 
         function getClassTeachersPageInfo(schoolId,  onSuccess, onError){
             sendGetRequest('/getClassTeachersPageInfo?sessionId=' + getQueryParameter('sessionId')+  '&schoolId='+ schoolId , onSuccess, onError);
