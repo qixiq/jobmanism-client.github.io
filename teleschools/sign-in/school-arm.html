@@ -18,7 +18,7 @@
     <script> 
         var sessionId = getQueryParameter('sessionId'); 
         var schoolId = getQueryParameter('schoolId'); 
-        var levelId = getQueryParameter('levelId')
+        var armId = getQueryParameter('armId')
 
         function onError(info){
 
@@ -27,31 +27,31 @@
 
         function onSuccess(info){
             
-            document.getElementById("banner").innerHTML = info.year.schoolName + ' ( Year ' +  info.year.name + ' )';
+            //document.getElementById("banner").innerHTML = info.year.schoolName + ' ( Year ' +  info.year.name + ' )';
 
             var content = '';
 
-            for(var i = 0; i < info.year.arms.length; ++i)
+            //for(var i = 0; i < info.year.arms.length; ++i)
             {
-                var arm = info.year.arms[i];
+                //var arm = info.year.arms[i];
 
-                content += '<td><table style="vertical-align: top; width: 360px;"><tr><th class="table-header"><a href="javascript:goToLevelArm(\'' + arm.armId + '\')">' + info.year.name + ' ' + arm.arm + '</a></th></tr>';
+                //content += '<td><table style="vertical-align: top; width: 360px;"><tr><th class="table-header"><a href="javascript:goToLevelArm(\'' + arm.armId + '\')">' + info.year.name + ' ' + arm.arm + '</a></th></tr>';
 
-                    if(arm.classTeachers.length > 0){ 
-                        for(var j = 0; j < arm.classTeachers.length; ++j)
-                        {
-                            content += addLandingPagePersonRow(arm.classTeachers[j], true, 360);
-                        } 
-                        content += '<td><hr></td>';
-                    }
+                   // if(arm.classTeachers.length > 0){ 
+                   //     for(var j = 0; j < arm.classTeachers.length; ++j)
+                   //     {
+                   //         content += addLandingPagePersonRow(arm.classTeachers[j], true, 360);
+                   //     } 
+                   //     content += '<td><hr></td>';
+                   // }
 
 
-                for(var j = 0; j < arm.students.length; ++j)
-                {
-                    content += addLandingPagePersonRow(arm.students[j], false, 360);
-                }
+                //for(var j = 0; j < arm.students.length; ++j)
+               // {
+                //    content += addLandingPagePersonRow(arm.students[j], false, 360);
+               // }
 
-                content += '</table></td>';
+                //content += '</table></td>';
             }
 
 
@@ -64,7 +64,7 @@
 
         function init()
         {
-            getSchoolYearPageInfo(schoolId, levelId, onSuccess, onError);
+            getSchoolArmPageInfo(schoolId, armId, onSuccess, onError);
         }
         
         window.addEventListener('load', init);

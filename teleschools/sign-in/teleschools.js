@@ -47,9 +47,18 @@ function goHome(){
 
 
         function goToLevelArm(id){
-            document.location.href = getPathPrefix(document.location.href) + '/school-arm.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId') + '&armId=' +armId;
+            document.location.href = getPathPrefix(document.location.href) + '/school-arm.html?sessionId='  + getQueryParameter('sessionId')  + '&schoolId=' + getQueryParameter('schoolId') + '&armId=' + id;
         }
         
+        function getSchoolArmPageInfoWithDate(schoolId, armId, date, onSuccess, onError){
+            sendGetRequest('/getSchoolArmPageInfo?sessionId=' + getQueryParameter('sessionId')+ '&armId=' +armId + '&schoolId='+ schoolId + '&date=' + date, onSuccess, onError);
+        }
+
+        function getSchoolArmPageInfo(schoolId, armId, onSuccess, onError){ 
+            var d = new Date();
+            var date = d.getFullYear() * 10000 + d.getMonth()* 100 + d.getDate();
+            getSchoolArmPageInfoWithDate(schoolId, armId, date, onSuccess, onError);
+        }
 
         function getSchoolOfficersPageInfo(schoolId,  onSuccess, onError){
             sendGetRequest('/getSchoolOfficersPageInfo?sessionId=' + getQueryParameter('sessionId')+  '&schoolId='+ schoolId , onSuccess, onError);
