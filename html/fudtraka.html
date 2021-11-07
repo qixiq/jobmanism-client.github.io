@@ -1,0 +1,916 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <!-- title -->
+        <title>FUDTRAKA - It's All About Food</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+        <meta name="author" content="ThemeZaa">
+        <!-- description -->
+        <meta name="description" content="POFO is a highly creative, modern, visually stunning and Bootstrap responsive multipurpose agency and portfolio HTML5 template with 25 ready home page demos.">
+        <!-- keywords -->
+        <meta name="keywords" content="creative, modern, clean, bootstrap responsive, html5, css3, portfolio, blog, agency, templates, multipurpose, one page, corporate, start-up, studio, branding, designer, freelancer, carousel, parallax, photography, personal, masonry, grid, coming soon, faq">
+        <!-- favicon -->
+        <link rel="shortcut icon" href="images/favicon.png">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+        <!-- style sheets and font icons  -->
+        <link rel="stylesheet" type="text/css" href="css/bootsnav.css">
+        <link rel="stylesheet" type="text/css" href="css/font-icons.min.css">
+        <link rel="stylesheet" type="text/css" href="css/theme-vendors.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/responsive.css" />
+        <!-- scripts -->
+        <script type="text/javascript" src="fudtraka.js"></script>
+        <script>
+            var sessionId = getQueryParameter('sessionId'); 
+            var searchTerms = '';
+            var currentState = '';
+            var hits = [];
+            const resultsPerPage = 6;
+            var resultsMarkup = '';
+
+            function appendPaginationElement(numberOfPages){
+
+            }
+
+            function appendResultItem(item){  
+
+
+                resultsMarkup += '<div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">';
+                resultsMarkup += '<div class="row g-0 align-items-center">';
+                    if(item.resourceId > 0){
+
+                    }
+ 
+                    
+                resultsMarkup += '<div class="col-12 col-lg-6 blog-text">';
+                resultsMarkup += '<div class="content margin-20px-bottom md-no-padding-left ">';
+                resultsMarkup += '<a href="#" class="text-extra-dark-gray margin-5px-bottom alt-font text-extra-large font-weight-600 d-inline-block">' +  item.businessName +'</a>';
+                //resultsMarkup += '<div class="text-medium-gray text-extra-small margin-15px-bottom text-uppercase alt-font"><span><a href="blog-grid.html" class="text-medium-gray">Emily Wright</a></span></div>';
+                resultsMarkup += '<p class="m-0 w-95">';
+                var phoneNumber = item.phoneNumber;
+                var searchResults = '';
+ 
+   
+                if(item.plusCode && item.plusCode != '')
+                {
+                    searchResults += 'GPS: ' + item.plusCode ; 
+                }
+
+                searchResults += ' , ' + item.city + ' , ' + item.state + ' State <br/>'; 
+                searchResults += '<strong>Phone :&nbsp;</strong>' ;  
+                searchResults +=  item.phoneNumber ;
+                resultsMarkup += searchResults;
+                resultsMarkup += '</p>';
+                resultsMarkup += '</div> ';
+                resultsMarkup += '<a class="btn btn-very-small btn-dark-gray text-uppercase" href="#vendorDetail">Explore</a>';
+                resultsMarkup += '</div>';
+                resultsMarkup += '</div>';
+                resultsMarkup += '</div>'; 
+
+            }
+
+            function onQueryResult(data){
+
+                hits = data.hits;
+                resultsMarkup = '';
+                for(var i = 0; i < hits.length && i < resultsPerPage; ++i){
+                    var hit = hits[i];
+                    appendResultItem(hit);
+                } 
+
+                resultsMarkup += '<div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">';
+                resultsMarkup += '<div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">';
+                resultsMarkup += '<ul id="resultsPagination">';
+                resultsMarkup += '<li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>';
+                resultsMarkup += '<li class="active"><a href="#">1</a></li>';
+                resultsMarkup += '<li><a href="#">2</a></li>';
+                resultsMarkup += '<li><a href="#">3</a></li>';
+                resultsMarkup += '<li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>';
+                resultsMarkup += '</ul>';
+                resultsMarkup += '</div>';
+                resultsMarkup += '</div>'; 
+
+                document.getElementById('resultsHolder').innerHTML = resultsMarkup;
+            }
+
+         
+            function onPerformSearch(){
+                searchTerms = document.getElementById('searchQuery').value;
+                data = {};
+                data.nlQuery = searchTerms; 
+                searchForFoodAndDrinkVendorLocations(data, onQueryResult, onError)
+            }
+
+            function onGotLandingPageInfo(data){
+
+            }
+
+            function onError(data){
+                
+            }
+    
+            function init() {
+                currentState = document.getElementById('stateSelection').innerHTML;
+                getFudtrakaLandingPageInfo(onGotLandingPageInfo, onError)
+            }
+
+            function onStateSelectionChanged(state){
+                document.getElementById('stateSelection').innerHTML = state;
+            }
+
+            window.addEventListener('load', init);
+
+        </script>
+    </head>
+    <body>
+                <!-- start header -->
+                <header class="header-with-topbar fixed-topbar">
+                    <!-- topbar -->
+                    <div class="top-header-area bg-black padding-10px-tb">
+                        <div class="container-lg">
+                            <div class="row align-items-center m-0">
+                                <div class="col-md-6 ps-lg-0 text-uppercase alt-font d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <a href="tel:1234567890" class="text-link-white-2 line-height-normal" title="Call us 123-456-7890">Call us 123-456-7890</a>
+                                    <div class="separator-line-verticle-extra-small bg-dark-gray d-inline-block margin-two-half-lr position-relative align-middle"></div>
+                                    <a href="mailto:no-reply@domain.com" class="text-link-white-2 line-height-normal" title="no-reply@domain.com">no-reply@domain.com</a>
+                                </div>
+                                <div class="col-md-6 pe-lg-0 d-none d-md-flex align-items-center justify-content-end">
+                                    <div class="icon-social-very-small d-inline-block line-height-normal">
+                                        <a href="https://www.facebook.com/" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                                        <a href="https://twitter.com/" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
+                                        <a href="https://linkedin.com/" title="Linked In" target="_blank" class="text-link-white-2"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="https://plus.google.com" title="Google Plus" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a>                            
+                                    </div>  
+                                    <div class="separator-line-verticle-extra-small bg-dark-gray d-inline-block margin-two-half-lr position-relative align-middle top-1px"></div>
+                                    <div class="btn-group dropdown-style-1">
+                                        <button type="button" class="btn dropdown-toggle sm-w-100" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span  id="stateSelection" >Abia</span> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="javascript:onStateSelectionChanged('Abia')" title="Abia">Abia</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Akwa Ibom')" title="Akwa Ibom">Akwa Ibom</a></li> 
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end topbar -->
+                    <!-- start navigation -->
+                    <nav class="navbar navbar-default bootsnav navbar-fixed-top header-light-transparent background-transparent navbar-expand-lg">
+                        <div class="container-lg nav-header-container">
+                            <!-- start logo -->
+                            <div class="col-auto ps-0">
+                                <a href="fudtraka.html" title="Fudtraka" class="logo"><img src="fudtraka-svg.png"  class="default" alt="Fudtraka"></a>
+                            </div>
+ 
+                            <!-- end logo -->
+                            <div class="col accordion-menu pe-0 pe-md-3">
+                                <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar-collapse-toggle-1">
+                                    <span class="sr-only">toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <div class="navbar-collapse collapse justify-content-end" id="navbar-collapse-toggle-1">
+                                    <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="animate__fadeIn" data-out="animate__fadeOut">
+                                        <!-- start  menu -->
+                                        <li class="dropdown simple-dropdown"><a href="#">HOME</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                           
+                                        </li>
+                                        <!-- end  menu -->
+
+  
+                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#news">NEWS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                            <!-- start
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">RESTAURANT </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">BUKA </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">GRILL </a> 
+                                                </li> 
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">LOUNGE </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">FAST FOOD</a> 
+                                                </li> 
+                                            </ul> 
+                                            -->
+                                        </li>
+                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#whats-cooking">WHAT'S COOKING ?</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                            <!-- start
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">RESTAURANT </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">BUKA </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">GRILL </a> 
+                                                </li> 
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">LOUNGE </a> 
+                                                </li>
+                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">FAST FOOD</a> 
+                                                </li> 
+                                            </ul> 
+                                            -->
+                                        </li>
+
+                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#blog">BLOG</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                           
+                                        </li>
+
+                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#search">EXPLORE</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                           
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- end navigation --> 
+                    <!-- end navigation --> 
+                </header>
+                <!-- end header -->
+
+        <!-- start slider section -->
+        <section id="carousel" class="wow animate__fadeIn p-0 top-space">
+            <div class="swiper-container full-screen sm-h-500px md-landscape-h-580px white-move" data-slider-options='{ "loop": true, "slidesPerView": "1", "allowTouchMove":true, "autoplay": { "delay": 5000, "disableOnInteraction": false }, "keyboard": { "enabled": true, "onlyInViewport": true }, "navigation": { "nextEl": ".swiper-button-next", "prevEl": ".swiper-button-prev" }, "pagination": { "el": ".swiper-pagination", "clickable": true } }'>
+                <div class="swiper-wrapper">
+                    <!-- start slider item -->
+                    <div class="swiper-slide cover-background" style="background-image:url('sluggers17.png');">
+                        <div class="opacity-extra-medium bg-extra-dark-gray"></div>
+                        <div class="container position-relative h-100">
+                            <div class="row h-100">
+                                <div class="col-12 d-flex flex-column justify-content-center text-center">
+                                    <span class="text-large text-very-light-gray font-weight-300 w-95 mx-auto margin-25px-bottom d-block">Slugger's Lounge</span>
+                                    <h1 class="alt-font text-uppercase text-white-2 font-weight-700 w-75 sm-w-90 mx-auto margin-35px-bottom">Eat Clean</h1>
+                                    <div class="btn-dual"><a href="" class="btn btn-white btn-rounded btn-medium sm-margin-two-all">Explore</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end slider item -->
+                    <!-- start slider item -->
+                    <div class="swiper-slide cover-background" style="background-image:url('sluggers13.png');">
+                        <div class="opacity-extra-medium bg-extra-dark-gray"></div>
+                        <div class="container position-relative h-100">
+                            <div class="row h-100">
+                                <div class="col-12 d-flex flex-column justify-content-center text-center">
+                                    <span class="text-large text-very-light-gray font-weight-300 w-95 mx-auto margin-25px-bottom d-block">Apollo's Sports Bar</span>
+                                    <h1 class="alt-font text-uppercase text-white-2 font-weight-700 w-75 sm-w-90 mx-auto margin-35px-bottom">Feast For the SOUL</h1>
+                                    <div class="btn-dual"><a href="" class="btn btn-white btn-rounded btn-medium sm-margin-two-all">Explore</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end slider item -->
+                    <!-- start slider item -->
+                    <div class="swiper-slide cover-background" style="background-image:url('sluggers5.png');">
+                        <div class="opacity-extra-medium bg-extra-dark-gray"></div>
+                        <div class="container position-relative h-100">
+                            <div class="row h-100">
+                                <div class="col-12 d-flex flex-column justify-content-center text-center">
+                                    <span class="text-large text-very-light-gray font-weight-300 w-95 mx-auto margin-25px-bottom d-block">Yakoyo Amala Joint</span>
+                                    <h1 class="alt-font text-uppercase text-white-2 font-weight-700 w-75 sm-w-90 mx-auto margin-35px-bottom">You are what you Eat</h1>
+                                    <div class="btn-dual"><a href="" class="btn btn-white btn-rounded btn-medium sm-margin-two-all">Explore</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end slider item -->
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination swiper-pagination-white"></div>
+                <!-- <div class="swiper-button-next light"><i class="ti-angle-right"></i></div>
+                    <div class="swiper-button-prev light"><i class="ti-angle-left"></i></div> -->
+            </div>
+        </section>
+        <!-- end slider section -->
+                <!-- start post content section --> 
+                <section id="news" class="wow animate__fadeIn bg-light-gray">
+                    <div class="container"> 
+                        <div class="row">
+                            <div class="col-12 blog-content">
+                                <ul class="blog-text blog-wrapper grid grid-loading grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-extra-large">
+                                    <li class="grid-sizer"></li>
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">17 july 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Design can speak the tongue of art with the force of commerce.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Herman Miller</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.2s">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">03 July 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">If your business isn’t mobile friendly, your business is dead.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Jeremy Dupont</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.4s">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">22 June 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Design is as much an act of spacing as an act of marking.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Hugh Macleod</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li> 
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">02 June 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Design is the conscious effort to impose a meaningful order.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Jennifer Freeman</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.2s">                          
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">13 May 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">The life of a designer is a life of fight: fight against the ugliness.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Bill Gardner</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.4s">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">29 April 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Graphic design will save the world right after rock and roll does.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Willie Clark</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">18 April 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">I like the body. I like to design everything to do with the body.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">John Doe</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.2s">                          
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">31 March 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Do good work for good people. Good design is a language, not a style.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Herman Miller</a></span>
+                                                </div>
+                                            </div>
+                                        </div>                          
+                                    </li>
+                                    <!-- end post item -->
+                                    <!-- start post item -->
+                                    <li class="grid-item wow animate__fadeInUp" data-wow-delay="0.4s">
+                                        <div class="blog-post blog-post-style7 border border-color-light-gray padding-fourteen-all lg-padding-ten-all sm-padding-30px-all bg-white">
+                                            <div class="post-details">
+                                                <span class="text-extra-small text-uppercase d-block margin-four-bottom md-margin-two-bottom">02 March 2017</span>
+                                                <span class="text-large alt-font margin-50px-bottom md-margin-30px-bottom d-block"><a href="javascript:void(0);">Leopard is an animal design, and my designs come from nature.</a></span>
+                                                <div class="author padding-10px-top position-relative">
+                                                    <span class="text-uppercase text-extra-small">by <a href="javascript:void(0);">Jay Benjamin</a></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- end blog content section -->   
+        <!-- start portfolio section -->
+        <section  style="background-color: aliceblue;" id="whats-cooking"  class="wow animate__fadeIn padding-90px-top md-padding-50px-top sm-padding-30px-top">
+            <!-- start filter content -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 filter-content overflow-hidden">
+                        <ul class="hover-option10 lightbox-portfolio portfolio-wrapper grid grid-loading grid-4col xl-grid-4col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-medium">
+                            <li class="grid-sizer"></li>
+                            <!-- start portfolio item -->
+                            <li class="grid-item web wow animate__zoomIn">
+                                <figure>
+                                    <div class="portfolio-img bg-black"><img src="meat.jpeg" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers13.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item advertising wow animate__zoomIn" data-wow-delay="0.2s">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers1.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers7.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item web branding wow animate__zoomIn" data-wow-delay="0.4s">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers8.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers4.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item design photography grid-item-double wow animate__zoomIn">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers13.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers17.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item branding advertising wow animate__zoomIn" data-wow-delay="0.2s">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers1.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers7.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item web design wow animate__zoomIn">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers5.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers8.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item design branding wow animate__zoomIn" data-wow-delay="0.4s">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers5.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers17.png"><i class="ti-zoom-in" aria-hidden="true"></i></a> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                            <!-- start portfolio item -->
+                            <li class="grid-item photography advertising wow animate__zoomIn" data-wow-delay="0.4s">
+                                <figure>
+                                    <div  class="portfolio-img bg-black"><img src="sluggers4.png" alt=""/></div>
+                                    <figcaption>
+                                        <div class="portfolio-hover-main">
+                                            <div class="portfolio-hover-box align-middle">
+                                                <div class="portfolio-icon">
+                                                    <a class="gallery-link" title="IMAGE TITLE" href="sluggers17.png"><i class="ti-zoom-in" aria-hidden="true"></i></a>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            <!-- end portfolio item -->
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+        <!-- end portfolio section -->
+        </section>
+        <!-- end gallery section -->
+                <!-- start results section -->
+                <section style="background-color: blanchedalmond;" id="search" class="wow animate__fadeIn">
+                    
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <main class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right">
+
+                                <input id="searchQuery" type="text" class="alt-font justify-content-center text-medium-gray font-weight-600 mb-0 text-uppercase">
+                                <br/>
+                                <button style="margin-top: 10px;" onclick="onPerformSearch()">SEARCH</button>
+                                <hr/>   
+                            </main>
+                        </div>
+                    </div>
+                </section>
+                <!-- end results section -->
+                                <!-- start results section -->
+                                <section style="background-color: blanchedalmond;" class="wow animate__fadeIn">
+                    
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                
+                                            <main id="resultsHolder" class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right"> 
+                                               <!--  start post item 
+                                                <div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">
+                                                    <div class="row g-0 align-items-center">
+                                                        <div class="col-12 col-lg-5 blog-image md-margin-30px-bottom sm-margin-20px-bottom margin-45px-right md-no-margin-right">
+                                                            <a href="blog-standard-post.html"><img src="https://via.placeholder.com/1200x840" alt=""></a>
+                                                        </div> 
+                                                        <div class="col-12 col-lg-6 blog-text">
+                                                            <div class="content margin-20px-bottom md-no-padding-left ">
+                                                                <a href="blog-standard-post.html" class="text-extra-dark-gray margin-5px-bottom alt-font text-extra-large font-weight-600 d-inline-block">Design is thinking made visual</a>
+                                                                <div class="text-medium-gray text-extra-small margin-15px-bottom text-uppercase alt-font"><span>By <a href="blog-grid.html" class="text-medium-gray">Emily Wright</a></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span>17 july 2017</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="text-medium-gray">Design</a></div>
+                                                                <p class="m-0 w-95">Lorem Ipsum is simply dummy text of the printing and industry. Lorem Ipsum has been the industry industry’s standard dummy text Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                                            </div>
+                                                            <a class="btn btn-very-small btn-dark-gray text-uppercase" href="#vendorDetail">Explore</a>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">
+                                                    <div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">
+                                                        <ul id="resultsPagination">
+                                                            <li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>
+                                                            <li class="active"><a href="#">1</a></li>
+                                                            <li><a href="#">2</a></li>
+                                                            <li><a href="#">3</a></li>
+                                                            <li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>-->  
+                                                <!-- end pagination -->
+                                            </main>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- end results section -->
+                        <!-- start blog section --> 
+        <section style="background-color: lightsteelblue;" id="blog" class="wow animate__fadeIn">
+            <div class="container"> 
+                <div class="row">
+                    <div class="col-12 blog-content">
+                        <ul class="blog-grid blog-wrapper grid grid-loading grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col hover-option4 blog-post-style3 gutter-extra-large">
+                            <li class="grid-sizer"></li>
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers8.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">I find modernist design boring, but it so much faster!</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy...</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Jay Benjamin</a>&nbsp;&nbsp;|&nbsp;&nbsp;13 May 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.2s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers4.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Being a famous designer is like being a famous dentist.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy...</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Herman Miller</a>&nbsp;&nbsp;|&nbsp;&nbsp;29 April 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.4s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers1.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Designers are meant to be loved, not to be understood.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy....</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Hugh Macleod</a>&nbsp;&nbsp;|&nbsp;&nbsp;18 April 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers13.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Design is the conscious effort to impose a meaningful order.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy...</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Willie Clark</a>&nbsp;&nbsp;|&nbsp;&nbsp;31 March 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.2s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers5.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Good design is a lot like clear thinking made visual.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy...</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">John Doe</a>&nbsp;&nbsp;|&nbsp;&nbsp;09 March 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.4s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers5.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Design is as much an act of spacing as an act of marking.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy....</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Isaac Tobin</a>&nbsp;&nbsp;|&nbsp;&nbsp;20 February 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers17.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Good design goes to heaven; bad design goes everywhere.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy....</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Jason Bourne</a>&nbsp;&nbsp;|&nbsp;&nbsp;14 January 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.2s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers13.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Good design is obvious. Great design is transparent.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy....</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Amanda Holmes</a>&nbsp;&nbsp;|&nbsp;&nbsp;01 January 2017</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                            <!-- start post item -->
+                            <li class="grid-item last-paragraph-no-margin text-center text-sm-start wow animate__fadeInUp" data-wow-delay="0.4s">
+                                <div class="blog-post bg-light-gray">
+                                    <div class="blog-post-images overflow-hidden position-relative">
+                                        <a href="#">
+                                            <img src="sluggers5.png" alt="">
+                                            <div class="blog-hover-icon"><span class="text-extra-large font-weight-300">+</span></div>
+                                        </a>
+                                    </div>
+                                    <div class="post-details padding-40px-all md-padding-20px-all">
+                                        <a href="#" class="alt-font post-title text-medium text-extra-dark-gray w-100 d-block lg-w-100 margin-15px-bottom">Everything is designed. Few things are designed well.</a>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy....</p>
+                                        <div class="separator-line-horrizontal-full bg-medium-gray margin-20px-tb"></div>
+                                        <div class="author">
+                                            <span class="text-medium-gray text-uppercase text-extra-small d-inline-block">by <a href="#" class="text-medium-gray">Hugh Macleod</a>&nbsp;&nbsp;|&nbsp;&nbsp;22 December 2016</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end post item -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- start pagination -->
+                <div class=" text-center margin-100px-top md-margin-50px-top wow animate__fadeInUp">
+                    <div class="pagination text-small text-uppercase text-extra-dark-gray">
+                        <ul id="blogPagination" class="mx-auto">
+                            <li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- end pagination -->
+            </div>
+        </section>
+        <!-- end blog content section -->  
+        <!-- start footer --> 
+        <footer class="footer-standard"> 
+            <div class="footer-widget-area padding-five-tb sm-padding-30px-tb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray md-no-border-right md-margin-30px-bottom text-center text-sm-start">
+                            <!-- start logo -->
+                            <a href="#" class="margin-20px-bottom d-inline-block"><img class="footer-logo" src="fudtraka-svg.png"   alt="Pofo"></a>
+                            <!-- end logo -->
+                            <p class="text-small d-inline-block w-95 lg-w-100 xs-w-95">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                            <!-- start social media -->
+                            <div class="social-icon-style-8 d-inline-block align-middle">
+                                <ul class="small-icon mb-0">
+                                    <li><a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                                    <li><a class="twitter" href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a class="google" href="https://plus.google.com" target="_blank"><i class="fab fa-google-plus-g"></i></a></li>
+                                    <li><a class="instagram" href="https://instagram.com/" target="_blank"><i class="fab fa-instagram me-0" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                            <!-- end social media -->
+                        </div>
+                        <!-- start additional links -->
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right md-margin-30px-bottom text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Additional Links</div>
+                            <ul class="list-unstyled">
+                                <li><a class="text-small" href="#">Sign In</a></li>
+                                <li><a class="text-small" href="#">Manage Businesses</a></li>
+                                <li><a class="text-small" href="#">Join Us</a></li>
+                                <li><a class="text-small" href="#">Home Portfolio Minimal</a></li>
+                                <li><a class="text-small" href="#">Home Portfolio  parallax</a></li>
+                                <li><a class="text-small" href="#">Home Portfolio Personal</a></li>
+                            </ul>
+                        </div>
+                        <!-- end additional links -->
+                        <!-- start contact information -->
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right xs-margin-30px-bottom text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Contact Info</div>
+                            <p class="text-small d-inline-block d-md-block margin-15px-bottom w-80 md-w-70">POFO Design Agency<br> 301 The Greenhouse, Custard Factory, London, E2 8DY.</p>
+                            <div class="text-small">Email: <a href="mailto:sales@domain.com">sales@domain.com</a></div>
+                            <div class="text-small">Phone: +44 (0) 123 456 7890</div>
+                            <a href="#" class="text-small text-uppercase text-decoration-underline">View Direction</a>
+                        </div>
+                        <!-- end contact information -->
+                        <!-- start instagram -->
+                        <div class="col-lg-3 col-sm-6 widget padding-45px-left md-padding-15px-left text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-15px-bottom font-weight-600">Resent portfolio</div>
+                            <div class="w-100 d-inline-block">
+                                <ul class="instafeed-grid instafeed-wrapper grid grid-3col xl-grid-3col lg-grid-3col md-grid-3col sm-grid-3col xs-grid-3col gutter-small" data-total="6">
+                                    <li class="grid-item">
+                                        <figure>
+                                            <a href="#" data-href="{{link}}" target="_blank">
+                                                <img src="#" data-src="{{image}}" class="insta-image" alt="" />
+                                                <span class="insta-counts"><i class="ti-instagram"></i>{{likes}}</span>
+                                            </a>
+                                        </figure>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end instagram -->
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light-gray padding-50px-tb text-center sm-padding-30px-tb">
+                <div class="container">
+                    <div class="row">
+                        <!-- start copyright -->
+                        <div class="col-md-6 text-center text-md-start text-small">&copy; 2021 FUDTRAKA is Proudly Powered by <a href="http://www.themezaa.com" target="_blank" class="text-dark-gray">ThemeZaa</a></div>
+                        <div class="col-md-6 text-center text-md-end text-small">
+                            <a href="javascript:void(0);" class="text-dark-gray">Term and Condition</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" class="text-dark-gray">Privacy Policy</a>
+                        </div>
+                        <!-- end copyright -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end footer -->
+        <!-- start scroll to top -->
+        <a class="scroll-top-arrow" href="javascript:void(0);"><i class="ti-arrow-up"></i></a>
+        <!-- end scroll to top  -->
+        <!-- javascript -->
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootsnav.js"></script>
+        <script type="text/javascript" src="js/jquery.nav.js"></script>
+        <script type="text/javascript" src="js/hamburger-menu.js"></script>
+        <script type="text/javascript" src="js/theme-vendors.min.js"></script>
+        <!-- setting -->
+        <script type="text/javascript" src="js/main.js"></script> 
+    </body>
+</html>
