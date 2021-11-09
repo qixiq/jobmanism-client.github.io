@@ -80,6 +80,7 @@
                 for(var i = 0; i < hits.length && i < resultsPerPage; ++i){
                     var hit = hits[i];
                     appendResultItem(hit);
+                    resultsMarkup += '<hr/>'
                 } 
 
                 resultsMarkup += '<div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">';
@@ -152,7 +153,42 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a href="javascript:onStateSelectionChanged('Abia')" title="Abia">Abia</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Abuja FCT')" title="Abuja FCT">Abuja FCT</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Adamawa')" title="Akwa Ibom">Akwa Ibom</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Anambra')" title="Anambra">Anambra</a></li> 
                                             <li><a href="javascript:onStateSelectionChanged('Akwa Ibom')" title="Akwa Ibom">Akwa Ibom</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Bauchi')" title="Bauchi">Bauchi</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Bayelsa')" title="Bayelsa">Bayelsa</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Benue')" title="Benue">Benue</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Borno')" title="Borno">Borno</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Cross River')" title="Cross River">Cross River</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Delta')" title="Delta">Delta</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Ebonyi')" title="Ebonyi">Ebonyi</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Edo')" title="Edo">Edo</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Ekiti')" title="Ekiti">Ekiti</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Enugu')" title="Enugu">Enugu</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Gombe')" title="Gombe">Gombe</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Imo')" title="Imo">Imo</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Jigawa')" title="Jigawa">Jigawa</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Kaduna')" title="Kaduna">Kaduna</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Kano')" title="Kano">Kano</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Katsina')" title="Katsina">Katsina</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Kebbi')" title="Kebbi">Kebbi</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Kogi')" title="Kogi">Kogi</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Kwara')" title="Kwara">Kwara</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Lagos')" title="Lagos">Lagos</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Nasarawa')" title="Nasarawa">Nasarawa</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Niger')" title="Niger">Niger</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Ogun')" title="Ogun">Ogun</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Ondo')" title="Ondo">Ondo</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Osun')" title="Osun">Osun</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Oyo')" title="Oyo">Oyo</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Plateau')" title="Plateau">Plateau</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Rivers')" title="Rivers">Rivers</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Sokoto')" title="Sokoto">Sokoto</a></li>  
+                                            <li><a href="javascript:onStateSelectionChanged('Taraba')" title="Taraba">Taraba</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Yobe')" title="Yobe">Yobe</a></li> 
+                                            <li><a href="javascript:onStateSelectionChanged('Zamfara')" title="Zamfara">Zamfara</a></li>  
                                         </ul>
                                     </div>
                                 </div>
@@ -217,7 +253,13 @@
                                             </ul> 
                                             -->
                                         </li>
-
+                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#recipes">RECIPES</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                        </li>
+                                        
+                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#trivia">TRIVIA</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                        </li>
+                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#wellness">WELLNESS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                        </li>
                                         <li class="dropdown simple-dropdown"><a class="inner-link" href="#blog">BLOG</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
                                            
                                         </li>
@@ -560,65 +602,77 @@
             </div> 
         <!-- end portfolio section -->
         </section>
-        <!-- end gallery section -->
-                <!-- start results section -->
-                <section style="background-color: blanchedalmond;" id="search" class="wow animate__fadeIn">
-                    
+        <section id="recipes" class="wow animate__fadeIn bg-light-gray">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+                        <div class="position-relative overflow-hidden w-100"><p><h2>TODAY'S RECIPE</h2><h4>Banga Soup</h4></p></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- start column -->
+                    <div class="col-12 col-lg-6 md-margin-15px-bottom ">
+                        <div class="bg-white padding-40px-all sm-padding-30px-all last-paragraph-no-margin">
+                            <p><span><strong>INGRIDIENTS</strong></span><br/>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
+                        </div>
+                    </div>
+                    <!-- end column -->
+                    <!-- start column -->
+                    <div class="col-12 col-lg-6 md-margin-15px-bottom ">
+                        <div class="bg-white padding-40px-all last-paragraph-no-margin">
+                            <p><span><strong>DIRECTIONS</strong></span><br/>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
+                        </div>
+                    </div>
+                    <!-- end column -->
+                </div>
+                </div>
+            </div>
+        </section>
+                <!-- start full width column section -->
+                <section id="trivia" class="wow animate__fadeIn">
                     <div class="container">
                         <div class="row justify-content-center">
-
-                            <main class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right">
-
-                                <input id="searchQuery" type="text" class="alt-font justify-content-center text-medium-gray font-weight-600 mb-0 text-uppercase">
-                                <br/>
-                                <button style="margin-top: 10px;" onclick="onPerformSearch()">SEARCH</button>
-                                <hr/>   
-                            </main>
+                            <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+                                <div class="position-relative overflow-hidden w-100">
+                                    <p><h2>CROSSWORD</h2><h4>Fudtraka 1</h4></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- start column -->
+                            <div class="col-12">
+                                <div class="bg-light-gray padding-40px-all sm-padding-30px-all last-paragraph-no-margin">
+                                    <div><iframe src='https://puzzel.org/en/crossword/embed?p=-Mo0pICX61fm5XGrYLYA' width='100%' height='800' frameborder='0'></iframe></div>
+                                </div>
+                            </div>
+                            <!-- end column -->
                         </div>
                     </div>
                 </section>
-                <!-- end results section -->
-                                <!-- start results section -->
-                                <section style="background-color: blanchedalmond;" class="wow animate__fadeIn">
-                    
+                <!-- end full width column section -->
+                                <!-- start full width column section -->
+                                <section id="wellness" class="wow animate__fadeIn">
                                     <div class="container">
                                         <div class="row justify-content-center">
-                
-                                            <main id="resultsHolder" class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right"> 
-                                               <!--  start post item 
-                                                <div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">
-                                                    <div class="row g-0 align-items-center">
-                                                        <div class="col-12 col-lg-5 blog-image md-margin-30px-bottom sm-margin-20px-bottom margin-45px-right md-no-margin-right">
-                                                            <a href="blog-standard-post.html"><img src="https://via.placeholder.com/1200x840" alt=""></a>
-                                                        </div> 
-                                                        <div class="col-12 col-lg-6 blog-text">
-                                                            <div class="content margin-20px-bottom md-no-padding-left ">
-                                                                <a href="blog-standard-post.html" class="text-extra-dark-gray margin-5px-bottom alt-font text-extra-large font-weight-600 d-inline-block">Design is thinking made visual</a>
-                                                                <div class="text-medium-gray text-extra-small margin-15px-bottom text-uppercase alt-font"><span>By <a href="blog-grid.html" class="text-medium-gray">Emily Wright</a></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span>17 july 2017</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="text-medium-gray">Design</a></div>
-                                                                <p class="m-0 w-95">Lorem Ipsum is simply dummy text of the printing and industry. Lorem Ipsum has been the industry industry’s standard dummy text Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                                            </div>
-                                                            <a class="btn btn-very-small btn-dark-gray text-uppercase" href="#vendorDetail">Explore</a>
-                                                        </div>
-                                                    </div>
-                                                </div> 
-                                                <div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">
-                                                    <div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">
-                                                        <ul id="resultsPagination">
-                                                            <li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>
-                                                            <li class="active"><a href="#">1</a></li>
-                                                            <li><a href="#">2</a></li>
-                                                            <li><a href="#">3</a></li>
-                                                            <li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>-->  
-                                                <!-- end pagination -->
-                                            </main>
+                                            <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
+                                                <div class="position-relative overflow-hidden w-100">
+                                                    <p><h2>WELLNESS</h2><h4>Food is the Best Medicine</h4></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- start column -->
+                                            <div class="col-12">
+                                                <div class="bg-light-gray padding-40px-all sm-padding-30px-all last-paragraph-no-margin">
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.</p>
+                                                </div>
+                                            </div>
+                                            <!-- end column -->
                                         </div>
                                     </div>
                                 </section>
-                                <!-- end results section -->
-                        <!-- start blog section --> 
+                                <!-- end full width column section -->
+        <!-- end gallery section -->
         <section style="background-color: lightsteelblue;" id="blog" class="wow animate__fadeIn">
             <div class="container"> 
                 <div class="row">
@@ -823,6 +877,65 @@
                 <!-- end pagination -->
             </div>
         </section>
+                <!-- start results section -->
+                <section style="background-color: blanchedalmond;" id="search" class="wow animate__fadeIn">
+                    
+                    <div class="container">
+                        <div class="row justify-content-center">
+
+                            <main class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right">
+
+                                <input id="searchQuery" type="text" class="alt-font justify-content-center text-medium-gray font-weight-600 mb-0 text-uppercase">
+                                <br/>
+                                <button style="margin-top: 10px;" onclick="onPerformSearch()">SEARCH</button>
+                                <hr/>   
+                            </main>
+                        </div>
+                    </div>
+                </section>
+                <!-- end results section -->
+                                <!-- start results section -->
+                                <section style="background-color: blanchedalmond;" class="wow animate__fadeIn">
+                    
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                
+                                            <main id="resultsHolder" class="col-12 col-lg-9 right-sidebar padding-15px-left padding-45px-right"> 
+                                               <!--  start post item 
+                                                <div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">
+                                                    <div class="row g-0 align-items-center">
+                                                        <div class="col-12 col-lg-5 blog-image md-margin-30px-bottom sm-margin-20px-bottom margin-45px-right md-no-margin-right">
+                                                            <a href="blog-standard-post.html"><img src="https://via.placeholder.com/1200x840" alt=""></a>
+                                                        </div> 
+                                                        <div class="col-12 col-lg-6 blog-text">
+                                                            <div class="content margin-20px-bottom md-no-padding-left ">
+                                                                <a href="blog-standard-post.html" class="text-extra-dark-gray margin-5px-bottom alt-font text-extra-large font-weight-600 d-inline-block">Design is thinking made visual</a>
+                                                                <div class="text-medium-gray text-extra-small margin-15px-bottom text-uppercase alt-font"><span>By <a href="blog-grid.html" class="text-medium-gray">Emily Wright</a></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span>17 july 2017</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" class="text-medium-gray">Design</a></div>
+                                                                <p class="m-0 w-95">Lorem Ipsum is simply dummy text of the printing and industry. Lorem Ipsum has been the industry industry’s standard dummy text Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                                            </div>
+                                                            <a class="btn btn-very-small btn-dark-gray text-uppercase" href="#vendorDetail">Explore</a>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">
+                                                    <div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">
+                                                        <ul id="resultsPagination">
+                                                            <li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>
+                                                            <li class="active"><a href="#">1</a></li>
+                                                            <li><a href="#">2</a></li>
+                                                            <li><a href="#">3</a></li>
+                                                            <li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>-->  
+                                                <!-- end pagination -->
+                                            </main>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- end results section -->
+                        <!-- start blog section --> 
+
         <!-- end blog content section -->  
         <!-- start footer --> 
         <footer class="footer-standard"> 
