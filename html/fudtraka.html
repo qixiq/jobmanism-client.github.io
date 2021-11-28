@@ -32,8 +32,8 @@
             const resultsPerPage = 6;
             var resultsMarkup = '';
 
-            function appendPaginationElement(numberOfPages){
-
+            function onExploreBusiness(id){
+                window.open(getPathPrefix(document.location.href) + '/business.html?sessionId=' + sessionId + '&locationId=' + id, '_blank');
             }
 
             function appendResultItem(item){  
@@ -66,10 +66,75 @@
                 resultsMarkup += searchResults;
                 resultsMarkup += '</p>';
                 resultsMarkup += '</div> ';
-                resultsMarkup += '<a class="btn btn-very-small btn-dark-gray text-uppercase" href="#vendorDetail">Explore</a>';
+                resultsMarkup += '<a class="btn btn-very-small btn-dark-gray text-uppercase" href="javascript:onExploreBusiness(\'' + item.locationId + '\')">Explore</a>';
                 resultsMarkup += '</div>';
                 resultsMarkup += '</div>';
                 resultsMarkup += '</div>'; 
+
+            }
+
+            function populateExploreResultsPage(page){
+                var count = 0;
+                for(var i = resultsPerPage*page ; i < hits.length && count < resultsPerPage; ++i, ++count){
+                        var hit = hits[i];
+                        appendResultItem(hit);
+                        resultsMarkup += '<hr/>'
+                    } 
+
+                    composePagingWidget(hits, page);
+            }
+
+            function showResultsPage(page){
+                var pg = parseInt(page);
+                resultsMarkup = ''; 
+                populateExploreResultsPage(pg);  
+                document.getElementById('resultsHolder').innerHTML = resultsMarkup;
+            }
+
+            function composePagingWidget(elements, page){
+ 
+                var remainder = elements.length % resultsPerPage;
+                var totalPages =  (elements.length - remainder) / resultsPerPage;
+                 
+                if(remainder > 0)
+                {
+                    totalPages++;
+                }
+                //
+                if(totalPages > 1){
+                    resultsMarkup += '<div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">';
+                    resultsMarkup += '<div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">';
+                    resultsMarkup += '<ul id="resultsPagination">';
+                    var count = 0;
+                    
+                    var hasNext = page < (totalPages -1 );
+                    var hasPrev = page > 0;
+                   //var hasNext = 
+                    //for(var i = page; i < totalPages && count < 5; ++i)
+
+        
+                    
+                    if(hasPrev)
+                    {
+                        resultsMarkup += '<li><a href="javascript:showResultsPage(\'' + (page -1) + '\')"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>';
+                    }
+
+
+                    
+                    //resultsMarkup += '<li  class="active" ><a href="javascript:showResultsPage(\'' + page + '\')">' + (page + 1) + '</a></li>';
+                     
+                    if(hasNext)
+                    {
+                        resultsMarkup += '<li><a href="javascript:showResultsPage(\'' + (page + 1 ) + '\')">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>'; 
+                    }
+                        
+                   
+
+
+                    resultsMarkup += '</ul>';
+                    resultsMarkup += '</div>';
+                    resultsMarkup += '</div>'; 
+                }
 
             }
 
@@ -77,23 +142,26 @@
 
                 hits = data.hits;
                 resultsMarkup = '';
-                for(var i = 0; i < hits.length && i < resultsPerPage; ++i){
-                    var hit = hits[i];
-                    appendResultItem(hit);
-                    resultsMarkup += '<hr/>'
-                } 
+                if(hits.length > 0)
+                {
+                    populateExploreResultsPage(0);
+                }
+                else
+                {
+                    resultsMarkup += '<div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">';
+                    resultsMarkup += '<div class="row g-0 align-items-center">';
+                    resultsMarkup += '<div class="col-12 col-lg-6 blog-text">';
+                    resultsMarkup += '<div class="content margin-20px-bottom md-no-padding-left ">';
+                    resultsMarkup += '<p class="m-0 w-95">';
+                    resultsMarkup += 'No Matching Items Found.';
+                    resultsMarkup += '</p>';
+                    resultsMarkup += '</div> ';
+                    resultsMarkup += '</div>';
+                    resultsMarkup += '</div>';
+                    resultsMarkup += '</div>'; 
+                }
 
-                resultsMarkup += '<div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">';
-                resultsMarkup += '<div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">';
-                resultsMarkup += '<ul id="resultsPagination">';
-                resultsMarkup += '<li><a href="#"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>';
-                resultsMarkup += '<li class="active"><a href="#">1</a></li>';
-                resultsMarkup += '<li><a href="#">2</a></li>';
-                resultsMarkup += '<li><a href="#">3</a></li>';
-                resultsMarkup += '<li><a href="#">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>';
-                resultsMarkup += '</ul>';
-                resultsMarkup += '</div>';
-                resultsMarkup += '</div>'; 
+
 
                 document.getElementById('resultsHolder').innerHTML = resultsMarkup;
             }
@@ -102,6 +170,7 @@
             function onPerformSearch(){
                 searchTerms = document.getElementById('searchQuery').value;
                 data = {};
+                data.stateNameFragment = document.getElementById('stateSelection').innerHTML;
                 data.nlQuery = searchTerms; 
                 searchForFoodAndDrinkVendorLocations(data, onQueryResult, onError)
             }
