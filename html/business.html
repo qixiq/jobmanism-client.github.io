@@ -26,12 +26,13 @@
         <script type="text/javascript" src="fudtraka.js"></script>
         <script>
             var sessionId = getQueryParameter('sessionId'); 
+            var locationId = getQueryParameter('locationId'); 
+            var initData;
             var searchTerms = '';
             var currentState = '';
             var hits = [];
             const resultsPerPage = 6;
-            var resultsMarkup = '';
-            var locationId = getQueryParameter('lcoationId'); 
+            var resultsMarkup = ''; 
 
             function onExploreBusiness(id){
                 window.open(getPathPrefix(document.location.href) + '/business.html?sessionId=' + sessionId + '&businessId=' + id, '_blank');
@@ -177,15 +178,18 @@
             }
 
             function onGotLandingPageInfo(data){
-
+                initData = data;
+                var bannerText = data.location.businessName + ' , ' + data.location.address.city + '&nbsp;&nbsp;&nbsp;&nbsp; phone: ' + data.location.phoneNumber.numberText;
+                document.getElementById('name-banner').innerHTML = bannerText;
+                document.getElementById('map-frame').src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyAGqXOCO3YWIrQtcgNk1SyBj8599KdnVY8&q=' + encodeURIComponent(data.location.address.gpsLocation);
             }
 
             function onError(data){
-                
+
             }
     
             function init() { 
-                getBusiness(onGotLandingPageInfo, onError)
+                getFoodAndDrinkVendorLocation(sessionId, locationId, onGotLandingPageInfo, onError);
             }
  
 
@@ -235,59 +239,10 @@
                                 </button>
                                 <div class="navbar-collapse collapse justify-content-end" id="navbar-collapse-toggle-1">
                                     <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="animate__fadeIn" data-out="animate__fadeOut">
-                                        <!-- start  menu -->
-                                        <li class="dropdown simple-dropdown"><a href="#">HOME</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                           
-                                        </li>
-                                        <!-- end  menu -->
-
   
-                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#news">NEWS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                            <!-- start
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">RESTAURANT </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">BUKA </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">GRILL </a> 
-                                                </li> 
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">LOUNGE </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">FAST FOOD</a> 
-                                                </li> 
-                                            </ul> 
-                                            -->
-                                        </li>
-                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#whats-cooking">WHAT'S COOKING ?</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                            <!-- start
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">RESTAURANT </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">BUKA </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">GRILL </a> 
-                                                </li> 
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">LOUNGE </a> 
-                                                </li>
-                                                <li class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" href="#">FAST FOOD</a> 
-                                                </li> 
-                                            </ul> 
-                                            -->
-                                        </li>
-                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#recipes">RECIPES</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                        </li>
-                                        
-                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#trivia">TRIVIA</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                        </li>
-                                        <li class="dropdown simple-dropdown"><a  class="inner-link" href="#wellness">WELLNESS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                        </li>
-                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#blog">BLOG</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                           
-                                        </li>
-
-                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#search">EXPLORE</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
-                                           
-                                        </li>
+                                        <li class="dropdown simple-dropdown"><a class="inner-link" href="#directions">DIRECTIONS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i>
+                                             
+                                        </li> 
                                     </ul>
                                 </div>
                             </div>
@@ -300,40 +255,27 @@
                         <div class="row align-items-center">
                             <div class="col-xl-8 col-md-6 text-center text-md-start">
                                 <!-- start page title -->
-                                <h1 class="alt-font text-white-2 font-weight-600 mb-0 text-uppercase">Google Map</h1>
+                                <h1 id="name-banner" class="alt-font text-white-2 font-weight-600 mb-0 text-uppercase"></h1>
                                 <!-- end page title -->
-                            </div>
-                            <div class="col-xl-4 col-md-6 breadcrumb alt-font text-small justify-content-center justify-content-md-end sm-margin-10px-top">
-                                <!-- breadcrumb -->
-                                <ul>
-                                    <li><a href="#" class="text-dark-gray">Elements</a></li>
-                                    <li><a href="#" class="text-dark-gray">General elements</a></li>
-                                    <li class="text-dark-gray">Google Map</li>
-                                </ul>
-                                <!-- end breadcrumb -->
                             </div>
                         </div>
                     </div>
                 </section>
                 <!-- end page title section -->     
                 <!-- start map section -->
-                <section class="wow animate__fadeIn">
+                <section  id="directions" class="wow animate__fadeIn">
                     <div class="container">
+
                         <div class="row justify-content-center">
-                            <div class="col-12 col-lg-7 text-center margin-100px-bottom sm-margin-40px-bottom">
-                                <div class="position-relative overflow-hidden w-100">
-                                    <span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase">Google Map Style 01</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-12">
-                                <iframe  class="w-100 h-500px"  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.2166304959483!2d3.415267!3d6.425101!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x11df0a38a74be984!2s6FR5CCG8+24!5e0!3m2!1sen!2sus!4v1637385898762!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                             </div>
-                             <div class="col-12">
-                             <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d127165.17385062706!2d7.304521897344519!3d5.117933696295114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x0%3A0x3806512770cef191!2s499F%2B5R%20Aba%2C%20Nigeria!3m2!1d5.1179375!2d7.3745625!5e0!3m2!1sen!2sus!4v1637533253304!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                             </div>
-                             <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d12342.627176879989!2d7.367462257017278!3d5.110111914815812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x0%3A0x3806512770cef191!2s499F%2B5R%20Aba%2C%20Nigeria!3m2!1d5.1179375!2d7.3745625!5e0!3m2!1sen!2sus!4v1637533509545!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                <iframe id="map-frame"
+  width="600"
+  height="450"
+  style="border:0"
+  loading="lazy"
+  allowfullscreen
+  >
+</iframe>
+
                         </div>
                     </div>
                 </section>
