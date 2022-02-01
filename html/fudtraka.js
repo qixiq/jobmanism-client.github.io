@@ -610,6 +610,7 @@ function  removeSchoolTeacher(schoolId, id,
 function  getSchoolStudents(schoolId, onSuccess, onError){
     sendGetRequest('/getSchoolStudents?sessionId=' + getQueryParameter('sessionId') + '&schoolId=' + schoolId, onSuccess, onError);
 }
+
         
 function  deleteSchoolStudents(schoolId, id,
     onSuccess,
@@ -638,6 +639,11 @@ function addSchoolStudents(
                 };
                 sendJsonPostRequest(data, '/addStudentsToSchool', onSuccess, onError);
             }
+
+function claimBusinessLocation( sessionId, locationId, tier,  onSuccess, onError){
+    var data = { sessionId: sessionId, locationId : locationId, tier : tier};
+    sendJsonPostRequest(data, '/claimBusinessLocation', onSuccess, onError);
+} 
 
 function addBusinessObject(
     path,
