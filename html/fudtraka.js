@@ -189,6 +189,26 @@ function login(user, pwd, onSuccess, onError) {
     sendJsonPostRequest(data, '/login', onSuccess, onError);
 }
 
+function signUpWithEmailConfirmation(email, pwd, onSuccess, onError){
+    var data = { email: email, password : pwd};
+    sendJsonPostRequest(data, '/signUpWithEmailConfirmation', onSuccess, onError);
+}
+
+function resetPassword(email, onSuccess, onError){
+    var data = { email: email };
+    sendJsonPostRequest(data, '/resetPassword', onSuccess, onError);
+}
+
+function confirmSignUpWithEmailCode(email, code, onSuccess, onError){
+    var data = { email: email, confirmationCode : code};
+    sendJsonPostRequest(data, '/confirmSignUpWithEmailCode', onSuccess, onError);
+}
+
+function loginWithEmail(email, pwd, onSuccess, onError){
+    var data = { email: email, password : pwd};
+    sendJsonPostRequest(data, '/loginWithEmail', onSuccess, onError);
+}
+
 function teleSchoolsBeginSignupWithEmail(user, pwd, email, onSuccess, onError) {
 
     var data = { userName: user, password: pwd, project: 'TeleSchools', emailAddress: email, completionlinkPrefix: getPathPrefix(document.location.href) + '/teleschools-completesignup.html' };
