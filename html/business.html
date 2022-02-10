@@ -165,24 +165,27 @@
                 document.getElementById('loginParagraph').style.display = 'none' ;
                 document.getElementById('resetPasswordParagraph').style.display = 'initial' ;
                 document.getElementById('signupParagraph').style.display = 'initial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
                 document.getElementById('email_login').style.display = 'intial' ;
                 document.getElementById('password_login').style.display = 'block' ;
                 document.getElementById('credentialsButton').innerHTML = 'Login' ;
                 document.getElementById('credentialsBanner').innerHTML = 'Login';
             }
 
-            function onConfirmSigupCode(){
+            function onConfirmSigupCode(email){
                 loginMode = 'confirm-sign-up-code';
-                document.getElementById('completedContent').innerHTML = ''; 
+                var completedContent = '<p>Enter signup confirmation code that you received via your email, <strong>' + email + '</strong></p>';
+                document.getElementById('completedContent').innerHTML = completedContent; 
                 document.getElementById('credentialsBanner').style.display = 'initial';
                 document.getElementById('formContent').style.display = 'initial';
-                document.getElementById('loginParagraph').style.display = 'initial' ;
+                document.getElementById('loginParagraph').style.display = 'none' ;
                 document.getElementById('resetPasswordParagraph').style.display = 'none' ;
-                document.getElementById('signupParagraph').style.display = 'initial' ;
-                document.getElementById('email_login').style.display = 'intial' ;
+                document.getElementById('signupParagraph').style.display = 'none' ;
+                document.getElementById('signup_confirm_code').style.display = 'block' ; 
+                document.getElementById('email_login').style.display = 'none' ;
                 document.getElementById('password_login').style.display = 'none' ;
-                document.getElementById('credentialsButton').innerHTML = 'Reset Password' ;
-                document.getElementById('credentialsBanner').innerHTML = 'Reset Password';  
+                document.getElementById('credentialsButton').innerHTML = 'Confirm Signup' ;
+                document.getElementById('credentialsBanner').innerHTML = 'Confirm Signup';  
             }
 
             function onResetPasswordLink(){
@@ -193,6 +196,7 @@
                 document.getElementById('loginParagraph').style.display = 'initial' ;
                 document.getElementById('resetPasswordParagraph').style.display = 'none' ;
                 document.getElementById('signupParagraph').style.display = 'initial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
                 document.getElementById('email_login').style.display = 'intial' ;
                 document.getElementById('password_login').style.display = 'none' ;
                 document.getElementById('credentialsButton').innerHTML = 'Reset Password' ;
@@ -209,6 +213,7 @@
                 document.getElementById('resetPasswordParagraph').style.display = 'initial' ;
                 document.getElementById('signupParagraph').style.display = 'none' ;
                 document.getElementById('email_login').style.display = 'intial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
                 document.getElementById('password_login').style.display = 'block' ;
                 document.getElementById('credentialsButton').innerHTML = 'Sign Up' ;
                 document.getElementById('credentialsBanner').innerHTML = 'Sign Up';
@@ -531,6 +536,7 @@
                                             <div class="form-results d-none"></div>
                                             <!-- <input type="text" name="name" id="name" placeholder="Name*" class="input-bg required"> -->
                                             <input type="text" name="email" id="email_login" placeholder="E-mail*" class="input-bg required">
+                                            <input type="text" name="confirmCode" id="signup_confirm_code" placeholder="Confirmation Code*" class="input-bg required">
                                             <input type="password" name="password" id="password_login" placeholder="Password*" class="input-bg">
                                             <!--  <textarea name="comment" id="comment" placeholder="Your Message" class="input-bg"></textarea> -->
                                             <button id="credentialsButton" type="submit" class="btn btn-small border-radius-4 btn-black ">Login</button>
@@ -643,17 +649,17 @@
 
                 var email = document.getElementById('email_login').value;
                 var password = document.getElementById('password_login').value;
-                var signupCode = '';
+                var signupCode = document.getElementById('signup_confirm_code').value;
                
                 if(loginMode == 'sign-up'){
                     signUpWithEmailConfirmation(email,  
                     password,
                     function(data){
                         if(data.isError){
-
+                            document.getElementById('errorParagraph').innerHTML = "Could not signup with the credentials that you provided";
                         }
                         else{ 
-                            onConfirmSigupCode();
+                            onConfirmSigupCode(email);
                         }
                     },
                     function(){
@@ -665,10 +671,10 @@
                     signupCode, 
                     function(data){
                         if(data.isError){
-
+                            document.getElementById('errorParagraph').innerHTML = "Could not complete signup with the code that you provided";
                         }
                         else{ 
-                            onCompleteForm('');
+                            document.location.href = getPathPrefix(document.location.href) + '/business.html?sessionId=' + data.sessionId + '&locationId=' + locationId ; 
                         }
                     },
                     function(){
@@ -682,7 +688,7 @@
                             document.getElementById('errorParagraph').innerHTML = "Failed to reset password";
                         }
                         else{ 
-                            onCompleteForm('Please check ' + email + ' for password reset message');
+                            onCompleteForm('<p>Please check <span><strong>' + email + '</strong></span> for password reset message</p>');
                         }
                     },
                     function(){
