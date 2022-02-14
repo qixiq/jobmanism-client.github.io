@@ -22,6 +22,7 @@
         <link rel="stylesheet" type="text/css" href="css/theme-vendors.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <link rel="stylesheet" type="text/css" href="css/responsive.css" />
+        <link rel="stylesheet" type="text/css" href="css/grid-overlay.css" />
         <!-- scripts -->
         <script type="text/javascript" src="fudtraka.js"></script>
         <script>
@@ -31,112 +32,8 @@
             var loginMode;
             var initData;
             var searchTerms = '';
-            var currentState = '';
-            var hits = [];
-            const resultsPerPage = 6;
-            var resultsMarkup = ''; 
+            var currentState = '';  
 
-            function appendResultItem(item){  
-
-
-                resultsMarkup += '<div class="blog-post-content margin-60px-bottom padding-60px-bottom d-inline-block border-bottom border-color-extra-light-gray md-margin-30px-bottom md-padding-30px-bottom text-center text-md-start md-no-border">';
-                resultsMarkup += '<div class="row g-0 align-items-center">';
-                    if(item.resourceId > 0){
-
-                    }
- 
-                    
-                resultsMarkup += '<div class="col-12 col-lg-6 blog-text">';
-                resultsMarkup += '<div class="content margin-20px-bottom md-no-padding-left ">';
-                resultsMarkup += '<a href="#" class="text-extra-dark-gray margin-5px-bottom alt-font text-extra-large font-weight-600 d-inline-block">' +  item.businessName +'</a>';
-                //resultsMarkup += '<div class="text-medium-gray text-extra-small margin-15px-bottom text-uppercase alt-font"><span><a href="blog-grid.html" class="text-medium-gray">Emily Wright</a></span></div>';
-                resultsMarkup += '<p class="m-0 w-95">';
-                var phoneNumber = item.phoneNumber;
-                var searchResults = '';
- 
-   
-                if(item.plusCode && item.plusCode != '')
-                {
-                    searchResults += 'GPS: ' + item.plusCode ; 
-                }
-
-                searchResults += ' , ' + item.city + ' , ' + item.state + ' State <br/>'; 
-                searchResults += '<strong>Phone :&nbsp;</strong>' ;  
-                searchResults +=  item.phoneNumber ;
-                resultsMarkup += searchResults;
-                resultsMarkup += '</p>';
-                resultsMarkup += '</div> ';
-                resultsMarkup += '<a class="btn btn-very-small btn-dark-gray text-uppercase" href="javascript:onExploreBusiness(\'' + item.businessId + '\')">Explore</a>';
-                resultsMarkup += '</div>';
-                resultsMarkup += '</div>';
-                resultsMarkup += '</div>'; 
-
-            }
-
-            function populateExploreResultsPage(page){
-                var count = 0;
-                for(var i = resultsPerPage*page ; i < hits.length && count < resultsPerPage; ++i, ++count){
-                        var hit = hits[i];
-                        appendResultItem(hit);
-                        resultsMarkup += '<hr/>'
-                    } 
-
-                    composePagingWidget(hits, page);
-            }
-
-            function showResultsPage(page){
-                var pg = parseInt(page);
-                resultsMarkup = ''; 
-                populateExploreResultsPage(pg);  
-                document.getElementById('resultsHolder').innerHTML = resultsMarkup;
-            }
-
-            function composePagingWidget(elements, page){
- 
-                var remainder = elements.length % resultsPerPage;
-                var totalPages =  (elements.length - remainder) / resultsPerPage;
-                 
-                if(remainder > 0)
-                {
-                    totalPages++;
-                }
-                //
-                if(totalPages > 1){
-                    resultsMarkup += '<div class="col-12 text-center margin-100px-top px-0 sm-margin-50px-top position-relative wow animate__fadeInUp">';
-                    resultsMarkup += '<div class="pagination text-small text-uppercase text-extra-dark-gray justify-content-center">';
-                    resultsMarkup += '<ul id="resultsPagination">';
-                    var count = 0;
-                    
-                    var hasNext = page < (totalPages -1 );
-                    var hasPrev = page > 0;
-                   //var hasNext = 
-                    //for(var i = page; i < totalPages && count < 5; ++i)
-
-        
-                    
-                    if(hasPrev)
-                    {
-                        resultsMarkup += '<li><a href="javascript:showResultsPage(\'' + (page -1) + '\')"><i class="fas fa-long-arrow-alt-left margin-5px-right d-none d-md-inline-block"></i> Prev</a></li>';
-                    }
-
-
-                    
-                    //resultsMarkup += '<li  class="active" ><a href="javascript:showResultsPage(\'' + page + '\')">' + (page + 1) + '</a></li>';
-                     
-                    if(hasNext)
-                    {
-                        resultsMarkup += '<li><a href="javascript:showResultsPage(\'' + (page + 1 ) + '\')">Next <i class="fas fa-long-arrow-alt-right margin-5px-left d-none d-md-inline-block"></i></a></li>'; 
-                    }
-                        
-                   
-
-
-                    resultsMarkup += '</ul>';
-                    resultsMarkup += '</div>';
-                    resultsMarkup += '</div>'; 
-                }
-
-            }
 
             function goHome(){   
                 document.location.href = getPathPrefix(document.location.href) + '/fudtraka.html?sessionId=' + sessionId   ;
@@ -227,7 +124,18 @@
 
 
          
-    
+            function isVideo(annotation){
+                return false;
+
+            }
+
+            function canManage(permissions){
+                return true;
+            }
+
+            function manageBusinessLocation(){
+                window.open(getPathPrefix(document.location.href) + '/manage-business.html?sessionId=' + sessionId + '&locationId=' + locationId, '_blank');
+            }
 
             function onGotLandingPageInfo(data){
                 initData = data;
@@ -237,16 +145,121 @@
 
                 var accordionContent = '';
 
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#gallery">GALLERY</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#menu">MENU</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#hours">HOURS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                
+                
+
                 if(!data.location.permissions){
                     accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="javascript:onLogin();">LOGIN</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
                 }
-                else if(!data.location.isClaimed){
-                    accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="javascript:claimBusiness();">CLAIM THIS BUSINESS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                else{
+
+                    accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#settings">SETTINGS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                        if(!data.location.isClaimed){
+                        accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="javascript:claimBusiness();">CLAIM THIS BUSINESS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                    }
+
+                    if(canManage(data.location.permissions)){
+                        accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="javascript:manageBusinessLocation();">MANAGE</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                    }
                 }
 
+
+               
+                
                 accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#directions">DIRECTIONS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
 
                 document.getElementById('accordion').innerHTML = accordionContent;
+
+                var galleryVideos = [];
+                var galleryImages = [];
+
+                for(var i= 0; i < data.location.businessAnnotations.length; ++i)
+                {
+                    var annotation = data.location.businessAnnotations[i];
+                    if(isVideo(annotation)){
+                        galleryVideos.push(annotation);
+                    }
+                    else{
+                        galleryImages.push(annotation);
+                    }
+                }
+
+                for(var i= 0; i < data.location.locationAnnotations.length; ++i)
+                {
+                    var annotation = data.location.locationAnnotations[i];
+                    if(isVideo(annotation)){
+                        galleryVideos.push(annotation);
+                    }
+                    else{
+                        galleryImages.push(annotation);
+                    }
+                }
+
+                if(galleryImages.length > 0 || galleryVideos.length > 0)
+                {
+                    document.getElementById('imageGalleryHeaderText').innerHTML = 'IMAGE GALLERY';
+
+                    
+                    var content = '';
+                    var content1 = '';
+                    content += '<div class="row"><div class="cards">';
+                    //content += '<div class="row">';
+                    //content += '<div class="col-12 lightbox-portfolio p-0">';
+                    //content += '<div id="justified" class="justified-gallery" data-justified-options=\'{ "rowHeight": 400, "maxRowHeight": false, "captions": true, "margins": 10, "waitThumbnailsLoad": true }\'>';
+                    var fade = 0;
+                    var fadeClasses = [];
+                    for(var j = 0; j < galleryImages.length; ++j){
+
+                        var annotation = galleryImages[j];
+
+                        if(fade > 3){
+                            fade = 0;
+                        }
+                        var imagePath = getResourceUrl(annotation.resourceId);
+                        var title = annotation.comments;
+                        //content += '<!-- start gallery item -->';
+                       // content += '<div class=" wow animate__fadeInUp " ' ;
+
+                
+                        if(fade == 1){
+                            //content += ' data-wow-delay="0.2s" ';
+
+                        }
+                        else if(fade == 2){
+                            //content += '  data-wow-delay="0.4s" ';
+                        }
+                        else if(fade == 3){
+                            //content += ' data-wow-delay="0.6s" ';
+                        }
+                        
+                        //content += '>';
+                        //content += '<a href="' + imagePath + '" class="gallery-link justify-gallery-content" title="'+ title + '"> 
+                        content += '<div class="card"><img  src="' + imagePath + '" alt=""/></div>';
+                        //content += '<div class="justify-hover-icon text-center"><i class="ti-zoom-in text-white"></i></div>';
+                        //content += '</a>';
+                        //content += '</div>';
+                        //content += '<!-- end gallery item -->';
+                        ++fade;
+
+                    }
+
+                    content += '</div></div>' ; //</div></div></div>';
+
+                    var sel = document.getElementById('imageGalleryBody');
+                    sel.innerHTML = content;
+                    sel.style.display='none';
+                    sel.offsetHeight; // no need to store this anywhere, the reference is enough
+                    sel.style.display='';
+                }
+                else{
+                    document.getElementById('imageGalleryHeader').style.display = 'none';
+                    document.getElementById('imageGalleryBody').style.display = 'none';
+                }
+
+               
             }
 
             function onError(data){
@@ -285,7 +298,7 @@
                                     <div class="icon-social-very-small d-inline-block line-height-normal">
                                         <a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
                                         <a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
-                                        <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a>                            
+                                        <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-youtube"></i></a>                            
                                     </div>   
                                 </div>
                             </div>
@@ -513,6 +526,25 @@
                         </div>
                     </div>
                 </section>
+                <section id="imageGalleryHeader" class="wow animate__fadeIn bg-light-gray padding-50px-tb page-title-small top-space">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="text-center text-md-start">
+                                <!-- start page title -->
+                                <h1  id="imageGalleryHeaderText" class="alt-font text-center text-extra-dark-gray font-weight-600 mb-0"></h1>
+                                <!-- end page title --> 
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- end page title section -->
+                <!-- start portfolio section -->
+                <section id="imageGalleryBody" class="wow animate__fadeIn">
+
+                     
+                </section>
+
+ 
                 <!-- start pop-up with form section -->
  
                 <section  id="login" class="wow animate__fadeIn">
