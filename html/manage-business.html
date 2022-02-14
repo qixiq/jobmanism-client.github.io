@@ -1,1 +1,505 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <!-- title -->
+        <title>FUDTRAKA - It's All About Food</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+        <meta name="author" content="ThemeZaa">
+        <!-- description -->
+        <meta name="description" content="POFO is a highly creative, modern, visually stunning and Bootstrap responsive multipurpose agency and portfolio HTML5 template with 25 ready home page demos.">
+        <!-- keywords -->
+        <meta name="keywords" content="creative, modern, clean, bootstrap responsive, html5, css3, portfolio, blog, agency, templates, multipurpose, one page, corporate, start-up, studio, branding, designer, freelancer, carousel, parallax, photography, personal, masonry, grid, coming soon, faq">
+        <!-- favicon -->
+        <link rel="shortcut icon" href="images/favicon.png">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+        <!-- style sheets and font icons  -->
+        <link rel="stylesheet" type="text/css" href="css/bootsnav.css">
+        <link rel="stylesheet" type="text/css" href="css/font-icons.min.css">
+        <link rel="stylesheet" type="text/css" href="css/theme-vendors.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/responsive.css" />
+        <link rel="stylesheet" type="text/css" href="css/grid-overlay.css" />
+        <!-- scripts -->
+        <script type="text/javascript" src="fudtraka.js"></script>
+        <script>
+            var tiers = [{name:'claim_basic', code: 0}, {name : 'claim_extra', code: 1}, {name: 'claim_advanced', code : 2} , {name : 'claim_premium', code : 3}];
+            var sessionId = getQueryParameter('sessionId'); 
+            var locationId = getQueryParameter('locationId'); 
+            var loginMode;
+            var initData;
+            var searchTerms = '';
+            var currentState = '';  
+            var uploadFiles = [];
 
+            function goHome(){   
+                document.location.href = getPathPrefix(document.location.href) + '/fudtraka.html?sessionId=' + sessionId   ;
+            }
+
+
+            function claimBusiness(){  
+                toggleSections('claim'); 
+                document.location.href = getPathPrefix(document.location.href) + '/business.html?sessionId=' + sessionId + '&locationId=' + locationId + '#claim' ;
+            }
+
+   
+
+            function onLogin(){
+                toggleSections('login'); 
+                document.getElementById('login-link').style.display = 'none' ;
+                onLoginLink();
+                document.getElementById('login-link').click();
+            }
+
+            function onLoginLink(){
+                loginMode = 'login';
+                document.getElementById('completedContent').innerHTML = ''; 
+                document.getElementById('credentialsBanner').style.display = 'initial';
+                document.getElementById('formContent').style.display = 'initial';
+                document.getElementById('loginParagraph').style.display = 'none' ;
+                document.getElementById('resetPasswordParagraph').style.display = 'initial' ;
+                document.getElementById('signupParagraph').style.display = 'initial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
+                document.getElementById('email_login').style.display = 'intial' ;
+                document.getElementById('password_login').style.display = 'block' ;
+                document.getElementById('credentialsButton').innerHTML = 'Login' ;
+                document.getElementById('credentialsBanner').innerHTML = 'Login';
+            }
+
+            function onConfirmSigupCode(email){
+                loginMode = 'confirm-sign-up-code';
+                var completedContent = '<p>Enter signup confirmation code that you received via your email, <strong>' + email + '</strong></p>';
+                document.getElementById('completedContent').innerHTML = completedContent; 
+                document.getElementById('credentialsBanner').style.display = 'initial';
+                document.getElementById('formContent').style.display = 'initial';
+                document.getElementById('loginParagraph').style.display = 'none' ;
+                document.getElementById('resetPasswordParagraph').style.display = 'none' ;
+                document.getElementById('signupParagraph').style.display = 'none' ;
+                document.getElementById('signup_confirm_code').style.display = 'block' ; 
+                document.getElementById('email_login').style.display = 'none' ;
+                document.getElementById('password_login').style.display = 'none' ;
+                document.getElementById('credentialsButton').innerHTML = 'Confirm Signup' ;
+                document.getElementById('credentialsBanner').innerHTML = 'Confirm Signup';  
+            }
+
+            function onResetPasswordLink(){
+                loginMode = 'reset-password';
+                document.getElementById('completedContent').innerHTML = ''; 
+                document.getElementById('credentialsBanner').style.display = 'initial';
+                document.getElementById('formContent').style.display = 'initial';
+                document.getElementById('loginParagraph').style.display = 'initial' ;
+                document.getElementById('resetPasswordParagraph').style.display = 'none' ;
+                document.getElementById('signupParagraph').style.display = 'initial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
+                document.getElementById('email_login').style.display = 'intial' ;
+                document.getElementById('password_login').style.display = 'none' ;
+                document.getElementById('credentialsButton').innerHTML = 'Reset Password' ;
+                document.getElementById('credentialsBanner').innerHTML = 'Reset Password';  
+            }
+
+
+            function onSignUpLink(){
+                loginMode = 'sign-up';
+                document.getElementById('completedContent').innerHTML = ''; 
+                document.getElementById('credentialsBanner').style.display = 'initial';
+                document.getElementById('formContent').style.display = 'initial';
+                document.getElementById('loginParagraph').style.display = 'initial' ;
+                document.getElementById('resetPasswordParagraph').style.display = 'initial' ;
+                document.getElementById('signupParagraph').style.display = 'none' ;
+                document.getElementById('email_login').style.display = 'intial' ;
+                document.getElementById('signup_confirm_code').style.display = 'none' ; 
+                document.getElementById('password_login').style.display = 'block' ;
+                document.getElementById('credentialsButton').innerHTML = 'Sign Up' ;
+                document.getElementById('credentialsBanner').innerHTML = 'Sign Up';
+            }
+
+            function onCompleteForm(content){
+                document.getElementById('completedContent').innerHTML = content; 
+                document.getElementById('credentialsBanner').style.display = 'none';
+                document.getElementById('formContent').style.display = 'none';
+            }
+
+
+         
+            function isVideo(annotation){
+                return false;
+
+            }
+
+            function canManage(permissions){
+                return true;
+            }
+
+            function manageBusinessLocation(){
+                window.open(getPathPrefix(document.location.href) + '/manage-business.html?sessionId=' + sessionId + '&locationId=' + locationId, '_blank');
+            }
+
+            function onGotLandingPageInfo(data){
+                initData = data;
+                var bannerText = data.location.businessName + ' , ' + data.location.address.city + '&nbsp;&nbsp;&nbsp;&nbsp; phone: ' + data.location.phoneNumber.numberText;
+                document.getElementById('name-banner').innerHTML = bannerText; 
+
+                var accordionContent = '';
+
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#gallery">MEDIA ASSETS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#menu">MENU</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#hours">HOURS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+                accordionContent += '<li class="dropdown simple-dropdown"><a class="inner-link" href="#settings">SETTINGS</a><i class="fas fa-angle-down dropdown-toggle" data-bs-toggle="dropdown" aria-hidden="true"></i></li>';
+
+                 
+
+                document.getElementById('accordion').innerHTML = accordionContent;
+
+                var galleryVideos = [];
+                var galleryImages = [];
+
+                for(var i= 0; i < data.location.businessAnnotations.length; ++i)
+                {
+                    var annotation = data.location.businessAnnotations[i];
+                    if(isVideo(annotation)){
+                        galleryVideos.push(annotation);
+                    }
+                    else{
+                        galleryImages.push(annotation);
+                    }
+                }
+
+                for(var i= 0; i < data.location.locationAnnotations.length; ++i)
+                {
+                    var annotation = data.location.locationAnnotations[i];
+                    if(isVideo(annotation)){
+                        galleryVideos.push(annotation);
+                    }
+                    else{
+                        galleryImages.push(annotation);
+                    }
+                }
+
+                if(galleryImages.length > 0 || galleryVideos.length > 0)
+                {
+                    document.getElementById('imageGalleryHeaderText').innerHTML = 'IMAGE GALLERY';
+
+                    
+                    var content = '';
+                    var content1 = '';
+                    content += '<div class="row"><div class="cards">';
+                    //content += '<div class="row">';
+                    //content += '<div class="col-12 lightbox-portfolio p-0">';
+                    //content += '<div id="justified" class="justified-gallery" data-justified-options=\'{ "rowHeight": 400, "maxRowHeight": false, "captions": true, "margins": 10, "waitThumbnailsLoad": true }\'>';
+                    var fade = 0;
+                    var fadeClasses = [];
+                    for(var j = 0; j < galleryImages.length; ++j){
+
+                        var annotation = galleryImages[j];
+
+                        if(fade > 3){
+                            fade = 0;
+                        }
+                        var imagePath = getResourceUrl(annotation.resourceId);
+                        var title = annotation.comments;
+                        //content += '<!-- start gallery item -->';
+                       // content += '<div class=" wow animate__fadeInUp " ' ;
+
+                
+                        if(fade == 1){
+                            //content += ' data-wow-delay="0.2s" ';
+
+                        }
+                        else if(fade == 2){
+                            //content += '  data-wow-delay="0.4s" ';
+                        }
+                        else if(fade == 3){
+                            //content += ' data-wow-delay="0.6s" ';
+                        }
+                        
+                        //content += '>';
+                        //content += '<a href="' + imagePath + '" class="gallery-link justify-gallery-content" title="'+ title + '"> 
+                        content += '<div class="card"><img  src="' + imagePath + '" alt=""/></div>';
+                        //content += '<div class="justify-hover-icon text-center"><i class="ti-zoom-in text-white"></i></div>';
+                        //content += '</a>';
+                        //content += '</div>';
+                        //content += '<!-- end gallery item -->';
+                        ++fade;
+
+                    }
+
+                    content += '</div></div>' ; //</div></div></div>';
+
+                    var sel = document.getElementById('imageGalleryBody');
+                    sel.innerHTML = content;
+                    sel.style.display='none';
+                    sel.offsetHeight; // no need to store this anywhere, the reference is enough
+                    sel.style.display='';
+                }
+                else{
+                    document.getElementById('imageGalleryHeader').style.display = 'none';
+                    document.getElementById('imageGalleryBody').style.display = 'none';
+                }
+
+               
+            }
+
+            function onError(data){
+
+            }
+
+            function toggleSections(shown){
+                document.getElementById('claim').style.display = shown == 'claim' ?  'initial' : 'none'; 
+                document.getElementById('login').style.display = shown == 'login' ?  'initial' : 'none';
+            }
+    
+            function init() { 
+                document.getElementById('picture_file').addEventListener('change', function () {
+                uploadFiles = this.files;
+                    }, false);
+                getFoodAndDrinkVendorLocation(sessionId, locationId, onGotLandingPageInfo, onError);
+            }
+ 
+
+            window.addEventListener('load', init);
+
+        </script>
+    </head>
+    <body>
+                <!-- start header -->
+                <header class="header-with-topbar fixed-topbar">
+                    <!-- topbar -->
+                    <div class="top-header-area bg-black padding-10px-tb">
+                        <div class="container-lg">
+                            <div class="row align-items-center m-0">
+                                <div class="col-md-6 ps-lg-0 text-uppercase alt-font d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <a href="tel:+234 902 477 0029, +234 815 778 5852" class="text-link-white-2 line-height-normal" title="Call us +234 902 477 0029, +234 815 778 5852">Call us +234 902 477 0029, +234 815 778 5852</a>
+                                    <div class="separator-line-verticle-extra-small bg-dark-gray d-inline-block margin-two-half-lr position-relative align-middle"></div>
+                                    <a href="mailto:info@fudtraka.com" class="text-link-white-2 line-height-normal" title="info@fudtraka.com">info@fudtraka.com</a>
+                                </div>
+                                <div class="col-md-6 pe-lg-0 d-none d-md-flex align-items-center justify-content-end">
+                                    <div class="icon-social-very-small d-inline-block line-height-normal">
+                                        <a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                                        <a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
+                                        <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-youtube"></i></a>                            
+                                    </div>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end topbar -->
+                    <!-- start navigation -->
+                    <nav class="navbar navbar-default bootsnav navbar-fixed-top header-light-transparent background-transparent navbar-expand-lg">
+                        <div class="container-lg nav-header-container">
+                            <!-- start logo -->
+                            <div class="col-auto ps-0">
+                                <a href="javascript:goHome();" title="Fudtraka" class="logo"><img src="fudtraka-svg.png"  class="default" alt="Fudtraka"></a>
+                            </div>
+ 
+                            <!-- end logo -->
+                            <div class="col accordion-menu pe-0 pe-md-3">
+                                <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbar-collapse-toggle-1">
+                                    <span class="sr-only">toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <div class="navbar-collapse collapse justify-content-end" id="navbar-collapse-toggle-1">
+                                    <ul id="accordion" class="nav navbar-nav navbar-left no-margin alt-font text-normal" data-in="animate__fadeIn" data-out="animate__fadeOut">
+    
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- end navigation -->  
+                </header>
+                <section class="wow animate__fadeIn bg-extra-dark-gray padding-35px-tb page-title-small top-space">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-xl-8 col-md-6 text-center text-md-start">
+                                <!-- start page title -->
+                                <h1 id="name-banner" class="alt-font text-white-2 font-weight-600 mb-0 text-uppercase"></h1>
+                                <!-- end page title -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="imageGalleryHeader" class="wow animate__fadeIn bg-light-gray padding-50px-tb page-title-small top-space">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="text-center text-md-start">
+                                <!-- start page title -->
+                                <h1  id="imageGalleryHeaderText" class="alt-font text-center text-extra-dark-gray font-weight-600 mb-0"></h1>
+                                <!-- end page title --> 
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- end page title section -->
+                <!-- start portfolio section -->
+                <section id="imageGalleryBody" class="wow animate__fadeIn">
+
+                     
+                </section>
+
+ 
+                <!-- start pop-up with form section -->
+ 
+                <section  id="media_assets_editor" class="wow animate__fadeIn">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-xl-6 col-lg-8 col-md-10 text-center">
+                                 <!-- <h5 class="font-weight-300 text-extra-dark-gray w-80 mx-auto margin-eight-bottom sm-margin-30px-bottom lg-w-100 wow animate__fadeInDown" data-wow-delay="0.2s">We would love to hear about start your new project.</h5> -->
+                                <a   href="#media_asset_form" class="btn btn-medium btn-rounded btn-transparent-dark-gray wow animate__fadeInDown popup-with-form">Add Media Asset</a>
+                                <!-- start form -->
+                                <form id="media_asset_form"  class="white-popup-block mfp-hide col-11 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-9 p-0 mx-auto"> 
+                                    <div class="padding-fifteen-all bg-white border-radius-6 lg-padding-seven-all">
+                                         <!-- start logo -->
+                                        <div class="col-auto ps-0">
+                                            <img src="fudtraka-svg.png"  class="default" alt="Fudtraka">
+                                        </div>
+                                        <br/>
+                                        <br/>
+                                        <div id="completedContent" class=""></div> 
+                                        <div id="credentialsBanner" class=" text-center text-uppercase text-extra-dark-gray alt-font text-large font-weight-600 margin-30px-bottom">Add Media Asset</div> 
+                                        <div  id="formContent" >
+                                            <div class="form-results d-none"></div>
+                                            <!-- <input type="text" name="name" id="name" placeholder="Name*" class="input-bg required"> -->  
+                                            <input type="file" name="picture_file" id="picture_file"  >
+                                            <textarea name="comments" id="comments" placeholder="Your Message" class="input-bg"></textarea> 
+                                            <button type="submit" class="btn btn-small border-radius-4 btn-black ">Add Asset</button>
+                                             <!--  <br/>
+                                            <br/>
+                                            <div id="loginParagraph"> 
+                                                <p>Already signed up? <a class="btn btn-very-small btn-rounded btn-transparent-dark-gray" href="javascript:onLoginLink();">Login</a></p>
+                                            </div>
+                                            <div id="signupParagraph"> 
+                                                <p >Don't have an account? <a class="btn btn-very-small btn-rounded btn-transparent-dark-gray" href="javascript:onSignUpLink();">Sign Up</a></p>                                           
+                                            </div>
+                                            <div id="resetPasswordParagraph"> 
+                                                <p >Forgot your password? <a class="btn btn-very-small btn-rounded btn-transparent-dark-gray" href="javascript:onResetPasswordLink();">Reset Password</a></p>
+                                            </div>
+                                            <div id="errorParagraph" style="color: red;"> 
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>  
+        <!-- start footer --> 
+        <footer class="footer-standard"> 
+            <div class="footer-widget-area padding-five-tb sm-padding-30px-tb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray md-no-border-right md-margin-30px-bottom text-center text-sm-start">
+                            <!-- start logo -->
+                            <a href="#" class="margin-20px-bottom d-inline-block"><img class="footer-logo" src="fudtraka-svg.png"   alt="Pofo"></a>
+                            <!-- end logo -->
+                            <p class="text-small d-inline-block w-95 lg-w-100 xs-w-95">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                            <!-- start social media -->
+                            <div class="social-icon-style-8 d-inline-block align-middle">
+                                <ul class="small-icon mb-0">
+                                    <a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                                    <a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a>   
+                                </ul>
+                            </div>
+                            <!-- end social media -->
+                        </div>
+                        <!-- start additional links -->
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right md-margin-30px-bottom text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Additional Links</div>
+                            <ul class="list-unstyled">
+                                <li><a class="text-small" href="#">Sign In</a></li>
+                                <li><a class="text-small" href="#">Manage Businesses</a></li>
+                                <li><a class="text-small" href="#">Join Us</a></li> 
+                            </ul>
+                        </div>
+                        <!-- end additional links -->
+                        <!-- start contact information -->
+                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right xs-margin-30px-bottom text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Contact Info</div>
+                            <p class="text-small d-inline-block d-md-block margin-15px-bottom w-80 md-w-70">Fudtraka<br> Suite 3, Alhaja Humani Shopping Mall, 72 Kudirat Abiola Way, Oregun, Lagos State</p>
+                            <div class="text-small">Email: <a href="mailto:info@fudtraka.com">info@fudtraka.com</a></div>
+                            <div class="text-small">Phone: +234 902 477 0029, </div>
+                            <div class="text-small">+234 815 778 5852</div> 
+                        </div>
+                        <!-- end contact information -->
+                        <!-- start instagram -->
+                        <div class="col-lg-3 col-sm-6 widget padding-45px-left md-padding-15px-left text-center text-sm-start">
+                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-15px-bottom font-weight-600">Resent portfolio</div>
+                            <div class="w-100 d-inline-block">
+                                <ul class="instafeed-grid instafeed-wrapper grid grid-3col xl-grid-3col lg-grid-3col md-grid-3col sm-grid-3col xs-grid-3col gutter-small" data-total="6">
+                                    <li class="grid-item">
+                                        <figure>
+                                            <a href="#" data-href="{{link}}" target="_blank">
+                                                <img src="#" data-src="{{image}}" class="insta-image" alt="" />
+                                                <span class="insta-counts"><i class="ti-instagram"></i>{{likes}}</span>
+                                            </a>
+                                        </figure>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end instagram -->
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light-gray padding-50px-tb text-center sm-padding-30px-tb">
+                <div class="container">
+                    <div class="row">
+                        <!-- start copyright -->
+                        <div class="col-md-6 text-center text-md-start text-small">&copy; 2022 FUDTRAKA is Proudly Powered by <a href="http://www.themezaa.com" target="_blank" class="text-dark-gray">ThemeZaa</a></div>
+                        <div class="col-md-6 text-center text-md-end text-small">
+                            <a href="javascript:void(0);" class="text-dark-gray">Term and Condition</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" class="text-dark-gray">Privacy Policy</a>
+                        </div>
+                        <!-- end copyright -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end footer -->
+        <!-- start scroll to top -->
+        <a class="scroll-top-arrow" href="javascript:void(0);"><i class="ti-arrow-up"></i></a>
+        <!-- end scroll to top  -->
+        <!-- javascript -->
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootsnav.js"></script>
+        <script type="text/javascript" src="js/jquery.nav.js"></script>
+        <script type="text/javascript" src="js/hamburger-menu.js"></script>
+        <script type="text/javascript" src="js/theme-vendors.min.js"></script>
+        <!-- setting -->
+        <script type="text/javascript" src="js/main.js"></script> 
+        <script>var form = document.getElementById('media_asset_form');
+            form.onsubmit = function () {
+
+                var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resource', uploadFiles[0]);
+                data.append('targetId', parseInt(locationId));
+                data.append('sessionId', sessionId); 
+                data.append('comments', document.getElementById('comments').value);
+                addBusinessLocationAnnotation( 
+                    data,
+                    init,
+                    onError); 
+
+            }
+
+               
+               
+                
+    
+                return false;
+            };
+        </script>
+        <script>
+            
+            
+
+
+        </script>
+    </body>
+</html>
