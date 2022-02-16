@@ -35,6 +35,14 @@
             var currentState = '';  
             var uploadFiles = [];
 
+            function appendMenuItemCategory(category){ 
+                var el = document.createElement("option");
+                el.textContent = category.name;
+                el.value = category.id;
+                document.getElementById('category').appendChild(el); 
+
+            }
+
             function goHome(){   
                 document.location.href = getPathPrefix(document.location.href) + '/fudtraka.html?sessionId=' + sessionId   ;
             }
@@ -178,9 +186,8 @@
                     }
                 }
 
-                if(galleryImages.length > 0 || galleryVideos.length > 0)
-                {
-                    document.getElementById('imageGalleryHeaderText').innerHTML = 'IMAGE GALLERY';
+         
+                    document.getElementById('imageGalleryHeaderText').innerHTML = 'GALLERY';
 
                     
                     var content = '';
@@ -229,32 +236,32 @@
                     content += '</div></div>' ; //</div></div></div>';
 
                     var sel = document.getElementById('imageGalleryBody');
-                    sel.innerHTML = content;
-                    sel.style.display='none';
-                    sel.offsetHeight; // no need to store this anywhere, the reference is enough
-                    sel.style.display='';
-                }
-                else{
-                    document.getElementById('imageGalleryHeader').style.display = 'none';
-                    document.getElementById('imageGalleryBody').style.display = 'none';
-                }
+                    sel.innerHTML = content; 
+
+
+                    getMenuItemCategories(onGotMenuItemCategories, onError);
 
                
             }
 
-            function onError(data){
-
+            function onGotMenuItemCategories(data){
+                data.items.forEach(appendMenuItemCategory); 
+                document.getElementById('category').selectedIndex = 0;
             }
 
-            function toggleSections(shown){
-                document.getElementById('claim').style.display = shown == 'claim' ?  'initial' : 'none'; 
-                document.getElementById('login').style.display = shown == 'login' ?  'initial' : 'none';
+            function onError(data){
+
             }
     
             function init() { 
                 document.getElementById('picture_file').addEventListener('change', function () {
                 uploadFiles = this.files;
                     }, false);
+
+                    document.getElementById('menu_picture_file').addEventListener('change', function () {
+                uploadFiles = this.files;
+                    }, false);
+
                 getFoodAndDrinkVendorLocation(sessionId, locationId, onGotLandingPageInfo, onError);
             }
  
@@ -342,6 +349,8 @@
                      
                 </section>
 
+
+
  
                 <!-- start pop-up with form section -->
  
@@ -381,6 +390,43 @@
                                             </div>
                                             <div id="errorParagraph" style="color: red;"> 
                                             </div> -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>  
+
+                <section id="menu" class="wow animate__fadeIn" style="background-color: aliceblue;">
+
+                     
+                </section>
+
+                <section  id="menu_items_editor" class="wow animate__fadeIn">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-xl-6 col-lg-8 col-md-10 text-center">
+                                 <!-- <h5 class="font-weight-300 text-extra-dark-gray w-80 mx-auto margin-eight-bottom sm-margin-30px-bottom lg-w-100 wow animate__fadeInDown" data-wow-delay="0.2s">We would love to hear about start your new project.</h5> -->
+                                <a   href="#menu_item_form" class="btn btn-medium btn-rounded btn-transparent-dark-gray wow animate__fadeInDown popup-with-form">Add Menu Item</a>
+                                <!-- start form -->
+                                <form id="menu_item_form"  class="white-popup-block mfp-hide col-11 col-xxl-3 col-xl-4 col-lg-5 col-md-8 col-sm-9 p-0 mx-auto"> 
+                                    <div class="padding-fifteen-all bg-white border-radius-6 lg-padding-seven-all">
+                                         <!-- start logo -->
+                                        <div class="col-auto ps-0">
+                                            <img src="fudtraka-svg.png"  class="default" alt="Fudtraka">
+                                        </div>
+                                        <br/>
+                                        <br/> 
+                                        <div  class=" text-center text-uppercase text-extra-dark-gray alt-font text-large font-weight-600 margin-30px-bottom">Add Menu Item</div> 
+                                        <div>
+                                            <div class="form-results d-none"></div>
+                                            <label>Category</label><select placeholder="Category*" id="category"></select>
+                                            <input type="text" name="name" id="menu_name" placeholder="Name*" class="input-bg required">   
+                                            <input type="number" name="price" id="menu_price" placeholder="Price*" class="input-bg required">   
+                                            <textarea name="description" id="menu_description" placeholder="Description*" class="input-bg"></textarea> 
+                                            <input type="file" name="menu_picture_file" id="menu_picture_file" placeholder="Choose Picture File" >
+                                            <button type="submit" class="btn btn-small border-radius-4 btn-black ">Add Menu Item</button> 
                                         </div>
                                     </div>
                                 </form>
@@ -490,6 +536,34 @@
 
                
                
+                
+    
+                return false;
+            };
+        </script>
+        <script>var form = document.getElementById('menu_item_form');
+            form.onsubmit = function () {
+
+                var data = new FormData();
+            if(uploadFiles.length > 0){
+                data.append('resource', uploadFiles[0]);
+            }
+                data.append('locationId', locationId);
+                data.append('businessId', initData.location.businessId +'');
+                data.append('sessionId', sessionId); 
+                data.append('description', document.getElementById('menu_description').value);
+                data.append('name', document.getElementById('menu_name').value);
+                data.append('price', document.getElementById('menu_price').value);
+                data.append('menuItemCategoryId', document.getElementById('category').value);
+                addBusinessLocationMenuItem( 
+                    data,
+                    init,
+                    onError); 
+
+        
+
+                
+                
                 
     
                 return false;
