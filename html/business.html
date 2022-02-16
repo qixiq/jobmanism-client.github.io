@@ -259,6 +259,54 @@
                     document.getElementById('imageGalleryBody').style.display = 'none';
                 }
 
+                var menus = {};
+
+                for(var j = 0; j < data.location.menuItems.length; ++j){
+                    var menuItem = data.location.menuItems[j];
+                    var items = menus[menuItem.category.name] ;
+                    if(!items){
+                        items = [];
+                        menus[menuItem.category.name] = items;
+                    }
+
+                    items.push(menuItem);
+                }
+
+                if(Object.keys(menus).length  > 0){
+
+                    var tabsContent = '';
+                    var divsContent = '';
+                    var k = 0;
+                    divsContent += '<div class="row align-items-center">';
+                    for(var key in menus)
+                    { 
+                        
+
+                        
+                        
+                        divsContent += '<div style="background-color: bisque; margin: 5px;" class="col-12 col-lg-4 col-md-9 ">';
+                        divsContent += '<h6 class="text-center text-uppercase">' + key +'</h6>';
+
+                        for (let index = 0; index < menus[key].length; index++) {
+                            const element = menus[key][index]; 
+                            divsContent  += '<p style="  overflow: hidden;">';
+                            divsContent += '<span style="float: left" ><strong>' + element.name + '</strong></span><span style="float: right" > &#x20A6;' + element.price + '</span>';
+                            divsContent += '</p>';    
+                        }
+                        
+                        divsContent += '</div>';
+                        k++;
+
+                    }
+                    divsContent += '</div>';
+                    document.getElementById('menu_tabs').innerHTML = tabsContent;
+                    document.getElementById('menu_content').innerHTML = divsContent;
+
+
+                }
+                else{
+                    document.getElementById('menu').style.display = 'none';
+                }
                
             }
 
@@ -592,6 +640,26 @@
                         </div>
                     </div>
                 </section>  
+                        <!-- start tab style 04 section -->
+        <section id="menu" class="wow animate__fadeIn bg-light-gray">
+            <div class="container tab-style4">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-2 col-md-3 pe-0 position-relative z-index-1">
+                        <!-- start tab navigation -->
+                        <ul id="menu_tabs" class="nav nav-tabs alt-font text-uppercase text-small font-weight-600">
+
+                        </ul>
+                        <!-- end tab navigation -->
+                    </div>
+                    <div  class="col-12 col-lg-10 col-md-9 ps-0">
+                        <div  id="menu_content" >
+
+                        </div>
+                    </div>       
+                </div>                                
+            </div>
+        </section>
+        <!-- end tab style 04 section -->
         <!-- start footer --> 
         <footer class="footer-standard"> 
             <div class="footer-widget-area padding-five-tb sm-padding-30px-tb">
