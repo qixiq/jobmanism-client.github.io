@@ -1,4 +1,44 @@
 var host = 'https://obatalademo.azurewebsites.net';
+
+function addFooterContent(){
+    var content = '<div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray md-no-border-right md-margin-30px-bottom text-center text-sm-start">';
+    content += '<!-- start logo -->';
+    content += '<a href="#" class="margin-20px-bottom d-inline-block"><img class="footer-logo" src="fudtraka-svg.png"   alt="Pofo"></a>';
+    content += '<!-- end logo -->';
+    content += '<p class="text-small d-inline-block w-95 lg-w-100 xs-w-95">Fudtraka is an online platform that provides incomparable business visibility for all kinds of food vendors across the country with real time navigation, where Vendors can list their Businesses, place advertisement, create and update Menu through personalized web pages. While prospective Customers can search for choice Vendors or Menus based on proximity, location, reviews, and rating of others..</p>';
+    content += '<!-- start social media -->';
+    content += '<div class="social-icon-style-8 d-inline-block align-middle">';
+    content += '<ul class="small-icon mb-0">';
+    content += '<a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>';
+    content += '<a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>';
+    content += '<a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a> ';  
+    content += '</ul>';
+    content += '</div>';
+    content += '<!-- end social media -->';
+    content += '</div>';
+    content += '<!-- start additional links -->';
+    content += '<div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right md-margin-30px-bottom text-center text-sm-start">';
+    content += '<div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Additional Links</div>';
+    content += '<ul class="list-unstyled">';
+    //content += '<li><a class="text-small" href="#">Sign In</a></li>';
+    //content += '<li><a class="text-small" href="#">Manage Businesses</a></li>';
+    //content += '<li><a class="text-small" href="#">Join Us</a></li>'; 
+    content += '</ul>';
+    content += '</div>';
+    content += '<!-- end additional links -->';
+    content += '<!-- start contact information -->';
+    content += '<div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right xs-margin-30px-bottom text-center text-sm-start">';
+    content += '<div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Contact Info</div>';
+    content += '<p class="text-small d-inline-block d-md-block margin-15px-bottom w-80 md-w-70">Fudtraka<br> Suite 3, Alhaja Humani Shopping Mall, 72 Kudirat Abiola Way, Oregun, Lagos State</p>';
+    content += '<div class="text-small">Email: <a href="mailto:info@fudtraka.com">info@fudtraka.com</a></div>';
+    content += '<div class="text-small">Phone: +234 902 477 0029,</div>';
+    content += '<div class="text-small">+234 815 778 5852</div>'; 
+    content += '</div>';
+    content += '<!-- end contact information -->';
+   
+   document.getElementById('footer_content').innerHTML = content;                  
+                    
+}
 function sendJsonPostRequest(body, path, onSuccess, onError) {
     fetch(host + path, {
         method: 'POST',
@@ -1176,6 +1216,22 @@ function addBusinessAnnotation(
     onError)
     {
         sendFormDataPostRequest(data, '/addAnnotationToBusiness', onSuccess, onError);
+    }
+
+    function uploadMenuData( 
+        data,
+        onSuccess,
+        onError)
+        {
+            sendFormDataPostRequest(data, '/uploadMenu', onSuccess, onError);
+        }
+
+function addBusinessLocationMenuItem( 
+    data,
+    onSuccess,
+    onError)
+    {
+        sendFormDataPostRequest(data, '/addBusinessLocationMenuItem', onSuccess, onError);
     }
 
 function addBusinessLocationAnnotation( 
