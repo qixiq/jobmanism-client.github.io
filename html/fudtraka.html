@@ -186,6 +186,7 @@
             function init() {
                 currentState = document.getElementById('stateSelection').innerHTML;
                 //getFudtrakaLandingPageInfo(onGotLandingPageInfo, onError)
+                addFooterContent();
             }
 
             function onStateSelectionChanged(state){
@@ -916,58 +917,8 @@
         <footer class="footer-standard"> 
             <div class="footer-widget-area padding-five-tb sm-padding-30px-tb">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray md-no-border-right md-margin-30px-bottom text-center text-sm-start">
-                            <!-- start logo -->
-                            <a href="#" class="margin-20px-bottom d-inline-block"><img class="footer-logo" src="fudtraka-svg.png"   alt="Pofo"></a>
-                            <!-- end logo -->
-                            <p class="text-small d-inline-block w-95 lg-w-100 xs-w-95">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <!-- start social media -->
-                            <div class="social-icon-style-8 d-inline-block align-middle">
-                                <ul class="small-icon mb-0">
-                                    <a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                                    <a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
-                                    <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a>   
-                                </ul>
-                            </div>
-                            <!-- end social media -->
-                        </div>
-                        <!-- start additional links -->
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right md-margin-30px-bottom text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Additional Links</div>
-                            <ul class="list-unstyled">
-                                <li><a class="text-small" href="#">Sign In</a></li>
-                                <li><a class="text-small" href="#">Manage Businesses</a></li>
-                                <li><a class="text-small" href="#">Join Us</a></li> 
-                            </ul>
-                        </div>
-                        <!-- end additional links -->
-                        <!-- start contact information -->
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right xs-margin-30px-bottom text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Contact Info</div>
-                            <p class="text-small d-inline-block d-md-block margin-15px-bottom w-80 md-w-70">Fudtraka<br> Suite 3, Alhaja Humani Shopping Mall, 72 Kudirat Abiola Way, Oregun, Lagos State</p>
-                            <div class="text-small">Email: <a href="mailto:info@fudtraka.com">info@fudtraka.com</a></div>
-                            <div class="text-small">Phone: +234 902 477 0029,</div>
-                            <div class="text-small">+234 815 778 5852</div> 
-                        </div>
-                        <!-- end contact information -->
-                        <!-- start instagram -->
-                        <div class="col-lg-3 col-sm-6 widget padding-45px-left md-padding-15px-left text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-15px-bottom font-weight-600">Resent portfolio</div>
-                            <div class="w-100 d-inline-block">
-                                <ul class="instafeed-grid instafeed-wrapper grid grid-3col xl-grid-3col lg-grid-3col md-grid-3col sm-grid-3col xs-grid-3col gutter-small" data-total="6">
-                                    <li class="grid-item">
-                                        <figure>
-                                            <a href="#" data-href="{{link}}" target="_blank">
-                                                <img src="#" data-src="{{image}}" class="insta-image" alt="" />
-                                                <span class="insta-counts"><i class="ti-instagram"></i>{{likes}}</span>
-                                            </a>
-                                        </figure>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end instagram -->
+                    <div id="footer_content" class="row">
+
                     </div>
                 </div>
             </div>
