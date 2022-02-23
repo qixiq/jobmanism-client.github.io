@@ -26,7 +26,7 @@
         <!-- scripts -->
         <script type="text/javascript" src="fudtraka.js"></script>
         <script>
-            var tiers = [{name:'claim_basic', code: 0}, {name : 'claim_extra', code: 1}, {name: 'claim_advanced', code : 2} , {name : 'claim_premium', code : 3}];
+            var tiers = [{name:'claim_bronze', code: 0}, {name : 'claim_silver', code: 1}, {name: 'claim_gold', code : 2} , {name : 'claim_platinum', code : 3}];
             var sessionId = getQueryParameter('sessionId'); 
             var locationId = getQueryParameter('locationId'); 
             var loginMode;
@@ -323,6 +323,7 @@
 
                 toggleSections('');
                 getFoodAndDrinkVendorLocation(sessionId, locationId, onGotLandingPageInfo, onError);
+                addFooterContent();
             }
  
 
@@ -412,11 +413,6 @@
                         </div>
                         <div class="row align-items-center"> 
                             <!-- start feature box item -->
-                            <div class="col-12 col-lg-3 col-sm-6 position-relative text-center wow animate__fadeIn" data-wow-delay="0.4s">
-                                <img src="https://via.placeholder.com/800x1022" alt="" class="w-100">
-                            </div>
-                            <!-- end feature box item -->
-                            <!-- start feature box item -->
                             <div class="col-12 col-lg-6 lg-margin-15px-top md-no-margin-top md-margin-ten-bottom sm-padding-five-lr sm-margin-ten-bottom wow animate__fadeIn last-paragraph-no-margin">
                                 <div class="padding-fourteen-right md-no-padding-right text-center text-lg-start">
                                     <h5 class="alt-font text-extra-dark-gray">What are the Beneftis of Claiming a Business ?</h5>
@@ -425,6 +421,12 @@
                                 </div>
                             </div>
                             <!-- end feature box item --> 
+                            <!-- start feature box item -->
+                            <div class="col-12 col-lg-3 col-sm-6 position-relative text-center wow animate__fadeIn" data-wow-delay="0.4s">
+                                <img src="https://via.placeholder.com/800x1022" alt="" class="w-100">
+                            </div>
+                            <!-- end feature box item -->
+
     
                         </div>
                         <br/>
@@ -484,76 +486,122 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-lg-8">
-                                <div class="row row-cols-1 row-cols-md-4 row-cols-sm-2 align-items-center">
-                                    <!-- start features box item -->
-                                    <div class="col text-center sm-margin-30px-bottom wow animate__zoomIn">
-                                        <h6 class= "text-extra-dark-gray alt-font" >BASIC</h6>
-                                        <img src="images/image-icon1.png" alt=""><p class="alt-font margin-10px-top ">
-                                            <ul>
-                                                <li>Basic Advertisement Subscription</li>
-                                                <li>200KB Single File Upload Limit</li>
-                                                <li>15 Media File Total Limit</li>
-                                                <li>10,000 Naira / Month</li>
-                                            </ul>
-                                            <form id="claim_basic">
-                                                <button>Claim</button> 
-                                            </form> 
-                                        </p>
+                        <div class="row align-items-center justify-content-center">
+                            <!-- start pricing item -->
+                            <div class="col-12 col-lg-4 col-md-8 text-center pricing-box-style1 md-margin-30px-bottom wow animate__fadeInUp">
+                                <div class="pricing-box border border-color-extra-light-gray">
+                                    <div class="padding-55px-all bg-very-light-gray md-padding-30px-all sm-pading-40px-all">
+                                        <!-- start pricing title -->
+                                        <div class="pricing-title text-center">
+                                            <i class="ti-user icon-large text-deep-pink d-inline-block padding-30px-all bg-white box-shadow-light rounded-circle margin-25px-bottom"></i>
+                                        </div>
+                                        <!-- end pricing title -->
+                                        <!-- start pricing price -->
+                                        <div class="pricing-price">
+                                            <span class="alt-font text-extra-dark-gray font-weight-600 text-uppercase">Bronze</span>
+                                            <h4 class="text-extra-dark-gray alt-font font-weight-600 mb-0">&#x20A6;150,000</h4>
+                                            <div class="text-extra-small text-uppercase alt-font margin-5px-top">Per Year</div>
+                                        </div>
+                                        <!-- end pricing price -->
                                     </div>
-                                    <!-- end features box item -->
-                                    <!-- start features box item -->
-                                    <div class="bg-light-gray col text-center sm-margin-30px-bottom wow animate__zoomIn" data-wow-delay="0.2s">
-                                        <h6 class= "text-extra-dark-gray  alt-font" >EXTRA</h6>
-                                        <img src="images/image-icon2.png" alt=""><p class="alt-font margin-10px-top">
-                                            <ul>
-                                                <li>Extra Advertisement Subscription</li>
-                                                <li>500KB Single File Upload Limit</li>
-                                                <li>20 Media File Total Limit</li>
-                                                <li>25,000 Naira / Month</li>
-                                            </ul>
-                                            <form id="claim_extra">
-                                                <button>Claim</button> 
-                                            </form> 
-                                        </p>
+                                    <!-- start pricing features -->
+                                    <div class="padding-45px-all pricing-features md-padding-20px-all sm-padding-30px-all">
+                                        <ul class="list-style-11">
+                                            <li>1 GB Media Upload</li>
+                                            <li>50 Menu Items</li>
+                                            <li>2 Menu Templates and Printing Per Week</li>
+                                            <li>State Advertisements</li>
+                                            <li>Weekly Classified Ads</li> 
+                                        </ul>
+                                        <!-- start pricing action -->
+                                        <div class="pricing-action margin-35px-top md-no-margin-top">
+                                            <form id="claim_bronze">
+                                                <button action="submit">Claim</button>
+                                            </form>                                       
+                                        </div>
+                                        <!-- end pricing action -->
                                     </div>
-                                    <!-- end features box item -->
-                                    <!-- start features box item -->
-                                    <div class="col text-center xs-margin-30px-bottom wow animate__zoomIn" data-wow-delay="0.4s">
-                                        <h6 class= "text-extra-dark-gray   alt-font" >ADVANCED</h6>
-                                        <img src="images/image-icon3.png" alt=""><p class="alt-font margin-10px-top ">
-                                            <ul>
-                                                <li>Advanced Advertisement Subscription</li>
-                                                <li>2MB Single File Upload Limit</li>
-                                                <li>50 Media File Total Limit</li>
-                                                <li>50,000 Naira / Month</li>
-                                            </ul>
-                                            <form id="claim_advanced">
-                                                <button>Claim</button> 
-                                            </form> 
-                                        </p>
-                                    </div>
-                                    <!-- end features box item -->
-                                    <!-- start features box item -->
-                                    <div class="bg-light-gray col text-center wow animate__zoomIn" data-wow-delay="0.6s">
-                                        <h6 class= "text-extra-dark-gray alt-font" >PREMIUM</h6>
-                                        <img src="images/image-icon4.png" alt=""><p class="alt-font margin-10px-top ">
-                                            <ul>
-                                                <li>Premium Advertisement Subscription</li>
-                                                <li>10MB Single File Upload Limit</li>
-                                                <li>100 Media File Total Limit</li>
-                                                <li>100,000 Naira / Month</li>
-                                            </ul>
-                                            <form id="claim_premium">
-                                                <button  >Claim</button> 
-                                            </form> 
-                                        </p>
-                                    </div>
-                                    <!-- end features box item -->
+                                    <!-- end pricing features -->
                                 </div>
                             </div>
-                        </div>  
+                            <!-- end pricing item -->
+                            <!-- start pricing item -->
+                            <div class="col-12 col-lg-4 col-md-8 text-center pricing-box-style1 md-margin-30px-bottom wow animate__fadeInUp" data-wow-delay="0.2s">
+                                <div class="pricing-box border border-color-extra-light-gray">
+                                    <div class="padding-55px-all bg-very-light-gray md-padding-30px-all sm-pading-40px-all">
+                                        <!-- start pricing title -->
+                                        <div class="pricing-title text-center">
+                                            <i class="ti-briefcase icon-large text-deep-pink d-inline-block padding-30px-all bg-white box-shadow-light rounded-circle margin-25px-bottom"></i>
+                                        </div>
+                                        <!-- end pricing title -->
+                                        <!-- start pricing price -->
+                                        <div class="pricing-price">
+                                            <span class="alt-font text-extra-dark-gray font-weight-600 text-uppercase">Silver</span>
+                                            <h4 class="text-extra-dark-gray alt-font font-weight-600 mb-0">&#x20A6;200,000</h4>
+                                            <div class="text-extra-small text-uppercase alt-font margin-5px-top">Per Year</div>
+                                        </div>
+                                        <!-- end pricing price -->
+                                    </div>
+                                    <!-- start pricing features -->
+                                    <div class="padding-45px-all pricing-features md-padding-20px-all sm-padding-30px-all">
+                                        <ul class="list-style-11">
+                                            <li>5 GB Media Upload</li>
+                                            <li>100 Menu Items</li>
+                                            <li>5 Menu Templates and Printing Per Week</li>
+                                            <li>Regional Advertisements</li>
+                                            <li>Thrice Weekly Classified Ads</li> 
+                                        </ul>
+                                        <!-- start pricing action -->
+                                        <div class="pricing-action margin-35px-top md-no-margin-top">
+                                            <form id="claim_silver">
+                                                <button action="submit">Claim</button>
+                                            </form>                                          
+                                        </div>
+                                        <!-- end pricing action -->
+                                    </div>
+                                    <!-- end pricing features -->
+                                </div>
+                            </div>
+                            <!-- end pricing item -->
+                            <!-- start pricing item -->
+                            <div class="col-12 col-lg-4 col-md-8 text-center pricing-box-style1 wow animate__fadeInUp" data-wow-delay="0.4s">
+                                <div class="pricing-box border border-color-extra-light-gray">
+                                    <div class="padding-55px-all bg-very-light-gray md-padding-30px-all sm-pading-40px-all">
+                                        <!-- start pricing title -->
+                                        <div class="pricing-title text-center">
+                                            <i class="ti-world icon-large text-deep-pink d-inline-block padding-30px-all bg-white box-shadow-light rounded-circle margin-25px-bottom"></i>
+                                        </div>
+                                        <!-- end pricing title -->
+                                        <!-- start pricing price -->
+                                        <div class="pricing-price">
+                                            <span class="alt-font text-extra-dark-gray font-weight-600 text-uppercase">Gold</span>
+                                            <h4 class="text-extra-dark-gray alt-font font-weight-600 mb-0">&#x20A6;300,000</h4>
+                                            <div class="text-extra-small text-uppercase alt-font margin-5px-top">Per Year</div>
+                                        </div>
+                                        <!-- end pricing price -->
+                                    </div>
+                                    <!-- start pricing features -->
+                                    <div class="padding-45px-all pricing-features md-padding-20px-all sm-padding-30px-all">
+                                        <ul class="list-style-11">
+                                            <li>Unlimited Media Upload</li>
+                                            <li>Unlimited Menu Items</li>
+                                            <li>Unlimited Menu Templates and Printing</li>
+                                            <li>National Advertisements</li>
+                                            <li>Daily Banner Ads</li> 
+                                        </ul>
+                                        <!-- start pricing action -->
+                                        <div class="pricing-action margin-35px-top md-no-margin-top">
+                                            <form id="claim_gold">
+                                                <button action="submit">Claim</button>
+                                            </form>                                          
+                                        </div>
+                                        <!-- end pricing action -->
+                                    </div>
+                                    <!-- end pricing features -->
+                                </div>
+                            </div>
+                            <!-- end pricing item -->
+                        </div>
 
                     </div>
                 </section>     
@@ -664,58 +712,7 @@
         <footer class="footer-standard"> 
             <div class="footer-widget-area padding-five-tb sm-padding-30px-tb">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray md-no-border-right md-margin-30px-bottom text-center text-sm-start">
-                            <!-- start logo -->
-                            <a href="#" class="margin-20px-bottom d-inline-block"><img class="footer-logo" src="fudtraka-svg.png"   alt="Pofo"></a>
-                            <!-- end logo -->
-                            <p class="text-small d-inline-block w-95 lg-w-100 xs-w-95">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <!-- start social media -->
-                            <div class="social-icon-style-8 d-inline-block align-middle">
-                                <ul class="small-icon mb-0">
-                                    <a href="https://www.facebook.com/Fudtraka-100668875879966" title="Facebook" target="_blank" class="text-link-white-2"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                                    <a href="https://twitter.com/fudtraka" title="Twitter" target="_blank" class="text-link-white-2"><i class="fab fa-twitter"></i></a>
-                                    <a href="https://www.youtube.com/channel/UCZBB_fhxu-wQKcTOl2FwTlg" title="You Tube" target="_blank" class="text-link-white-2"><i class="fab fa-google-plus-g"></i></a>   
-                                </ul>
-                            </div>
-                            <!-- end social media -->
-                        </div>
-                        <!-- start additional links -->
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right md-margin-30px-bottom text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Additional Links</div>
-                            <ul class="list-unstyled">
-                                <li><a class="text-small" href="#">Sign In</a></li>
-                                <li><a class="text-small" href="#">Manage Businesses</a></li>
-                                <li><a class="text-small" href="#">Join Us</a></li> 
-                            </ul>
-                        </div>
-                        <!-- end additional links -->
-                        <!-- start contact information -->
-                        <div class="col-lg-3 col-sm-6 widget border-right border-color-extra-light-gray padding-45px-left md-padding-15px-left md-no-border-right xs-margin-30px-bottom text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-10px-bottom font-weight-600">Contact Info</div>
-                            <p class="text-small d-inline-block d-md-block margin-15px-bottom w-80 md-w-70">Fudtraka<br> Suite 3, Alhaja Humani Shopping Mall, 72 Kudirat Abiola Way, Oregun, Lagos State</p>
-                            <div class="text-small">Email: <a href="mailto:info@fudtraka.com">info@fudtraka.com</a></div>
-                            <div class="text-small">Phone: +234 902 477 0029, </div>
-                            <div class="text-small">+234 815 778 5852</div> 
-                        </div>
-                        <!-- end contact information -->
-                        <!-- start instagram -->
-                        <div class="col-lg-3 col-sm-6 widget padding-45px-left md-padding-15px-left text-center text-sm-start">
-                            <div class="widget-title alt-font text-small text-extra-dark-gray text-uppercase margin-15px-bottom font-weight-600">Resent portfolio</div>
-                            <div class="w-100 d-inline-block">
-                                <ul class="instafeed-grid instafeed-wrapper grid grid-3col xl-grid-3col lg-grid-3col md-grid-3col sm-grid-3col xs-grid-3col gutter-small" data-total="6">
-                                    <li class="grid-item">
-                                        <figure>
-                                            <a href="#" data-href="{{link}}" target="_blank">
-                                                <img src="#" data-src="{{image}}" class="insta-image" alt="" />
-                                                <span class="insta-counts"><i class="ti-instagram"></i>{{likes}}</span>
-                                            </a>
-                                        </figure>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end instagram -->
+                    <div id="footer_content" class="row"> 
                     </div>
                 </div>
             </div>
