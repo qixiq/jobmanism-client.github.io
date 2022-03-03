@@ -1226,6 +1226,14 @@ function addBusinessAnnotation(
             sendFormDataPostRequest(data, '/uploadMenu', onSuccess, onError);
         }
 
+function updateBusinessProfile( 
+            data,
+            onSuccess,
+            onError)
+{
+    sendFormDataPostRequest(data, '/updateBusinessProfile', onSuccess, onError);
+}
+
 function addBusinessLocationMenuItem( 
     data,
     onSuccess,
