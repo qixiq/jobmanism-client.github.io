@@ -137,8 +137,58 @@
                 window.open(getPathPrefix(document.location.href) + '/manage-business.html?sessionId=' + sessionId + '&locationId=' + locationId, '_blank');
             }
 
+            function populateSocialMediaLinks(){
+
+                /*  <li><a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a class="twitter" href="http://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a class="google" href="http://www.google.com" target="_blank"><i class="fab fa-google-plus-g"></i></a></li>
+                                    <li><a class="dribbble" href="http://www.dribbble.com" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                                    <li><a class="linkedin" href="http://www.linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                                    <li><a class="instagram" href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a class="tumblr" href="http://www.tumblr.com/" target="_blank"><i class="fab fa-tumblr"></i></a></li>
+                                    <li><a class="flickr" href="http://www.flickr.com/" target="_blank"><i class="fab fa-flickr"></i></a></li>
+                                    <li><a class="youtube" href="http://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a class="rss" href="http://www.rss.com/" target="_blank"><i class="fas fa-rss"></i></a></li>
+                                    <li><a class="reddit" href="http://www.reddit.com/" target="_blank"><i class="fab fa-reddit-alien"></i></a></li>
+                                    <li><a class="behance" href="http://www.behance.com/" target="_blank"><i class="fab fa-behance"></i></a></li>
+                                    <li><a class="vine" href="http://vine.co/" target="_blank"><i class="fab fa-vine"></i></a></li>
+                                    -->*/
+
+                var content = '';
+
+                var digitalAssets = initData.location.digitalAssets;
+                for(var i = 0; i < digitalAssets.length; ++i)
+                {
+                    var d = digitalAssets[i];
+                    if(d.type.name == 'Facebook')
+                    {
+                        content += '<li><a class="facebook" href="' +  d.specification +'" target="_blank"><i class="fab fa-facebook-f"></i></a></li>';
+                    }
+                    else if(d.type.name == 'Instagram')
+                    {
+                        content += '<li><a class="instagram" href="' +  d.specification +'" target="_blank"><i class="fab fa-instagram"></i></a></li>';
+                    }
+                    else if(d.type.name == 'Youtube')
+                    {
+                        content += '<li><a class="youtube" href="' +  d.specification +'" target="_blank"><i class="fab fa-youtube"></i></a></li>';
+                    }
+                    else if(d.type.name == 'Twitter')
+                    {
+                        content += '<li><a class="twitter" href="' +  d.specification +'" target="_blank"><i class="fab fa-twitter"></i></a></li>';
+                    }
+                    else if(d.type.name == 'Pinterest')
+                    {
+                        content += '<li><a class="flickr" href="' +  d.specification +'" target="_blank"><i class="fab fa-flickr"></i></a></li>';
+                    }
+                }
+
+                document.getElementById('social-media-links').innerHTML = content;
+
+            }
+
             function onGotLandingPageInfo(data){
                 initData = data;
+                populateSocialMediaLinks();
                 var bannerText = data.location.businessName + ' , ' + data.location.address.city + '&nbsp;&nbsp;&nbsp;&nbsp; phone: ' + data.location.phoneNumber.numberText;
                 document.getElementById('name-banner').innerHTML = bannerText;
                 document.getElementById('map-frame').src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyAGqXOCO3YWIrQtcgNk1SyBj8599KdnVY8&q=' + encodeURIComponent(data.location.address.gpsLocation);
@@ -272,9 +322,7 @@
                     items.push(menuItem);
                 }
 
-                if(Object.keys(menus).length  > 0){
-
-                    var tabsContent = '';
+                if(Object.keys(menus).length  > 0){ 
                     var divsContent = '';
                     var k = 0;
                     divsContent += '<div class="row align-items-center">';
@@ -298,8 +346,7 @@
                         k++;
 
                     }
-                    divsContent += '</div>';
-                    document.getElementById('menu_tabs').innerHTML = tabsContent;
+                    divsContent += '</div>'; 
                     document.getElementById('menu_content').innerHTML = divsContent;
 
 
@@ -387,9 +434,26 @@
                                 <!-- start page title -->
                                 <h1 id="name-banner" class="alt-font text-white-2 font-weight-600 mb-0 text-uppercase"></h1>
                                 <!-- end page title -->
-                            </div>
+                                <ul id="social-media-links" class="medium-icon">
+                                   <!--   <li><a class="facebook" href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a class="twitter" href="http://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a class="google" href="http://www.google.com" target="_blank"><i class="fab fa-google-plus-g"></i></a></li>
+                                    <li><a class="dribbble" href="http://www.dribbble.com" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                                    <li><a class="linkedin" href="http://www.linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                                    <li><a class="instagram" href="http://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a class="tumblr" href="http://www.tumblr.com/" target="_blank"><i class="fab fa-tumblr"></i></a></li>
+                                    <li><a class="flickr" href="http://www.flickr.com/" target="_blank"><i class="fab fa-flickr"></i></a></li>
+                                    <li><a class="youtube" href="http://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a class="rss" href="http://www.rss.com/" target="_blank"><i class="fas fa-rss"></i></a></li>
+                                    <li><a class="reddit" href="http://www.reddit.com/" target="_blank"><i class="fab fa-reddit-alien"></i></a></li>
+                                    <li><a class="behance" href="http://www.behance.com/" target="_blank"><i class="fab fa-behance"></i></a></li>
+                                    <li><a class="vine" href="http://vine.co/" target="_blank"><i class="fab fa-vine"></i></a></li>
+                                    -->
+                                </ul> 
+                            </div> 
+
                         </div>
-                    </div>
+                    </div> 
                 </section>
                 <!-- end page title section -->  
                 <section id="claim" class="wow animate__fadeIn bg-black">
